@@ -1,6 +1,7 @@
 # Web09
 
-[Notion](https://substantial-flannel-f97.notion.site/A1O3-4c407ab1b1324d67bd43932c7e22c1bd)
+- [Notion](https://substantial-flannel-f97.notion.site/A1O3-4c407ab1b1324d67bd43932c7e22c1bd)
+- [백로그](https://docs.google.com/spreadsheets/d/18T5d3AXnZZ9pLfLomCuswxMANmP2dX0Ufoje-Nk6ERM/edit#gid=0)
 
 ## 소개
 
