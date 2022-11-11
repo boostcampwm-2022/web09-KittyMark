@@ -6,9 +6,9 @@
 
 <div align="center">
 
-<strong> 🐱 평소 챙겨주던 길고양이들을 냥자취 SNS 스타로 만들어주세요! 당신 집 주변의 고양이와 더 따뜻한 유대감을 나눌 수 있습니다. 🐱 </strong>
+<strong>🐱 평소 챙겨주던 길고양이들을 냥자취 SNS 스타로 만들어주세요! 당신 집 주변의 고양이와 더 따뜻한 유대감을 나눌 수 있습니다. 🐱</strong>
 <br/><br/>
-<strong> 🐱 기술 스택 🐱 </strong>
+<strong>🐱 기술 스택 🐱</strong>
 <br/><br/>
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/>
   <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
