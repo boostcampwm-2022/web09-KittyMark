@@ -8,6 +8,7 @@ module.exports = {
 		'plugin:react/recommended',
 		'airbnb',
 		'plugin:@typescript-eslint/recommended',
+		'plugin:prettier/recommended',
 	],
 	overrides: [],
 	parser: '@typescript-eslint/parser',
@@ -31,13 +32,17 @@ module.exports = {
 			2,
 			{ extensions: ['.js', '.jsx', '.ts', '.tsx'] },
 		],
-		'prettier/prettier': 'error',
-		// 'prettier/prettier': [
-		//     'error',
-		//     {
-		//         endOfLine: 'auto',
-		//     },
-		// ],
+		// 'prettier/prettier': 'error',
+		'prettier/prettier': [
+			'error',
+			{
+				endOfLine: 'auto',
+			},
+		],
+		'react/function-component-definition': [
+			2,
+			{ namedComponents: 'arrow-function' },
+		],
 	},
 	settings: {
 		'import/resolver': {
