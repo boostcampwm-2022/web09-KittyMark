@@ -1,0 +1,75 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: KittyMark CI
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build-test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: install frontend dependencies
+      working-directory: client
+      run: npm install
+      
+    - name: react build
+      working-directory: client
+      run: npm build
+      
+    - name: install backend dependencies
+      working-directory: server
+      run: npm install
+      
+    - name: test
+      working-directory: server
+      run: npm test
+      
+    - uses: actions/upload-artifact@v2
+      if: success() || failure()
+      with:
+        name: test-results
+        path: jest-junit.xml
+        
+#     - name: 테스트 결과를 PR에 코멘트로 등록합니다
+#       uses: EnricoMi/publish-unit-test-result-action@v1
+#       if: always()
+#       with:
+#         files: '**/build/test-results/test/TEST-*.xml'
+
+#     - name: 테스트 실패 시, 실패한 코드 라인에 Check 코멘트를 등록합니다
+#       uses: mikepenz/action-junit-report@v3
+#       if: always()
+#       with:
+#         report_paths: '**/build/test-results/test/TEST-*.xml'
+#         token: ${{ github.token }}
+
+    - name: build 실패 시 Slack으로 알립니다
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        author_name: 빌드 실패 알림
+        fields: repo, message, commit, author, action, eventName, ref, workflow, job, took
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: failure()
