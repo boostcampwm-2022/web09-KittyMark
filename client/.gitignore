@@ -23,3 +23,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .cert/
+
+.env
+.env.development
+.env.production
