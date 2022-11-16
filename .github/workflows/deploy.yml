@@ -57,3 +57,6 @@ jobs:
         script: |
           docker login https://ghcr.io -u wooseongshin -p "$TOKEN"
           mkdir kittymark
+          docker-compose pull
+          docker-compose down
+          docker-compose up -d
