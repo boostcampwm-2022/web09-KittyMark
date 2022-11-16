@@ -40,7 +40,7 @@ jobs:
       with:
         host: ${{ secrets.DEPLOYMENT_HOST }}
         username: ${{ secrets.DEPLOYMENT_USERNAME }}
-        key: ${{ secrets.DEPLOYMENT_KEY }}
+        password: ${{ secrets.DEPLOYMENT_PASSWORD }}
         port: 22
         source: "docker-compose.yml"
         target: "kittyMark"
@@ -52,7 +52,7 @@ jobs:
       with:
         host: ${{ secrets.DEPLOYMENT_HOST }}
         username: ${{ secrets.DEPLOYMENT_USERNAME }}
-        key: ${{ secrets.DEPLOYMENT_KEY }}
+        password: ${{ secrets.DEPLOYMENT_PASSWORD }}
         envs: TOKEN
         script: |
           docker login https://ghcr.io -u wooseongshin -p "$TOKEN"
