@@ -43,7 +43,7 @@ jobs:
         password: ${{ secrets.DEPLOYMENT_PASSWORD }}
         port: 22
         source: "docker-compose.yml"
-        target: "kittyMark"
+        target: "kittymark"
         
     - name: Run Docker Compose on the Server
       uses: appleboy/ssh-action@master
@@ -58,5 +58,4 @@ jobs:
           docker login https://ghcr.io -u wooseongshin -p "$TOKEN"
           mkdir kittymark
           docker-compose pull
-          docker-compose down
           docker-compose up -d
