@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StartPageContainer = styled.div`
+const LoginPageContainer = styled.div`
 	height: 100vh;
 	width: 100vw;
 	display: flex;
@@ -22,4 +22,4 @@ const OauthButton = styled.button`
 	}
 `;
 
-export { StartPageContainer, OauthButton };
+export { LoginPageContainer, OauthButton };
