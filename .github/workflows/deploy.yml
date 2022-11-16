@@ -56,6 +56,6 @@ jobs:
         envs: TOKEN
         script: |
           docker login https://ghcr.io -u wooseongshin -p "$TOKEN"
-          mkdir kittymark
+          cd kittymark
           docker-compose pull
           docker-compose up -d
