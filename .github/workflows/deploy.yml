@@ -30,7 +30,7 @@ jobs:
         password: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
 
     - name: Copy Docker Compose into the Server
-      us: appleboy/scp-action@master
+      uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.DEPLOYMENT_HOST }}
         username: ${{ secrets.DEPLOYMENT_USERNAME }}
