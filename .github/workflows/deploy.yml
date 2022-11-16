@@ -18,7 +18,11 @@ jobs:
 
     - name: Build React App
       working-directory: ./client
+      env: 
+        CI: ""
+        FRONTEND_SECRET: ${{ secrets.REACT_APP_SECRETS }}
       run: |
+        echo "$FRONTEND_SECRET" > .env
         npm i
         npm run build 
         
