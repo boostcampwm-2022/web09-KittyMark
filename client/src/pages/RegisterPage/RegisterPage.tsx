@@ -44,10 +44,10 @@ const RegisterPage = () => {
 	const onChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) =>
 		setNickname(event.target.value);
 
-	const onClickRegisterBtn = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const onClickRegisterBtn = (): number => {
 		// 전송 방법이나 url 설정이 완료되면 수정할 예정
-		console.log(profileImage);
-		console.log(nickname);
+		if (nickname && profileImage) return 1;
+		return 0;
 	};
 
 	return (
