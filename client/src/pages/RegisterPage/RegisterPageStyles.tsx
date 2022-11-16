@@ -87,6 +87,12 @@ const ImageSlot = styled.div`
 	border: 1px solid #ffc700;
 	border-radius: 3rem;
 
+	img {
+		width: 100%;
+		height: 100%;
+		border-radius: 3rem;
+	}
+
 	.input-button {
 		position: absolute;
 		top: 4rem;
