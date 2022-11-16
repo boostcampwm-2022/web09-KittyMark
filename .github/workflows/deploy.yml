@@ -21,3 +21,19 @@ jobs:
       run: |
         npm i
         npm run build 
+        
+    - name: Login to Github Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
+
+    - name: Copy Docker Compose into the Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DEPLOYMENT_HOST }}
+        username: ${{ secrets.DEPLOYMENT_USERNAME }}
+        password: ${{ secrets.DEPLOYMENT_PASSWORD }}
+        source: "docker-compose.yml"
+        target: "app"
