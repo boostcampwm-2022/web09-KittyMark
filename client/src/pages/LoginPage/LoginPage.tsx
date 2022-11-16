@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 // style
-import { StartPageContainer, OauthButton } from './StartPageStyles';
+import { LoginPageContainer, OauthButton } from './LoginPageStyles';
 // img
 import logo from '../../static/logo.png';
 import appName from '../../static/logoName.png';
 import kakaoOauth from '../../static/kakao_oauth.png';
 import naverOauth from '../../static/naver_oauth.png';
 
-const StartPage = () => {
+const LoginPage = () => {
 	const onClickNaverLogin = () => {
 		const clientId = process.env.REACT_APP_NAVER_LOGIN_CLIENT_ID;
 		const stateString = process.env.REACT_APP_NAVER_LOGIN_STATE;
@@ -58,7 +58,7 @@ const StartPage = () => {
 	}, []);
 
 	return (
-		<StartPageContainer>
+		<LoginPageContainer>
 			<img alt="Logo" src={logo} style={{ width: '5rem', height: '5rem' }} />
 			<img
 				alt="App Name"
@@ -71,8 +71,8 @@ const StartPage = () => {
 			<OauthButton type="button">
 				<img alt="Kakao Oauth" src={kakaoOauth} />
 			</OauthButton>
-		</StartPageContainer>
+		</LoginPageContainer>
 	);
 };
 
-export default StartPage;
+export default LoginPage;
