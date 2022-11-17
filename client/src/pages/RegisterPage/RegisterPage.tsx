@@ -1,4 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import uploadFile from '../../utils/awsUpload';
 // style
 import {
 	RegisterPageBody,
@@ -12,13 +15,24 @@ import plusBtn from '../../static/plusBtn.svg';
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 
 const RegisterPage = () => {
+	const location = useLocation();
+	const navigate = useNavigate();
+	const { email, oauthInfo } = location.state
+		? (location.state as { email: string; oauthInfo: string })
+		: { email: '', oauthInfo: '' };
+
 	const profileImageBtn = useRef<HTMLInputElement>(null);
 	const registerBtn = useRef<HTMLButtonElement>(null);
+
 	const [profileImage, setProfileImage] = useState<File>();
 	const [base64Image, setBase64Image] = useState<string | ArrayBuffer>(
 		defaultProfile,
 	);
 	const [nickname, setNickname] = useState<string>('');
+
+	useEffect(() => {
+		if (email === '' || oauthInfo === '') navigate('/');
+	}, []);
 
 	const onClickProfileImageBtn = () => {
 		if (profileImageBtn.current) {
@@ -44,10 +58,28 @@ const RegisterPage = () => {
 	const onChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) =>
 		setNickname(event.target.value);
 
-	const onClickRegisterBtn = (): number => {
-		// 전송 방법이나 url 설정이 완료되면 수정할 예정
-		if (nickname && profileImage) return 1;
-		return 0;
+	const onClickRegisterBtn = async () => {
+		// 이미지 object storage 에 올리고 경로 받아오기
+		let imageUrl = './defaultProfile.svg';
+		if (profileImage) imageUrl = await uploadFile(profileImage);
+
+		/* eslint-disable-next-line no-console */
+		console.log(imageUrl);
+
+		// api 보내기
+		const response = await axios.post('/api/auth/register', {
+			// const response = await axios.post(
+			// 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/auth/register`,
+			// 	{
+			email,
+			imageURL: imageUrl,
+			userName: nickname,
+			oauthInfo,
+		});
+		// 정상이면
+		if (response.data.code === 200) navigate('/home');
+
+		// TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
 	};
 
 	return (

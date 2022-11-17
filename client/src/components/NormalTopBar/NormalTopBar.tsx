@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-
+// img
 import logo from '../../static/logo.png';
 import appName from '../../static/logoName.png';
 
