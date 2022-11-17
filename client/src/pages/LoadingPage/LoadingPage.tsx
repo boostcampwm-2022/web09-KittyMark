@@ -35,7 +35,9 @@ const LoadingPage = () => {
 		if (response.data.code === 200) {
 			if (response.data.email !== undefined) {
 				// TODO: 회원가입
-				navigation('/register', { state: { email: response.data.email } });
+				navigation('/register', {
+					state: { email: response.data.email, ouathInfo: 'NAVER' },
+				});
 			} else {
 				// TODO: 로그인되어 홈으로 이동
 				navigation('/home');

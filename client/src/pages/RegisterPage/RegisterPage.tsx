@@ -17,9 +17,9 @@ import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 const RegisterPage = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { email } = location.state
-		? (location.state as { email: string })
-		: { email: '' };
+	const { email, oauthInfo } = location.state
+		? (location.state as { email: string; oauthInfo: string })
+		: { email: '', oauthInfo: '' };
 
 	const profileImageBtn = useRef<HTMLInputElement>(null);
 	const registerBtn = useRef<HTMLButtonElement>(null);
@@ -31,7 +31,7 @@ const RegisterPage = () => {
 	const [nickname, setNickname] = useState<string>('');
 
 	useEffect(() => {
-		if (email === '') navigate('/');
+		if (email === '' || oauthInfo === '') navigate('/');
 	}, []);
 
 	const onClickProfileImageBtn = () => {
@@ -74,6 +74,7 @@ const RegisterPage = () => {
 			email,
 			imageUrl,
 			userName: nickname,
+			oauthInfo,
 		});
 		// 정상이면
 		if (response.data.code === 200) navigate('/home');
