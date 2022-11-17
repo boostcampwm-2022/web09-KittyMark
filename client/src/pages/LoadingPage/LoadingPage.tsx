@@ -34,6 +34,7 @@ const LoadingPage = () => {
 				state,
 			},
 		);
+
 		if (data.code === 200) {
 			if (data.email !== undefined) {
 				navigation('/register', {
