@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import uploadFile from '../../utils/awsUpload';
 // style
 import {
@@ -13,6 +13,8 @@ import defaultProfile from '../../static/defaultProfile.svg';
 import plusBtn from '../../static/plusBtn.svg';
 // component
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
+// type
+import { Api } from '../../types/responseData';
 
 const RegisterPage = () => {
 	const location = useLocation();
@@ -59,25 +61,21 @@ const RegisterPage = () => {
 		setNickname(event.target.value);
 
 	const onClickRegisterBtn = async () => {
-		// 이미지 object storage 에 올리고 경로 받아오기
 		let imageUrl = './defaultProfile.svg';
 		if (profileImage) imageUrl = await uploadFile(profileImage);
 
-		/* eslint-disable-next-line no-console */
-		console.log(imageUrl);
+		// 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/auth/register`,
+		const { data }: AxiosResponse<Api> = await axios.post(
+			'/api/auth/register',
+			{
+				email,
+				imageURL: imageUrl,
+				userName: nickname,
+				oauthInfo,
+			},
+		);
 
-		// api 보내기
-		const response = await axios.post('/api/auth/register', {
-			// const response = await axios.post(
-			// 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/auth/register`,
-			// 	{
-			email,
-			imageURL: imageUrl,
-			userName: nickname,
-			oauthInfo,
-		});
-		// 정상이면
-		if (response.data.code === 200) navigate('/home');
+		if (data.code === 200) navigate('/home');
 
 		// TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
 	};
