@@ -1,0 +1,42 @@
+name: KittyMark CI
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  client-ci:
+    name: client-ci
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    
+    - name: Set up Node
+      uses: actions/setup-node@v2
+      with: 
+        node-version: 16
+       
+    - name: Build client
+      working-directory: client
+      run: |
+        npm i
+        npm run build
+      
+  server-ci:
+    name: server-ci
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    
+    - name: Set up Node
+      uses: actions/setup-node@v2
+      with: 
+        node-version: 16
+       
+    - name: Build server
+      working-directory: server
+      run: |
+        npm i
+        npm run build
