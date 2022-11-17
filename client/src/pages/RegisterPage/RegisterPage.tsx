@@ -72,7 +72,7 @@ const RegisterPage = () => {
 			// 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/auth/register`,
 			// 	{
 			email,
-			imageUrl,
+			imageURL: imageUrl,
 			userName: nickname,
 			oauthInfo,
 		});
