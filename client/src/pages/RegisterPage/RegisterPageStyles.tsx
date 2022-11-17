@@ -26,6 +26,12 @@ const RegisterForm = styled.form`
 
 	padding: 52px 49px 32px 49px;
 
+	* {
+		font-family: 'Jua';
+		font-style: normal;
+		font-weight: 400;
+	}
+
 	.wellcome-title {
 		margin: 0px;
 		font-size: 30px;
@@ -46,10 +52,6 @@ const RegisterForm = styled.form`
 		border: 1px solid #ffc700;
 		padding: 0px 10px;
 
-		font-family: 'Jua';
-		font-style: normal;
-		font-weight: 400;
-
 		cursor: pointer;
 
 		&::placeholder {
@@ -65,10 +67,6 @@ const RegisterForm = styled.form`
 		background: #ff9c9c;
 		border: 1px solid #ffc700;
 		border-radius: 1rem;
-
-		font-family: 'Jua';
-		font-style: normal;
-		font-weight: 400;
 		font-size: 20px;
 		line-height: 25px;
 

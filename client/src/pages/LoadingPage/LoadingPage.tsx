@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
 // style
 import { Background, LoadingText } from './LoadingPageStyles';
 // img
 import loadingCat from '../../static/loadingCat.gif';
+// type
+import { LoginApi } from '../../types/responseData';
 
 const LoadingPage = () => {
 	const navigation = useNavigate();
@@ -19,27 +21,25 @@ const LoadingPage = () => {
 		return name;
 	};
 
-	// TODO: authorization code를 BE에 전송 후, reponse에 따른 처리 필요
 	const postAuthrizationInfo = async (
 		socialName: string,
 		authorizationCode: string,
 		state: string,
 	) => {
-		const response = await axios.post(`/api/oauth/${socialName}`, {
-			// const response = await axios.post(
-			// 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/oauth/naver/yes`,
-			// 	{
-			authorizationCode,
-			state,
-		});
-		if (response.data.code === 200) {
-			if (response.data.email !== undefined) {
-				// TODO: 회원가입
+		// 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/oauth/naver/yes`,
+		const { data }: AxiosResponse<LoginApi> = await axios.post(
+			`/api/oauth/${socialName}`,
+			{
+				authorizationCode,
+				state,
+			},
+		);
+		if (data.code === 200) {
+			if (data.email !== undefined) {
 				navigation('/register', {
-					state: { email: response.data.email, ouathInfo: 'NAVER' },
+					state: { email: data.email, ouathInfo: 'NAVER' },
 				});
 			} else {
-				// TODO: 로그인되어 홈으로 이동
 				navigation('/home');
 			}
 		}
