@@ -17,7 +17,7 @@ jobs:
       with: 
         node-version: 16
        
-    - name: install frontend dependencies
+    - name: Build client
       working-directory: client
       run: |
         npm i
@@ -35,8 +35,8 @@ jobs:
       with: 
         node-version: 16
        
-    - name: install frontend dependencies
+    - name: Build server
       working-directory: server
       run: |
         npm i
-        npm start
+        npm run build
