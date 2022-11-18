@@ -7,7 +7,7 @@ import appName from '../../static/logoName.png';
 const NoramlTopBarContainer = styled.div`
 	width: calc(100% - 24px);
 	height: calc(4rem - 18px);
-	background-color: #ffe99c;
+	background-color: ${(props) => props.theme.palette.main};
 	display: flex;
 	flex-direction: row;
 	padding: 9px 12px;

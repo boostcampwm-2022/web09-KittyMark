@@ -8,7 +8,7 @@ const LoginPageContainer = styled.div`
 	align-items: center;
 	justify-content: center;
 	gap: 10px;
-	background-color: #ffe99c;
+	background-color: ${(props) => props.theme.palette.main};
 `;
 
 const OauthButton = styled.button`

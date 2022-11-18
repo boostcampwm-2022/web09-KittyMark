@@ -9,7 +9,7 @@ import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 const TempBody = styled.img`
 	width: 100%;
 	height: calc(100% - 8rem);
-	background-color: #ffffff;
+	background-color: ${(props) => props.theme.palette.back};
 	object-fit: cover;
 `;
 

@@ -64,9 +64,10 @@ const RegisterPage = () => {
 		let imageUrl = './defaultProfile.svg';
 		if (profileImage) imageUrl = await uploadFile(profileImage);
 
+		// '/api/auth/register',
 		// 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/auth/register`,
 		const { data }: AxiosResponse<Api> = await axios.post(
-			'/api/auth/register',
+			`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/auth/register`,
 			{
 				email,
 				imageURL: imageUrl,
@@ -115,6 +116,7 @@ const RegisterPage = () => {
 						className="submit-button"
 						type="button"
 						onClick={onClickRegisterBtn}
+						disabled={!nickname}
 					>
 						회원가입
 					</button>
