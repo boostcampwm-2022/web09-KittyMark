@@ -8,9 +8,9 @@
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"build": "nest build",
-		"lint": "eslint \"src/**/*.ts\" --fix",
-		"format": "prettier --write \"src/**/*.ts\"",
-		"format-check": "prettier --check \"src/**/*.ts\"",
+		"lint": "eslint \"{src,test}/**/*.ts\" --fix",
+		"format": "prettier --write \"{src,test}/**/*.ts\"",
+		"format-check": "prettier --check \"{src,test}/**/*.ts\"",
 		"start": "cross-env NODE_ENV=development & nest start",
 		"start:dev": "cross-env NODE_ENV=development & nest start --watch",
 		"start:debug": "nest start --debug --watch",
