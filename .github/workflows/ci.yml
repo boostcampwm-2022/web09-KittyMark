@@ -6,6 +6,7 @@ on:
 
 jobs:
   client-ci:
+    if: contains(github.event.pull_request.labels.*.name,${{'🎨 FE'}})
     name: client-ci
     runs-on: ubuntu-latest
     steps:
@@ -20,10 +21,13 @@ jobs:
     - name: Build client
       working-directory: client
       run: |
-        npm i
+        npm ci
+        npm run format-check
+        npm run lint
         npm run build
       
   server-ci:
+    if: contains(github.event.pull_request.labels.*.name,'💻 BE')
     name: server-ci
     runs-on: ubuntu-latest
     steps:
@@ -38,5 +42,7 @@ jobs:
     - name: Build server
       working-directory: server
       run: |
-        npm i
+        npm ci
+        npm run format-check
+        npm run lint
         npm run build
