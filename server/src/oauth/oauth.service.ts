@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { OauthNaverDto } from './oauth-naver.dto';
 import { HttpService } from '@nestjs/axios';
-import { AxiosError } from 'axios';
-import { firstValueFrom, lastValueFrom, map } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
