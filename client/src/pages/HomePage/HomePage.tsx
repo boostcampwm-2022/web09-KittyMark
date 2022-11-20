@@ -7,20 +7,20 @@ import NavBar from '../../components/NavBar/NavBar';
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 
 const TempBody = styled.img`
-	width: 100%;
-	height: calc(100% - 8rem);
-	background-color: ${(props) => props.theme.palette.back};
-	object-fit: cover;
+  width: 100%;
+  height: calc(100% - 8rem);
+  background-color: ${(props) => props.theme.palette.back};
+  object-fit: cover;
 `;
 
 const HomePage = () => {
-	return (
-		<>
-			<NormalTopBar />
-			<TempBody src={tempHomeBody} alt="Temp" />
-			<NavBar />
-		</>
-	);
+  return (
+    <>
+      <NormalTopBar />
+      <TempBody src={tempHomeBody} alt="Temp" />
+      <NavBar />
+    </>
+  );
 };
 
 export default HomePage;

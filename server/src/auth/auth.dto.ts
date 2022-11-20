@@ -1,4 +1,4 @@
 export class AuthDto {
-	oauthType: string;
-	email: string;
+  oauthType: string;
+  email: string;
 }

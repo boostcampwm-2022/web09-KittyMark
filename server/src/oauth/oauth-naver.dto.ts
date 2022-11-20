@@ -1,4 +1,4 @@
 export class OauthNaverDto {
-	authorizationCode: string;
-	state: string;
+  authorizationCode: string;
+  state: string;
 }
