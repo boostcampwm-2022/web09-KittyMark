@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const NavBarContainer = styled.div`
 	width: 100%;
 	height: 4rem;
-	background-color: #ffe99c;
+	background-color: ${(props) => props.theme.palette.main};
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;

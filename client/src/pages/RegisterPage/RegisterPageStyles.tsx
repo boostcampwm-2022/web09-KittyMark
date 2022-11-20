@@ -6,7 +6,7 @@ const RegisterPageBody = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: #fffbed;
+	background: ${(props) => props.theme.palette.back};
 
 	font-family: 'Jua';
 	font-style: normal;
@@ -16,7 +16,7 @@ const RegisterPageBody = styled.div`
 const RegisterForm = styled.form`
 	width: 17rem;
 	height: 27rem;
-	background: #ffe99c;
+	background: ${(props) => props.theme.palette.main};
 	border-radius: 35px;
 	display: flex;
 	flex-direction: column;
@@ -48,8 +48,8 @@ const RegisterForm = styled.form`
 		width: 14rem;
 		height: 3rem;
 		border-radius: 1rem;
-		background-color: #ffffff;
-		border: 1px solid #ffc700;
+		background-color: ${(props) => props.theme.palette.back};
+		border: 1px solid ${(props) => props.theme.palette.border};
 		padding: 0px 10px;
 
 		cursor: pointer;
@@ -65,12 +65,16 @@ const RegisterForm = styled.form`
 		width: 9.5rem;
 		height: 3rem;
 		background: #ff9c9c;
-		border: 1px solid #ffc700;
+		border: 1px solid ${(props) => props.theme.palette.border};
 		border-radius: 1rem;
 		font-size: 20px;
 		line-height: 25px;
 
 		cursor: pointer;
+
+		&:disabled {
+			background-color: #d4d4d4;
+		}
 	}
 `;
 
@@ -81,8 +85,8 @@ const ImageSlot = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: #ffffff;
-	border: 1px solid #ffc700;
+	background: ${(props) => props.theme.palette.back};
+	border: 1px solid ${(props) => props.theme.palette.border};
 	border-radius: 3rem;
 
 	img {
@@ -101,7 +105,7 @@ const ImageSlot = styled.div`
 		align-items: center;
 		justify-content: center;
 		background: #bcc7ff;
-		border: 1px solid #ffc700;
+		border: 1px solid ${(props) => props.theme.palette.border};
 		border-radius: 1.25rem;
 		cursor: pointer;
 	}

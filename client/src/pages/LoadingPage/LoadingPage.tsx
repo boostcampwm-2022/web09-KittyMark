@@ -26,9 +26,10 @@ const LoadingPage = () => {
 		authorizationCode: string,
 		state: string,
 	) => {
+		// `/api/oauth/${socialName}`,
 		// 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/oauth/naver/yes`,
 		const { data }: AxiosResponse<LoginApi> = await axios.post(
-			`/api/oauth/${socialName}`,
+			`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/oauth/naver/yes`,
 			{
 				authorizationCode,
 				state,
