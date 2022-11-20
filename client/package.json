@@ -38,7 +38,7 @@
 		"eject": "react-scripts eject",
 		"lint": "eslint . --fix",
 		"format": "prettier --write .",
-		"format-check": "perttier --check ."
+		"format-check": "prettier --check ."
 	},
 	"eslintConfig": {
 		"extends": [

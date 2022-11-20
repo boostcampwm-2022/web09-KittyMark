@@ -9,7 +9,7 @@
 		"prebuild": "rimraf dist",
 		"build": "nest build",
 		"format": "prettier --write .",
-		"format-check": "perttier --check .",
+		"format-check": "prettier --check .",
 		"start": "cross-env NODE_ENV=development & nest start",
 		"start:dev": "cross-env NODE_ENV=development & nest start --watch",
 		"start:debug": "nest start --debug --watch",
