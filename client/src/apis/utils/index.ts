@@ -5,8 +5,7 @@ import { SERVER } from '../config';
 const BASE_URL = SERVER;
 
 const axiosApi = (url: string, headers?: Record<string, unknown>) => {
-	const instance = axios.create({ baseURL: url, headers });
-	return instance;
+  return axios.create({ baseURL: url, headers });
 };
 
 const defaultInstance = axiosApi(BASE_URL);

@@ -10,18 +10,18 @@ import { LoginApi, Api } from '../../types/responseData';
  * @returns 서버와의 통신 이후 결과를 보내준다.
  */
 export const postAuthInfo = async (
-	socialName: 'naver' | 'kakao',
-	authorizationCode: string,
-	state: string,
+  socialName: 'naver' | 'kakao',
+  authorizationCode: string,
+  state: string,
 ): Promise<LoginApi> => {
-	const { data }: AxiosResponse<LoginApi> = await defaultInstance.post(
-		`/api/oauth/${socialName}`,
-		{
-			authorizationCode,
-			state,
-		},
-	);
-	return data;
+  const { data }: AxiosResponse<LoginApi> = await defaultInstance.post(
+    `/api/oauth/${socialName}`,
+    {
+      authorizationCode,
+      state,
+    },
+  );
+  return data;
 };
 
 /**
@@ -33,19 +33,19 @@ export const postAuthInfo = async (
  */
 // TODO 이미지 url 을 보내는 것이 아닌 form 으로 사진 데이터를 보내야한다.
 export const postRegisterInfo = async (
-	email: string,
-	imageURL: string,
-	userName: string,
-	oauthInfo: 'NAVER' | 'KAKAO',
+  email: string,
+  imageURL: string,
+  userName: string,
+  oauthInfo: 'NAVER' | 'KAKAO',
 ) => {
-	const { data }: AxiosResponse<Api> = await defaultInstance.post(
-		`/api/register`,
-		{
-			email,
-			imageURL,
-			userName,
-			oauthInfo,
-		},
-	);
-	return data;
+  const { data }: AxiosResponse<Api> = await defaultInstance.post(
+    `/api/register`,
+    {
+      email,
+      imageURL,
+      userName,
+      oauthInfo,
+    },
+  );
+  return data;
 };
