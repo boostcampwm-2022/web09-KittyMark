@@ -10,7 +10,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly userService: UserService,
   ) {}
-  @Get('/test')
+  @Get('/validate')
   test(@Req() request: Request) {
     return this.authService.validateLogin(request);
   }
