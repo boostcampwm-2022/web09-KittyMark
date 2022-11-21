@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: 1-1. 개발 기능 이름
+about: "[페이지 단위] 개발 Task"
 title: ''
 labels: ''
 assignees: ''
