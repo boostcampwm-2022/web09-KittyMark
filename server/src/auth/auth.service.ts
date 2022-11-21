@@ -4,6 +4,7 @@ import { UserService } from 'src/user/user.service';
 // import { Cache } from 'cache-manager';
 import { Request } from 'express';
 import { redisClient } from 'src/redis';
+import { OauthInfo } from 'src/user/user.enum';
 
 declare module 'express-session' {
   interface SessionData {
@@ -27,7 +28,7 @@ export class AuthService {
 
   // // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
   async login(email: string, request: Request) {
-    const user = await this.userService.findByEmail(email);
+    const user = await this.userService.findByOauthInfo(email, OauthInfo.NAVER);
 
     if (user) {
       request.session.isLogined = true;
