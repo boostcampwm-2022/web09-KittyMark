@@ -1,4 +1,3 @@
-// import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
