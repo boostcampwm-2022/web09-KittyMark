@@ -7,8 +7,8 @@ import { AuthModule } from 'src/auth/auth.module';
 import { AuthService } from 'src/auth/auth.service';
 
 @Module({
-	imports: [HttpModule, UserModule, AuthModule],
-	providers: [OauthService, AuthService],
-	controllers: [OauthController],
+  imports: [HttpModule, UserModule, AuthModule],
+  providers: [OauthService, AuthService],
+  controllers: [OauthController],
 })
 export class OauthModule {}

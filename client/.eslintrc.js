@@ -43,6 +43,8 @@ module.exports = {
 			2,
 			{ namedComponents: 'arrow-function' },
 		],
+		'@typescript-eslint/no-explicit-any': 'error',
+		'@typescript-eslint/no-unused-vars': 'error',
 	},
 	settings: {
 		'import/resolver': {

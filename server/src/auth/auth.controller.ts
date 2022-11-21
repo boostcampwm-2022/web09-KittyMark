@@ -6,22 +6,22 @@ import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-	constructor(
-		private readonly authService: AuthService,
-		private readonly userService: UserService,
-	) {}
-	@Get('/test')
-	test(@Req() request: Request) {
-		return this.authService.validateLogin(request);
-	}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
+  @Get('/test')
+  test(@Req() request: Request) {
+    return this.authService.validateLogin(request);
+  }
 
-	@Post('/register')
-	register(@Body() registerUserDto: RegisterUserDto) {
-		return this.userService.register(registerUserDto);
-	}
+  @Post('/register')
+  register(@Body() registerUserDto: RegisterUserDto) {
+    return this.userService.register(registerUserDto);
+  }
 
-	@Get('/logout')
-	logout(@Req() request: Request) {
-		return this.authService.logout(request);
-	}
+  @Get('/logout')
+  logout(@Req() request: Request) {
+    return this.authService.logout(request);
+  }
 }
