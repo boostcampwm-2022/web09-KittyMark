@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios, { AxiosResponse } from 'axios';
 import uploadFile from '../../utils/awsUpload';
+// api
+import { postRegisterInfo } from '../../apis/api/loginApi';
 // style
 import {
 	RegisterPageBody,
@@ -13,15 +14,15 @@ import defaultProfile from '../../static/defaultProfile.svg';
 import plusBtn from '../../static/plusBtn.svg';
 // component
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
-// type
-import { Api } from '../../types/responseData';
+
+type LocationStateType = { email: string; oauthInfo: 'NAVER' | 'KAKAO' };
 
 const RegisterPage = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { email, oauthInfo } = location.state
-		? (location.state as { email: string; oauthInfo: string })
-		: { email: '', oauthInfo: '' };
+	const { email, oauthInfo }: LocationStateType = location.state
+		? (location.state as LocationStateType)
+		: { email: '', oauthInfo: 'NAVER' };
 
 	const profileImageBtn = useRef<HTMLInputElement>(null);
 	const registerBtn = useRef<HTMLButtonElement>(null);
@@ -33,7 +34,7 @@ const RegisterPage = () => {
 	const [nickname, setNickname] = useState<string>('');
 
 	useEffect(() => {
-		if (email === '' || oauthInfo === '') navigate('/');
+		if (email === '') navigate('/');
 	}, []);
 
 	const onClickProfileImageBtn = () => {
@@ -63,22 +64,14 @@ const RegisterPage = () => {
 	const onClickRegisterBtn = async () => {
 		let imageUrl = './defaultProfile.svg';
 		if (profileImage) imageUrl = await uploadFile(profileImage);
-
-		// '/api/auth/register',
-		// 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/auth/register`,
-		const { data }: AxiosResponse<Api> = await axios.post(
-			`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/auth/register`,
-			{
-				email,
-				imageURL: imageUrl,
-				userName: nickname,
-				oauthInfo,
-			},
-		);
-
-		if (data.code === 200) navigate('/home');
-
-		// TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
+		try {
+			const data = await postRegisterInfo(email, imageUrl, nickname, oauthInfo);
+			if (data.code === 200) navigate('/home');
+			// TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.log(error);
+		}
 	};
 
 	return (
