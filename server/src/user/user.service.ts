@@ -1,5 +1,6 @@
-import { Injectable, Inject, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { RegisterUserDto } from './user-register.dto';
 import { User } from './user.entity';
 import { OauthInfo } from './user.enum';
@@ -7,7 +8,7 @@ import { OauthInfo } from './user.enum';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('USER_REPOSITORY')
+    @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
 
