@@ -18,7 +18,7 @@ async function bootstrap() {
   app.use(
     session({
       secret: process.env.SESSION_SECRET,
-      resave: true, //세션이 수정되지 않아도 지속적으로 저장하게 하는 옵션
+      resave: false, //세션이 수정되지 않아도 지속적으로 저장하게 하는 옵션
       saveUninitialized: false, //초기화되지 않는 세션을 저장하게 함
       cookie: {
         maxAge: 60 * 60 * 24 * 30, //30일
