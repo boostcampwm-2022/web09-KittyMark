@@ -1,68 +1,57 @@
 import React, { useEffect } from 'react';
-import axios, { AxiosResponse } from 'axios';
 import { useNavigate } from 'react-router-dom';
+// api
+import { postAuthInfo } from '../../apis/api/loginApi';
 // style
 import { Background, LoadingText } from './LoadingPageStyles';
 // img
 import loadingCat from '../../static/loadingCat.gif';
-// type
-import { LoginApi } from '../../types/responseData';
 
 const LoadingPage = () => {
-  const navigation = useNavigate();
-  const getSocialName = (url: URL) => {
-    const callback = url.pathname.split('/')[2];
-    let name = '';
-    if (callback.includes('naver')) {
-      name = 'naver';
-    } else if (callback.includes('kakao')) {
-      name = 'kakao';
-    }
-    return name;
-  };
+	const navigation = useNavigate();
+	const getSocialName = (url: URL): 'naver' | 'kakao' => {
+		const callback = url.pathname.split('/')[2];
+		let name: 'naver' | 'kakao' = 'kakao';
+		if (callback.includes('naver')) name = 'naver';
+		return name;
+	};
 
-  const postAuthrizationInfo = async (
-    socialName: string,
-    authorizationCode: string,
-    state: string,
-  ) => {
-    // `/api/oauth/${socialName}`,
-    // 	`https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/oauth/naver/yes`,
-    const { data }: AxiosResponse<LoginApi> = await axios.post(
-      `https://918f89f3-ffda-4d81-9766-70caf106fd5b.mock.pstmn.io/api/oauth/naver/yes`,
-      {
-        authorizationCode,
-        state,
-      },
-    );
+	const postAuthrizationInfo = async (
+		socialName: 'naver' | 'kakao',
+		authorizationCode: string,
+		state: string,
+	) => {
+		try {
+			const data = await postAuthInfo(socialName, authorizationCode, state);
+			if (data.code !== 200) navigation('/');
+			else if (data.email)
+				navigation('/register', {
+					state: { email: data.email, ouathInfo: 'NAVER' },
+				});
+			else navigation('/home');
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.log(error);
+		}
+	};
 
-    if (data.code === 200) {
-      if (data.email !== undefined) {
-        navigation('/register', {
-          state: { email: data.email, ouathInfo: 'NAVER' },
-        });
-      } else {
-        navigation('/home');
-      }
-    }
-  };
+	useEffect(() => {
+		const url = new URL(window.location.href);
+		const authorizationCode = url.searchParams.get('code');
+		const state = url.searchParams.get('state');
+		// TODO 만약에 여기서 getSocialName 에 아무것도 없다면 ? (인위적으로 클라이언트가 입력)
+		if (authorizationCode && state) {
+			const socialName = getSocialName(url);
+			postAuthrizationInfo(socialName, authorizationCode, state);
+		}
+	}, []);
 
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const authorizationCode = url.searchParams.get('code');
-    const state = url.searchParams.get('state');
-    if (authorizationCode && state) {
-      const socialName = getSocialName(url);
-      postAuthrizationInfo(socialName, authorizationCode, state);
-    }
-  }, []);
-
-  return (
-    <Background>
-      <img src={loadingCat} alt="로딩중" width="30%" />
-      <LoadingText>Loading...</LoadingText>
-    </Background>
-  );
+	return (
+		<Background>
+			<img src={loadingCat} alt="로딩중" width="30%" />
+			<LoadingText>Loading...</LoadingText>
+		</Background>
+	);
 };
 
 export default LoadingPage;
