@@ -39,7 +39,7 @@ export const postRegisterInfo = async (
   oauthInfo: 'NAVER' | 'KAKAO',
 ) => {
   const { data }: AxiosResponse<Api> = await defaultInstance.post(
-    `/api/register`,
+    `/api/auth/register`,
     {
       email,
       imageURL,
