@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Req,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { RegisterUserDto } from './dto/user-register.dto';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
@@ -14,6 +22,7 @@ export class AuthController {
   }
 
   @Post('/register')
+  @UsePipes(ValidationPipe)
   register(@Body() registerUserDto: RegisterUserDto) {
     return this.authService.register(registerUserDto);
   }
