@@ -1,4 +1,4 @@
-// import { OauthInfo } from './user.model';
+// import { OauthInfo } from '../model/OauthInfo.enum';
 
 export class RegisterUserDto {
   email: string;

@@ -1,15 +1,13 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req } from '@nestjs/common';
 import { Request } from 'express';
-import { RegisterUserDto } from 'src/user/user-register.dto';
-import { UserService } from 'src/user/user.service';
+import { RegisterUserDto } from './dto/user-register.dto';
+import { OauthNaverDto } from './dto/oauth-naver.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
+
   @Get('/validate')
   test(@Req() request: Request) {
     return this.authService.validateLogin(request);
@@ -17,11 +15,16 @@ export class AuthController {
 
   @Post('/register')
   register(@Body() registerUserDto: RegisterUserDto) {
-    return this.userService.register(registerUserDto);
+    return this.authService.register(registerUserDto);
   }
 
   @Get('/logout')
   logout(@Req() request: Request) {
     return this.authService.logout(request);
+  }
+
+  @Post('/oauth/naver')
+  loginNaver(@Body() oauthNaverDto: OauthNaverDto, @Req() request: Request) {
+    return this.authService.loginNaver(oauthNaverDto, request);
   }
 }

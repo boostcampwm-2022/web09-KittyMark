@@ -3,11 +3,7 @@ import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  userService: UserService;
-
-  constructor(userService: UserService) {
-    this.userService = userService;
-  }
+  constructor(private readonly userService: UserService) {}
 
   // TODO: 회원가입
 }

@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { OauthInfo } from './user.enum';
+import { OauthInfo } from '../auth/model/oauth-info.enum';
 
 @Entity()
 export class User {
