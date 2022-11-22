@@ -15,7 +15,7 @@ export const postAuthInfo = async (
   state: string,
 ): Promise<LoginApi> => {
   const { data }: AxiosResponse<LoginApi> = await defaultInstance.post(
-    `/api/oauth/${socialName}`,
+    `/api/auth/oauth/${socialName}`,
     {
       authorizationCode,
       state,

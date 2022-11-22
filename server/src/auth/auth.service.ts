@@ -1,7 +1,7 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { Request } from 'express';
 import { HttpService } from '@nestjs/axios';
-import { redisClient } from 'src/redis';
+import { redisClient } from 'src/utils/redis';
 import { OauthInfo } from './model/oauth-info.enum';
 import { RegisterUserDto } from './dto/user-register.dto';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
