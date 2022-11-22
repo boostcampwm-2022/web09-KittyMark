@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { OauthInfo } from './user.enum';
 
 @Entity()
 export class User {
@@ -12,7 +13,7 @@ export class User {
   email: string;
 
   @Column()
-  oauth_info: string;
+  oauth_info: OauthInfo;
 
   @Column()
   profile_url: string;
