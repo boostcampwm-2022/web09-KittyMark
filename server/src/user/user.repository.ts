@@ -13,6 +13,12 @@ export class UserRepository {
     return await this.userRepository.find();
   }
 
+  async findById(userId: number): Promise<User> {
+    return await this.userRepository.findOneBy({
+      id: userId,
+    });
+  }
+
   async findByOauthInfo(
     email: string,
     oauth_info: OauthInfo,
