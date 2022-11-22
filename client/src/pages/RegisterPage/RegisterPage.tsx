@@ -62,7 +62,7 @@ const RegisterPage = () => {
     setNickname(event.target.value);
 
   const onClickRegisterBtn = async () => {
-    let imageUrl = './defaultProfile.svg';
+    let imageUrl = '../../defaultProfile.svg';
     if (profileImage) imageUrl = await uploadFile(profileImage);
     try {
       const data = await postRegisterInfo(email, imageUrl, nickname, oauthInfo);

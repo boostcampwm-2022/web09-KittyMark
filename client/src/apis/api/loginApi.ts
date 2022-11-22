@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import defaultInstance from '../utils';
+import { defaultInstance, defaultFormInstance } from '../utils';
 // type
 import { LoginApi, Api } from '../../types/responseData';
 
@@ -24,6 +24,7 @@ export const postAuthInfo = async (
   return data;
 };
 
+// 사용 안함
 /**
  * @param email 서버에서 받은 email 정보를 기입한다.
  * @param imageURL 오브젝트 스토리지에 올리고 받은 사진 위치 정보 기입 (변경 예정)
@@ -46,6 +47,33 @@ export const postRegisterInfo = async (
       userName,
       oauthInfo,
     },
+  );
+  return data;
+};
+
+/**
+ * @param email 서버에서 받은 email 정보를 기입한다.
+ * @param image 사용자 입력 이미지 기입
+ * @param userName 사용자 입력 닉네임 기입
+ * @param oauthInfo NAVER 혹은 KAKAO
+ * @returns 서버와의 통신 이후 결과를 보내준다.
+ */
+export const newPostRegisterInfo = async (
+  email: string,
+  image: File,
+  userName: string,
+  oauthInfo: 'NAVER' | 'KAKAO',
+) => {
+  const formData = new FormData();
+  // TODO key 이름이 바뀔 수 있음
+  formData.append('email', email);
+  formData.append('nickname', userName);
+  formData.append('outhInfo', oauthInfo);
+  formData.append('image', image);
+
+  const { data }: AxiosResponse<Api> = await defaultFormInstance.post(
+    `/api/auth/register`,
+    formData,
   );
   return data;
 };
