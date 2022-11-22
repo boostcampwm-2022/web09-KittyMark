@@ -1,7 +1,7 @@
 name: deploy
 on:
   push:
-    branches: ["dev"]
+    branches: ["deploy-test"]
 
 jobs:
   ci-cd:
@@ -35,7 +35,11 @@ jobs:
         
     - name: Docker-compose Build and Push
       working-directory: .
+      env:
+        CI: ""
+        SERVER_SECRET: ${{ secrets.API_SERVER_SECRETS }}
       run: |
+        echo "$SERVER_SECRET" > ./server/.env
         docker-compose -f docker-compose-build.yml build
         docker-compose -f docker-compose-build.yml push
 
