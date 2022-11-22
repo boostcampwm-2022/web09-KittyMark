@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   ParseIntPipe,
   Patch,
@@ -14,6 +15,7 @@ import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/createBoardDto';
 import { UpdateBoardDto } from './dto/updateBoaedDto';
 import { ResponseInterceptor } from '../interceptor/responseInterceptor';
+import { DeleteBoardDto } from 'board/dto/deleteBoardDto';
 
 @Controller('board')
 @UseInterceptors(ResponseInterceptor)
@@ -30,6 +32,12 @@ export class BoardController {
   @UsePipes(ValidationPipe)
   updateBoard(@Body() updateBoardDto: UpdateBoardDto) {
     this.boardService.updateBoard(updateBoardDto);
+    return;
+  }
+
+  @Delete('/')
+  deleteBoard(@Body() deleteBoardDto: DeleteBoardDto) {
+    this.boardService.deleteBoard(deleteBoardDto);
     return;
   }
 

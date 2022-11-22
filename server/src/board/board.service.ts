@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Photo } from './photo.entity';
 import { UpdateBoardDto } from './dto/updateBoaedDto';
+import { DeleteBoardDto } from 'board/dto/deleteBoardDto';
 
 @Injectable()
 export class BoardService {
@@ -44,6 +45,10 @@ export class BoardService {
   updateBoard(updateBoardDto: UpdateBoardDto) {
     const { boardId, content } = updateBoardDto;
     this.boardRepository.update(boardId, { description: content });
+  }
+
+  deleteBoard(deleteBoardDto: DeleteBoardDto) {
+    this.boardRepository.delete({ id: deleteBoardDto.boardId });
   }
 
   // Todo 갯수 만큼 가져오기 미완성
