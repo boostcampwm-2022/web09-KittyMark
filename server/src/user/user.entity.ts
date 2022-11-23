@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { OauthInfo } from '../auth/model/oauth-info.enum';
+import { Board } from '../board/board.entity';
 
 @Entity()
 export class User {
@@ -17,4 +18,7 @@ export class User {
 
   @Column()
   profile_url: string;
+
+  @OneToMany(() => Board, (board) => board.user)
+  boards: Board[];
 }
