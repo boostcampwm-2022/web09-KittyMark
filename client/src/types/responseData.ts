@@ -21,6 +21,10 @@ export interface CommentApi extends Api {
   next_max_id: number;
 }
 
+export interface NewPostApi extends Api {
+  boardId: number;
+}
+
 export interface Board {
   userId: number;
   userName: string;

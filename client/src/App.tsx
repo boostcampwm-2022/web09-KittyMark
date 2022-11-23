@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage/HomePage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import LoadingPage from './pages/LoadingPage/LoadingPage';
 import CommentPage from './pages/CommentPage/CommentPage';
+import NewPostPage from './pages/NewPostPage/NewPostPage';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/comment/:boardId" element={<CommentPage />} />
+          <Route path="/new-post" element={<NewPostPage />} />
         </Routes>
       </RecoilRoot>
     </ThemeProvider>
