@@ -30,11 +30,11 @@ export class Board {
   longitude: number;
 
   // Todo 연관관계 매핑필요
-  @Column()
+  @Column({ nullable: true })
   like: number;
 
   // Todo 연관관계 매핑필요
-  @Column()
+  @Column({ nullable: true })
   comment: number;
 
   @CreateDateColumn({

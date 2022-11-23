@@ -21,7 +21,7 @@ export class BoardService {
       createBoardDto;
     const user = await this.userRepository.findById(userId);
     const boardInfo = {
-      description: content,
+      content,
       isStreet,
       location,
       latitude,
