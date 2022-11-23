@@ -20,3 +20,22 @@ export interface CommentApi extends Api {
   comments: [Comments];
   next_max_id: number;
 }
+
+export interface Board {
+  userId: number;
+  userName: string;
+  userProfile: string;
+  boardId: string;
+  content: string;
+  url: string[];
+  like: number;
+  comment: number;
+  createAt: string;
+  location: string | null;
+}
+
+export interface BoardApi extends Api {
+  boards?: [Board];
+  nextMaxId?: number;
+  count?: number;
+}
