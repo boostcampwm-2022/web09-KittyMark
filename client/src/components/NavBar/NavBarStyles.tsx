@@ -9,6 +9,10 @@ const NavBarContainer = styled.div`
   justify-content: space-evenly;
   align-items: center;
   gap: 1rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;
 
 const NavBarIcon = styled.button`

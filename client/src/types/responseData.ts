@@ -24,3 +24,22 @@ export interface CommentApi extends Api {
 export interface NewPostApi extends Api {
   boardId: number;
 }
+
+export interface Board {
+  userId: number;
+  userName: string;
+  userProfile: string;
+  boardId: string;
+  content: string;
+  url: string[];
+  like: number;
+  comment: number;
+  createAt: string;
+  location: string | null;
+}
+
+export interface BoardApi extends Api {
+  boards?: [Board];
+  nextMaxId?: number;
+  count?: number;
+}
