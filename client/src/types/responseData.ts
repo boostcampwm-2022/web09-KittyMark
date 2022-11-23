@@ -20,3 +20,7 @@ export interface CommentApi extends Api {
   comments: [Comments];
   next_max_id: number;
 }
+
+export interface NewPostApi extends Api {
+  boardId: number;
+}

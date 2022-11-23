@@ -1,7 +1,11 @@
 /* eslint-disable react/require-default-props */
 import React, { MouseEventHandler } from 'react';
 // style
-import { TopBarContainer, TopBarButton } from './TopBarStyles';
+import {
+  TopBarContainer,
+  TopBarBackButton,
+  TopBarCheckButton,
+} from './TopBarStyles';
 // img
 import backBtn from '../../static/backBtn.svg';
 import checkBtn from '../../static/checkBtn.svg';
@@ -12,6 +16,7 @@ interface TopBarProps {
   isCheck: boolean;
   backFunc?: MouseEventHandler<HTMLButtonElement>;
   checkFunc?: MouseEventHandler<HTMLButtonElement>;
+  checkDisableFunc?: () => boolean;
 }
 
 const TopBar = ({
@@ -20,21 +25,26 @@ const TopBar = ({
   isCheck,
   backFunc,
   checkFunc,
+  checkDisableFunc,
 }: TopBarProps) => {
   return (
     <TopBarContainer>
       {isBack && backFunc ? (
-        <TopBarButton type="button" onClick={backFunc}>
+        <TopBarBackButton type="button" onClick={backFunc}>
           <img src={backBtn} alt="Back" />
-        </TopBarButton>
+        </TopBarBackButton>
       ) : (
         <div style={{ padding: '0.75rem' }} />
       )}
       <p>{title}</p>
-      {isCheck && checkFunc ? (
-        <TopBarButton type="button" onClick={checkFunc}>
+      {isCheck && checkFunc && checkDisableFunc ? (
+        <TopBarCheckButton
+          type="button"
+          onClick={checkFunc}
+          disabled={checkDisableFunc()}
+        >
           <img src={checkBtn} alt="Check" />
-        </TopBarButton>
+        </TopBarCheckButton>
       ) : (
         <div style={{ padding: '0.75rem' }} />
       )}
