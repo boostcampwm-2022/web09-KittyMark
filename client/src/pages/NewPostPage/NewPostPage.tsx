@@ -76,7 +76,6 @@ const NewPostPage = () => {
     });
   };
 
-  // TODO 버튼이 모든 칸이 기입 되었을 경우만 눌리게 해주기
   const onClickSubmitBtn = async () => {
     try {
       const data = await postNewPostInfo(
@@ -88,9 +87,9 @@ const NewPostPage = () => {
         null,
         null,
       );
-      if (data.code === 201) navigation('/home');
+      if (data.statusCode === 201) navigation('/home');
       // eslint-disable-next-line no-alert
-      else alert('생성에 실패했다 냥');
+      else alert(data.message);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

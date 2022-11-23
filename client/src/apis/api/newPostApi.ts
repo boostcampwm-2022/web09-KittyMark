@@ -11,7 +11,7 @@ const postNewPostInfo = async (
   location: string | null,
   latitude: number | null,
   longitude: number | null,
-) => {
+): Promise<NewPostApi> => {
   const formData = new FormData();
   formData.append('userId', String(userId));
   images.forEach((image) => formData.append('images', image));
