@@ -26,7 +26,7 @@ export class AuthService {
 
   async register(registerUserDto: RegisterUserDto) {
     // TODO: OauthInfo 추가
-    const { email, imageURL, userName } = registerUserDto;
+    const { email } = registerUserDto;
 
     const find = await this.userRepository.findByOauthInfo(
       email,
@@ -37,12 +37,7 @@ export class AuthService {
       throw new ConflictException('이미 존재하는 유저입니다.');
     }
 
-    const user = {
-      name: userName,
-      email: email,
-      oauth_info: OauthInfo.NAVER,
-      profile_url: imageURL,
-    };
+    const user = registerUserDto.toEntity();
     this.userRepository.save(user);
 
     return { code: 200, message: 'Success' };
