@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import { Photo } from './photo.entity';
 import { UpdateBoardDto } from './dto/updateBoaedDto';
 import { DeleteBoardDto } from 'board/dto/deleteBoardDto';
-
+import { plainToClass } from 'class-transformer';
 @Injectable()
 export class BoardService {
   constructor(
@@ -17,7 +17,7 @@ export class BoardService {
   ) {}
 
   async createBoard(createBoardDto: CreateBoardDto) {
-    const { content, image, isStreet, location, longitude, latitude, userId } =
+    const { content, images, isStreet, location, longitude, latitude, userId } =
       createBoardDto;
     const user = await this.userRepository.findById(userId);
     const boardInfo = {
@@ -28,10 +28,11 @@ export class BoardService {
       longitude,
       user,
     };
-    const board = this.boardRepository.create(boardInfo);
+
+    const board = plainToClass(Board, boardInfo);
     await this.boardRepository.save(board);
 
-    image.forEach((url) => {
+    images.forEach((url) => {
       const imageInfo = {
         url,
         board,
@@ -44,20 +45,37 @@ export class BoardService {
 
   updateBoard(updateBoardDto: UpdateBoardDto) {
     const { boardId, content } = updateBoardDto;
-    this.boardRepository.update(boardId, { description: content });
+    this.boardRepository.update(boardId, { content: content });
   }
 
   deleteBoard(deleteBoardDto: DeleteBoardDto) {
     this.boardRepository.delete({ id: deleteBoardDto.boardId });
   }
 
-  // Todo 갯수 만큼 가져오기 미완성
-  async getBoardList(count, max_id) {
-    const boards = await this.boardRepository
+  async getLastBoardList(count: number, max_id: number) {
+    const qb = await this.boardRepository
       .createQueryBuilder('board')
-      .leftJoinAndSelect('board.photos', 'photo')
-      .where('board.id= :id', { id: 2 })
-      .getOne();
-    console.log(boards, count, max_id);
+      .select(['board', 'user.id', 'user.name', 'user.profileUrl', 'photo.url'])
+      .leftJoin('board.photos', 'photo')
+      .leftJoin('board.user', 'user')
+      .orderBy('board.createdAt', 'DESC');
+
+    let boards;
+
+    if (max_id != -1) {
+      const lastBoard = await this.boardRepository.findOneBy({ id: max_id });
+      boards = await qb
+        .andWhere('board.created_at < :created_at', {
+          created_at: lastBoard.createdAt,
+        })
+        .getMany();
+    } else {
+      boards = await qb.getMany();
+    }
+
+    boards = boards.slice(0, count);
+    const _count = boards.length;
+    const nextMaxId = boards[0].id;
+    return { boards, count: _count, nextMaxId };
   }
 }
