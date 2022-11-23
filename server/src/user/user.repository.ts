@@ -13,9 +13,15 @@ export class UserRepository {
     return await this.userRepository.find();
   }
 
-  async findById(userId: number): Promise<User> {
+  async findById(userId: number): Promise<User | undefined> {
     return await this.userRepository.findOneBy({
       id: userId,
+    });
+  }
+
+  async findByName(userName: string): Promise<User | undefined> {
+    return await this.userRepository.findOneBy({
+      name: userName,
     });
   }
 
