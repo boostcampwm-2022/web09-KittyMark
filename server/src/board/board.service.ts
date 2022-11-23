@@ -2,17 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { CreateBoardDto } from './dto/createBoardDto';
 import { Board } from './board.entity';
 import { UserRepository } from '../user/user.repository';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Photo } from './photo.entity';
 import { UpdateBoardDto } from './dto/updateBoaedDto';
 import { DeleteBoardDto } from 'board/dto/deleteBoardDto';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
+import { BoardRepository } from 'board/board.repository';
+import { PhotoRepository } from 'board/photo.repository';
+
 @Injectable()
 export class BoardService {
   constructor(
-    @InjectRepository(Board) private boardRepository: Repository<Board>,
-    @InjectRepository(Photo) private photoRepository: Repository<Photo>,
+    private readonly boardRepository: BoardRepository,
+    private readonly photoRepository: PhotoRepository,
     private readonly userRepository: UserRepository,
   ) {}
 
@@ -29,7 +30,7 @@ export class BoardService {
       user,
     };
 
-    const board = plainToClass(Board, boardInfo);
+    const board = plainToInstance(Board, boardInfo);
     await this.boardRepository.save(board);
 
     images.forEach((url) => {
@@ -37,7 +38,8 @@ export class BoardService {
         url,
         board,
       };
-      this.photoRepository.save(imageInfo);
+      const photo = plainToInstance(Photo, imageInfo);
+      this.photoRepository.save(photo);
     });
 
     return { boardId: board.id };
@@ -45,7 +47,7 @@ export class BoardService {
 
   updateBoard(updateBoardDto: UpdateBoardDto) {
     const { boardId, content } = updateBoardDto;
-    this.boardRepository.update(boardId, { content: content });
+    this.boardRepository.update(boardId, { content });
   }
 
   deleteBoard(deleteBoardDto: DeleteBoardDto) {
@@ -53,29 +55,6 @@ export class BoardService {
   }
 
   async getLastBoardList(count: number, max_id: number) {
-    const qb = await this.boardRepository
-      .createQueryBuilder('board')
-      .select(['board', 'user.id', 'user.name', 'user.profileUrl', 'photo.url'])
-      .leftJoin('board.photos', 'photo')
-      .leftJoin('board.user', 'user')
-      .orderBy('board.createdAt', 'DESC');
-
-    let boards;
-
-    if (max_id != -1) {
-      const lastBoard = await this.boardRepository.findOneBy({ id: max_id });
-      boards = await qb
-        .andWhere('board.created_at < :created_at', {
-          created_at: lastBoard.createdAt,
-        })
-        .getMany();
-    } else {
-      boards = await qb.getMany();
-    }
-
-    boards = boards.slice(0, count);
-    const _count = boards.length;
-    const nextMaxId = boards[0].id;
-    return { boards, count: _count, nextMaxId };
+    return await this.boardRepository.findLastBoardList(count, max_id);
   }
 }

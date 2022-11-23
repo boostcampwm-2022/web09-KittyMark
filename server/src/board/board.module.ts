@@ -6,10 +6,11 @@ import { Board } from './board.entity';
 import { BoardRepository } from './board.repository';
 import { Photo } from './photo.entity';
 import { UserModule } from '../user/user.module';
+import { PhotoRepository } from 'board/photo.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Board, Photo]), UserModule],
   controllers: [BoardController],
-  providers: [BoardService, BoardRepository],
+  providers: [BoardService, BoardRepository, PhotoRepository],
 })
 export class BoardModule {}
