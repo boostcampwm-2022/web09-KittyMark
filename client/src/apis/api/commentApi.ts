@@ -5,7 +5,7 @@ import { CommentApi, NewCommentApi } from '../../types/responseData';
 
 const getCommentInfo = async (boardId: number): Promise<CommentApi> => {
   const { data }: AxiosResponse<CommentApi> = await defaultInstance.get(
-    `/api/board/${boardId}/comment?count=100000`,
+    `/api/comment?boardId=${boardId}&count=100000`,
   );
   return data;
 };

@@ -83,9 +83,6 @@ const NewPostPage = () => {
         post.images,
         post.content,
         post.category,
-        null,
-        null,
-        null,
       );
       if (data.statusCode === 201) navigation('/home');
       // eslint-disable-next-line no-alert

@@ -8,9 +8,9 @@ const postNewPostInfo = async (
   images: File[],
   content: string,
   isStreet: boolean,
-  location: string | null,
-  latitude: number | null,
-  longitude: number | null,
+  location?: string,
+  latitude?: number,
+  longitude?: number,
 ): Promise<NewPostApi> => {
   const formData = new FormData();
   formData.append('userId', String(userId));
@@ -20,9 +20,10 @@ const postNewPostInfo = async (
   formData.append('location', location || '');
   formData.append('latitude', latitude ? String(latitude) : '');
   formData.append('longitude', longitude ? String(longitude) : '');
+
   const { data }: AxiosResponse<NewPostApi> = await defaultFormInstance.post(
     `/api/board`,
-    { userId, images, content, isStreet, location, latitude, longitude },
+    formData,
   );
   return data;
 };
