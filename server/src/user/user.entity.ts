@@ -14,10 +14,10 @@ export class User {
   email: string;
 
   @Column()
-  oauth_info: OauthInfo;
+  oauthInfo: OauthInfo;
 
   @Column()
-  profile_url: string;
+  profileUrl: string;
 
   @OneToMany(() => Board, (board) => board.user)
   boards: Board[];

@@ -41,13 +41,12 @@ export class BoardController {
     return;
   }
 
-  // Todo 미완성
   @Get('/')
   getBoardList(
     @Query('count', ParseIntPipe) count: number,
     @Query('max_id', ParseIntPipe) maxId: number,
   ) {
-    return this.boardService.getBoardList(count, maxId);
+    return this.boardService.getLastBoardList(count, maxId);
   }
 
   // @Get('/:boardId/comment')
