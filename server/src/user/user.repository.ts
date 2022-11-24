@@ -24,7 +24,7 @@ export class UserRepository {
     oauth_info: OauthInfo,
   ): Promise<User | undefined> {
     return await this.userRepository.findOne({
-      where: { email: email, oauth_info: oauth_info },
+      where: { email: email, oauthInfo: oauth_info },
     });
   }
 

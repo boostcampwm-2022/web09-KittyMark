@@ -2,41 +2,44 @@ import { Injectable } from '@nestjs/common';
 import { CreateBoardDto } from './dto/createBoardDto';
 import { Board } from './board.entity';
 import { UserRepository } from '../user/user.repository';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Photo } from './photo.entity';
 import { UpdateBoardDto } from './dto/updateBoaedDto';
 import { DeleteBoardDto } from 'board/dto/deleteBoardDto';
+import { plainToInstance } from 'class-transformer';
+import { BoardRepository } from 'board/board.repository';
+import { PhotoRepository } from 'board/photo.repository';
 
 @Injectable()
 export class BoardService {
   constructor(
-    @InjectRepository(Board) private boardRepository: Repository<Board>,
-    @InjectRepository(Photo) private photoRepository: Repository<Photo>,
+    private readonly boardRepository: BoardRepository,
+    private readonly photoRepository: PhotoRepository,
     private readonly userRepository: UserRepository,
   ) {}
 
   async createBoard(createBoardDto: CreateBoardDto) {
-    const { content, image, isStreet, location, longitude, latitude, userId } =
+    const { content, images, isStreet, location, longitude, latitude, userId } =
       createBoardDto;
     const user = await this.userRepository.findById(userId);
     const boardInfo = {
-      description: content,
+      content,
       isStreet,
       location,
       latitude,
       longitude,
       user,
     };
-    const board = this.boardRepository.create(boardInfo);
+
+    const board = plainToInstance(Board, boardInfo);
     await this.boardRepository.save(board);
 
-    image.forEach((url) => {
+    images.forEach((url) => {
       const imageInfo = {
         url,
         board,
       };
-      this.photoRepository.save(imageInfo);
+      const photo = plainToInstance(Photo, imageInfo);
+      this.photoRepository.save(photo);
     });
 
     return { boardId: board.id };
@@ -44,20 +47,14 @@ export class BoardService {
 
   updateBoard(updateBoardDto: UpdateBoardDto) {
     const { boardId, content } = updateBoardDto;
-    this.boardRepository.update(boardId, { description: content });
+    this.boardRepository.update(boardId, { content });
   }
 
   deleteBoard(deleteBoardDto: DeleteBoardDto) {
     this.boardRepository.delete({ id: deleteBoardDto.boardId });
   }
 
-  // Todo 갯수 만큼 가져오기 미완성
-  async getBoardList(count, max_id) {
-    const boards = await this.boardRepository
-      .createQueryBuilder('board')
-      .leftJoinAndSelect('board.photos', 'photo')
-      .where('board.id= :id', { id: 2 })
-      .getOne();
-    console.log(boards, count, max_id);
+  async getLastBoardList(count: number, max_id: number) {
+    return await this.boardRepository.findLastBoardList(count, max_id);
   }
 }

@@ -5,7 +5,7 @@ export class CreateBoardDto {
   userId: number;
 
   @IsNotEmpty()
-  image: string[];
+  images: string[];
 
   @IsNotEmpty()
   content: string;
