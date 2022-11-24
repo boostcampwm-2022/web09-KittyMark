@@ -1,70 +1,145 @@
-import { Injectable, Inject, CACHE_MANAGER } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
-// import { AuthDto } from './auth.dto';
-// import { Cache } from 'cache-manager';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { Request } from 'express';
+import { HttpService } from '@nestjs/axios';
+import { redisClient } from 'src/utils/redis';
+import { OauthInfo } from './model/oauth-info.enum';
+import { RegisterUserDto } from './dto/user-register.dto';
+import { OauthNaverDto } from './dto/oauth-naver.dto';
+import { UserRepository } from 'src/user/user.repository';
+import { firstValueFrom, map } from 'rxjs';
+import { plainToInstance } from 'class-transformer';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class AuthService {
-	constructor(
-		private userService: UserService, // @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-	) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly httpService: HttpService,
+  ) {}
 
-	// 홈페이지에서 로그인 확인 요청시 redis에서 세션 id 확인
-	async validateLogin(request: Request) {
-		// await this.cacheManager.set('hi', true, 0);
-		// const res = await this.cacheManager.get('hi');
-		// console.log(res);
+  // 홈페이지에서 로그인 확인 요청시 redis에서 세션 id 확인
+  async validateLogin(request: Request) {
+    const user = redisClient.get(request.sessionID);
+    if (!user) return { statusCode: 500, message: 'Unauthorized User' };
+    else {
+      return { statusCode: 200, message: 'SUCCESS' };
+    }
+  }
 
-		// return res;
+  async register(registerUserDto: RegisterUserDto) {
+    // TODO: OauthInfo 추가
+    const { email, imageURL, userName } = registerUserDto;
 
-		if (!request.session.userEmail)
-			return { code: 500, message: 'Unauthorized User' };
-		// else {
-		// const result = await this.cacheManager.get(request.session.userEmail);
-		// if (result) {
-		// 	return { code: 200, message: 'SUCCESS' };
-		// }
-		// }
-	}
+    const find = await this.userRepository.findByOauthInfo(
+      email,
+      OauthInfo.NAVER,
+    );
 
-	// // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
-	async login(email: string, request: Request) {
-		const user = await this.userService.findByEmail(email);
+    if (find) {
+      throw new ConflictException('이미 존재하는 유저입니다.');
+    }
 
-		console.log(user);
-		console.log(request.session);
-		if (user) {
-			request.session.userEmail = email;
-			return {
-				code: 200,
-				message: 'Success',
-			};
-			// await this.cacheManager.set(email, true, 10000);
-		} else {
-			return {
-				code: 200,
-				message: 'Register Required',
-				redirect: true,
-				email: email,
-			};
-		}
-	}
+    const userInfo = {
+      name: userName,
+      email: email,
+      oauth_info: OauthInfo.NAVER,
+      profile_url: imageURL,
+    };
+    const user = plainToInstance(User, userInfo);
+    this.userRepository.save(user);
 
-	async logout(request: Request) {
-		// await this.cacheManager.del(request.session.userEmail);
-		request.session.destroy((err) => {
-			if (err) {
-				console.log(err);
-				return { code: 500, message: 'Fail' };
-			} else {
-				return { code: 200, message: 'Success' };
-			}
-		});
-	}
+    return { statusCode: 200, message: 'Success' };
+  }
 
-	// redis에 세션id 저장
-	// async saveSessionId(sessionId: string) {
-	// 	await this.cacheManager.set(sessionId, true);
-	// }
+  // // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
+  async login(email: string, request: Request) {
+    const user = await this.userRepository.findByOauthInfo(
+      email,
+      OauthInfo.NAVER,
+    );
+
+    if (user) {
+      await redisClient.set(request.sessionID, email);
+      return {
+        statusCode: 200,
+        userId: user.id,
+        message: 'Success',
+      };
+    } else {
+      return {
+        statusCode: 200,
+        message: 'Register Required',
+        redirect: true,
+        email: email,
+      };
+    }
+  }
+
+  async logout(request: Request) {
+    await redisClient.del(request.sessionID);
+    request.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+        return { statusCode: 500, message: 'Fail' };
+      } else {
+        return { statusCode: 200, message: 'Success' };
+      }
+    });
+  }
+
+  async loginNaver(oauthNaverDto: OauthNaverDto, request: Request) {
+    const { accessToken, tokenType } = await this.getNaverToken(oauthNaverDto);
+
+    const email = await this.getUserEmail(accessToken, tokenType);
+
+    return await this.login(email, request);
+  }
+
+  async getNaverToken(oauthNaverDto: OauthNaverDto): Promise<{
+    accessToken: string;
+    refreshToken: string;
+    tokenType: string;
+    expiresIn: number;
+  }> {
+    const { authorizationCode, state } = oauthNaverDto;
+    const url =
+      'https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=' +
+      process.env.NAVER_CLIENT_ID +
+      '&client_secret=' +
+      process.env.NAVER_CLIENT_SECRET +
+      '&code=' +
+      authorizationCode +
+      '&state=' +
+      state;
+
+    const option = {
+      method: 'post',
+      url: url,
+    };
+
+    const response = this.httpService.request(option).pipe(map((r) => r.data));
+    const data = await firstValueFrom(response);
+
+    return {
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token,
+      tokenType: data.token_type,
+      expiresIn: data.expires_in,
+    };
+  }
+
+  async getUserEmail(accessToken: string, tokenType: string): Promise<string> {
+    const userInfoRequestURL = `https://openapi.naver.com/v1/nid/me`;
+    const option = {
+      method: 'get',
+      url: userInfoRequestURL,
+      headers: {
+        Authorization: `${tokenType} ${accessToken}`,
+      },
+    };
+    const response = this.httpService.request(option).pipe(map((r) => r.data));
+    const data = await firstValueFrom(response);
+
+    return data.response.email;
+  }
 }

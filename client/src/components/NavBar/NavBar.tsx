@@ -8,22 +8,22 @@ import userIcon from '../../static/userIcon.svg';
 import { NavBarContainer, NavBarIcon } from './NavBarStyles';
 
 const NavBar = () => {
-	return (
-		<NavBarContainer>
-			<NavBarIcon type="button">
-				<img src={homeIcon} alt="Home" />
-			</NavBarIcon>
-			<NavBarIcon type="button">
-				<img src={mapIcon} alt="Home" />
-			</NavBarIcon>
-			<NavBarIcon type="button">
-				<img src={messageIcon} alt="Home" />
-			</NavBarIcon>
-			<NavBarIcon type="button">
-				<img src={userIcon} alt="Home" />
-			</NavBarIcon>
-		</NavBarContainer>
-	);
+  return (
+    <NavBarContainer>
+      <NavBarIcon type="button">
+        <img src={homeIcon} alt="Home" />
+      </NavBarIcon>
+      <NavBarIcon type="button">
+        <img src={mapIcon} alt="Home" />
+      </NavBarIcon>
+      <NavBarIcon type="button">
+        <img src={messageIcon} alt="Home" />
+      </NavBarIcon>
+      <NavBarIcon type="button">
+        <img src={userIcon} alt="Home" />
+      </NavBarIcon>
+    </NavBarContainer>
+  );
 };
 
 export default NavBar;

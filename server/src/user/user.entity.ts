@@ -1,19 +1,24 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { OauthInfo } from '../auth/model/oauth-info.enum';
+import { Board } from '../board/board.entity';
 
 @Entity()
 export class User {
-	@PrimaryGeneratedColumn()
-	id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-	@Column({ unique: true })
-	name: string;
+  @Column({ unique: true })
+  name: string;
 
-	@Column({ unique: true })
-	email: string;
+  @Column({ unique: true })
+  email: string;
 
-	@Column()
-	oauth_info: string;
+  @Column()
+  oauthInfo: OauthInfo;
 
-	@Column()
-	profile_url: string;
+  @Column()
+  profileUrl: string;
+
+  @OneToMany(() => Board, (board) => board.user)
+  boards: Board[];
 }
