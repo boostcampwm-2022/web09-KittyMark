@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 // img
-import logo from '../../static/logo.png';
+import logo from '../../static/whiteLogo.png';
 import appName from '../../static/logoName.png';
 
 const NoramlTopBarContainer = styled.div`

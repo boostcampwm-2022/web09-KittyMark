@@ -13,8 +13,6 @@ const MenuModal = ({ top, left, onClickCancel }: MenuModalProps) => {
 
   useEffect(() => {
     const clickOutOfModal = (event: MouseEvent) => {
-      // eslint-disable-next-line no-console
-      console.log('outter modal');
       event.stopPropagation();
       if (
         event.currentTarget &&

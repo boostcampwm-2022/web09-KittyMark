@@ -19,6 +19,9 @@ const BoardMenuModal = styled.div`
     background-color: transparent;
     border: 0px;
     border-bottom: 1px lightgray solid;
+
+    font-family: 'Jua';
+    font-style: normal;
   }
   .last-content {
     border-bottom: 0px;

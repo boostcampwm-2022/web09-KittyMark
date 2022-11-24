@@ -15,17 +15,19 @@ const CommentPageBody = styled.div`
 const CommentListContainer = styled.div`
   width: 90vw;
   height: calc((100vh - 10rem) / 10 * 8.5);
-  background-color: ${(props) => props.theme.palette.main};
+  background-color: ${(props) => props.theme.palette.inner};
   border-radius: 2rem;
+  border: 1px solid ${(props) => props.theme.palette.border};
   display: flex;
   align-items: center;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
   .inner-container {
     margin: auto;
     width: calc(92% - 2rem);
     height: calc(95% - 2rem);
     padding: 1rem 1rem;
-    background-color: ${(props) => props.theme.palette.inner};
+    background-color: ${(props) => props.theme.palette.back};
     border-radius: 2rem;
 
     display: flex;

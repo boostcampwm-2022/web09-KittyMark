@@ -17,7 +17,7 @@ const BoardBodyContainer = styled.div`
 `;
 const BoardBodyButtonContainer = styled.div`
   display: flex;
-  align-items: left;
+  align-items: center;
   margin-top: 2%;
   padding-left: 3%;
 

@@ -6,7 +6,8 @@ const BoardBackground = styled.div`
   max-width: 800px;
   width: 93%;
   border-radius: 15px;
-  background-color: ${(props) => props.theme.palette.main};
+  background-color: ${(props) => props.theme.palette.inner};
+  border: 1px solid ${(props) => props.theme.palette.border};
   display: flex;
   flex-direction: column;
   align-items: center;

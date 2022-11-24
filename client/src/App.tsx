@@ -18,10 +18,10 @@ const App = () => {
     <ThemeProvider
       theme={{
         palette: {
-          main: '#ffe99c',
-          back: `#ffffff`,
-          border: '#ffc700',
-          inner: `#fffbed`,
+          main: '#1F2E66',
+          back: `#FFFFFF`,
+          border: '#DCDCDC',
+          inner: `#FAFAFA`,
         },
       }}
     >

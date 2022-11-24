@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 // img
 import homeIcon from '../../static/homeIcon.svg';
 import mapIcon from '../../static/mapIcon.svg';
@@ -8,9 +9,11 @@ import userIcon from '../../static/userIcon.svg';
 import { NavBarContainer, NavBarIcon } from './NavBarStyles';
 
 const NavBar = () => {
+  const navigation = useNavigate();
+
   return (
     <NavBarContainer>
-      <NavBarIcon type="button">
+      <NavBarIcon type="button" onClick={() => navigation('/home')}>
         <img src={homeIcon} alt="Home" />
       </NavBarIcon>
       <NavBarIcon type="button">
