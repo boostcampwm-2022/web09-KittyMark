@@ -29,6 +29,7 @@ const BoardItem = (props: Board) => {
       />
       <BoardImages src={url[0]} />
       <BoardBody
+        boardId={boardId}
         content={content}
         like={like}
         comment={comment}
