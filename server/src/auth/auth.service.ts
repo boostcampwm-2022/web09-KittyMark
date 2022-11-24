@@ -7,6 +7,8 @@ import { RegisterUserDto } from './dto/user-register.dto';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
 import { UserRepository } from 'src/user/user.repository';
 import { firstValueFrom, map } from 'rxjs';
+import { plainToInstance } from 'class-transformer';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -18,9 +20,9 @@ export class AuthService {
   // 홈페이지에서 로그인 확인 요청시 redis에서 세션 id 확인
   async validateLogin(request: Request) {
     const user = redisClient.get(request.sessionID);
-    if (!user) return { code: 500, message: 'Unauthorized User' };
+    if (!user) return { statusCode: 500, message: 'Unauthorized User' };
     else {
-      return { code: 200, message: 'SUCCESS' };
+      return { statusCode: 200, message: 'SUCCESS' };
     }
   }
 
@@ -37,15 +39,16 @@ export class AuthService {
       throw new ConflictException('이미 존재하는 유저입니다.');
     }
 
-    const user = {
+    const userInfo = {
       name: userName,
       email: email,
       oauth_info: OauthInfo.NAVER,
       profile_url: imageURL,
     };
+    const user = plainToInstance(User, userInfo);
     this.userRepository.save(user);
 
-    return { code: 200, message: 'Success' };
+    return { statusCode: 200, message: 'Success' };
   }
 
   // // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
@@ -58,13 +61,13 @@ export class AuthService {
     if (user) {
       await redisClient.set(request.sessionID, email);
       return {
-        code: 200,
+        statusCode: 200,
         userId: user.id,
         message: 'Success',
       };
     } else {
       return {
-        code: 200,
+        statusCode: 200,
         message: 'Register Required',
         redirect: true,
         email: email,
@@ -77,9 +80,9 @@ export class AuthService {
     request.session.destroy((err) => {
       if (err) {
         console.log(err);
-        return { code: 500, message: 'Fail' };
+        return { statusCode: 500, message: 'Fail' };
       } else {
-        return { code: 200, message: 'Success' };
+        return { statusCode: 200, message: 'Success' };
       }
     });
   }
