@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // img
 import testImage from '../../static/testImage.png';
 import catFootprint from '../../static/catFootprint.svg';
+import addPostButtonImg from '../../static/addPost.svg';
 // component
 import NavBar from '../../components/NavBar/NavBar';
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
@@ -73,8 +75,16 @@ const dummyBoards: Board[] = [
 ];
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [boards, setBoards] = useState<Board[]>([]);
   const requestCount = 10000;
+  const addPostButton = {
+    buttonImg: addPostButtonImg,
+    eventHandler: () => {
+      navigate('/new-post');
+    },
+    description: '게시물을 추가할래요.',
+  };
   const getData = async () => {
     const { statusCode, message, data } = await getBoardData(
       requestCount,
@@ -96,7 +106,7 @@ const HomePage = () => {
 
   return (
     <>
-      <NormalTopBar />
+      <NormalTopBar buttonData={addPostButton} />
       <BoardContainer>
         {boards.map((board) => {
           return BoardItem(board);
