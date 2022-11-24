@@ -81,7 +81,7 @@ const RegisterPage = () => {
 
   return (
     <>
-      <NormalTopBar />
+      <NormalTopBar buttonData={null} />
       <RegisterPageBody>
         <RegisterForm>
           <p className="wellcome-title">신규 유저님 환영합니다!</p>

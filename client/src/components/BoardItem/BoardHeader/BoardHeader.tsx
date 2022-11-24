@@ -1,4 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+// recoil
+import { useRecoilValue } from 'recoil';
+import user from '../../../store/userAtom';
+// style
 import {
   BoardHeaderWrapper,
   BoardHeaderContainer,
@@ -8,6 +13,7 @@ import {
 // img
 import pinIcon from '../../../static/pinIcon.svg';
 import menuButton from '../../../static/menuBtn.svg';
+// component
 import BoardMenu from '../BoardMenu/BoardMenu';
 
 interface BoardHeaderProps {
@@ -15,19 +21,24 @@ interface BoardHeaderProps {
   boardId: string;
   userProfile: string;
   userName: string;
+  isStreet: boolean;
   location: string | null;
 }
 
 const BoardHeader = (props: BoardHeaderProps) => {
-  const { userId, boardId, userProfile, userName, location } = props;
+  const navigate = useNavigate();
+  const { userId, boardId, userProfile, userName, isStreet, location } = props;
   const [menuHideOption, setMenuHideOption] = useState(true);
+  const userData = useRecoilValue(user);
+  const loginedUserId = userData.userId;
 
   const onClickMenu = () => {
     setMenuHideOption(!menuHideOption);
   };
 
   const onClickUserInfo = () => {
-    /* 해당 유저 페이지로 이동 */
+    /* TODO: 해당 유저 페이지로 이동 */
+    navigate('/home');
   };
 
   return (
@@ -39,7 +50,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
           </UserProfileImageContainer>
           <BoardHeaderInfoContainer>
             <div className="user-name">{userName}</div>
-            {location !== null ? (
+            {isStreet === true ? (
               <div>
                 <img src={pinIcon} alt="pin icon" />
                 <div className="location">{location}</div>
@@ -49,9 +60,13 @@ const BoardHeader = (props: BoardHeaderProps) => {
             )}
           </BoardHeaderInfoContainer>
         </BoardHeaderContainer>
-        <button type="button" onClick={onClickMenu}>
-          <img src={menuButton} alt="Create/Delete DropDown" />
-        </button>
+        {/* // 현재 로그인한 계정의 게시글만 수정/삭제할 수 있도록 함
+        {loginedUserId === userId ? ( */}
+        {loginedUserId !== null ? ( // 테스트용
+          <button type="button" onClick={onClickMenu}>
+            <img src={menuButton} alt="Create/Delete DropDown" />
+          </button>
+        ) : null}
       </BoardHeaderWrapper>
       {menuHideOption ? null : (
         <BoardMenu

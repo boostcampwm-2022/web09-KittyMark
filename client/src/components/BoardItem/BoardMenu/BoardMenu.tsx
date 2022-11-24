@@ -12,8 +12,7 @@ const BoardMenu = (props: BoardMenuProps) => {
   const { boardId, userId, changeHideOption } = props;
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const deleteBoard = () => {
-    /* 해당 게시글 삭제 요청 */
+  const requestDeleteBoard = () => {
     try {
       deleteBoardData(boardId, userId);
     } catch (error) {
@@ -27,7 +26,9 @@ const BoardMenu = (props: BoardMenuProps) => {
 
   useEffect(() => {
     const clickOutOfModal = (event: MouseEvent) => {
-      /* mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리 */
+      /** mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
+       *  TODO: 메뉴 버튼 클릭시 hideOption 상태 변화가 2번 일어나 메뉴가 닫히지 않는 버그
+       */
       if (
         event.currentTarget !== null &&
         modalRef.current &&
@@ -50,7 +51,7 @@ const BoardMenu = (props: BoardMenuProps) => {
       <button type="button" onClick={modifyBoard}>
         수정하기
       </button>
-      <button type="button" onClick={deleteBoard}>
+      <button type="button" onClick={requestDeleteBoard}>
         삭제하기
       </button>
       <button type="button" className="last-content" onClick={changeHideOption}>

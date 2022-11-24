@@ -1,5 +1,4 @@
 import { IsNotEmpty } from 'class-validator';
-// import { OauthInfo } from '../model/OauthInfo.enum';
 
 export class RegisterUserDto {
   @IsNotEmpty()
