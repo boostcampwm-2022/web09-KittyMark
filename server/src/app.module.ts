@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { BoardModule } from './board/board.module';
 import { ResponseInterceptor } from './interceptor/responseInterceptor';
 import { S3Module } from './S3/S3.module';
+import { AuthGuard } from './auth/auth.guard';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { S3Module } from './S3/S3.module';
     S3Module,
   ],
   controllers: [AppController],
-  providers: [AppService, ResponseInterceptor],
+  providers: [AppService, ResponseInterceptor, AuthGuard],
 })
 export class AppModule {}

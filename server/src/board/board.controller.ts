@@ -36,6 +36,7 @@ export class BoardController {
   }
 
   @Delete('/')
+  @UsePipes(ValidationPipe)
   deleteBoard(@Body() deleteBoardDto: DeleteBoardDto) {
     this.boardService.deleteBoard(deleteBoardDto);
     return;

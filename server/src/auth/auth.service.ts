@@ -10,6 +10,12 @@ import { firstValueFrom, map } from 'rxjs';
 import { plainToInstance } from 'class-transformer';
 import { User } from 'src/user/user.entity';
 
+declare module 'express-session' {
+  export interface SessionData {
+    userEmail: string;
+  }
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -60,6 +66,9 @@ export class AuthService {
 
     if (user) {
       await redisClient.set(request.sessionID, email);
+      await redisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
+      request.session.userEmail = email;
+
       return {
         statusCode: 200,
         userId: user.id,
