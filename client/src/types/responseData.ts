@@ -59,11 +59,20 @@ export interface Board {
   };
 }
 
-// 여기서 내부를 ? 처리한 이유는 500 에러가 난 경우를 대비한건가요?
 export interface BoardApi extends Api {
-  data: {
-    boards?: [Board];
-    nextMaxId?: number;
-    count?: number;
+  data?: {
+    boards: [Board];
+    nextMaxId: number;
+    count: number;
+  };
+}
+
+export interface LikeListApi extends Api {
+  data?: {
+    users: {
+      id: number;
+      name: string;
+      profileUrl: string;
+    };
   };
 }

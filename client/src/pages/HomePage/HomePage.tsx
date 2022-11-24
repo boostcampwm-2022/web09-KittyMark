@@ -81,7 +81,7 @@ const HomePage = () => {
       '-1',
     );
     if (statusCode !== 200) throw new Error(message);
-    if (data.boards === undefined) return;
+    if (data === undefined) return;
     setBoards(boards.concat(data.boards));
   };
 
