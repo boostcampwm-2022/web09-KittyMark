@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // recoil
 import { useRecoilValue } from 'recoil';
 import user from '../../../store/userAtom';
@@ -12,6 +13,7 @@ import {
 // img
 import pinIcon from '../../../static/pinIcon.svg';
 import menuButton from '../../../static/menuBtn.svg';
+// component
 import BoardMenu from '../BoardMenu/BoardMenu';
 
 interface BoardHeaderProps {
@@ -24,6 +26,7 @@ interface BoardHeaderProps {
 }
 
 const BoardHeader = (props: BoardHeaderProps) => {
+  const navigate = useNavigate();
   const { userId, boardId, userProfile, userName, isStreet, location } = props;
   const [menuHideOption, setMenuHideOption] = useState(true);
   const userData = useRecoilValue(user);
@@ -35,6 +38,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
 
   const onClickUserInfo = () => {
     /* TODO: 해당 유저 페이지로 이동 */
+    navigate('/home');
   };
 
   return (
