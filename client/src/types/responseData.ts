@@ -41,16 +41,22 @@ export interface NewPostApi extends Api {
 }
 
 export interface Board {
-  userId: number;
-  userName: string;
-  userProfile: string;
-  boardId: string;
+  id: string;
   content: string;
-  url: string[];
+  isStreet: boolean;
   like: number;
   comment: number;
   createAt: string;
   location: string | null;
+  // nextMaxId: number;
+  photos: {
+    url: string[];
+  };
+  user: {
+    id: number;
+    name: string;
+    profileUrl: string;
+  };
 }
 
 // 여기서 내부를 ? 처리한 이유는 500 에러가 난 경우를 대비한건가요?

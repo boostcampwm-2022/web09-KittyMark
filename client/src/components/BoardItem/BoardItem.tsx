@@ -7,29 +7,29 @@ import BoardBackground from './BoardItemStyles';
 
 const BoardItem = (props: Board) => {
   const {
-    userId,
-    userName,
-    userProfile,
-    boardId,
+    id,
     content,
-    url,
+    isStreet,
     like,
     comment,
     createAt,
     location,
+    photos,
+    user,
   } = props;
   return (
-    <BoardBackground key={boardId}>
+    <BoardBackground key={id}>
       <BoardHeader
-        userId={userId}
-        boardId={boardId}
-        userProfile={userProfile}
-        userName={userName}
+        userId={user.id}
+        boardId={id}
+        userProfile={user.profileUrl}
+        userName={user.name}
+        isStreet={isStreet}
         location={location}
       />
-      <BoardImages src={url[0]} />
+      <BoardImages src={photos.url[0]} />
       <BoardBody
-        boardId={boardId}
+        boardId={id}
         content={content}
         like={like}
         comment={comment}

@@ -15,11 +15,12 @@ interface BoardHeaderProps {
   boardId: string;
   userProfile: string;
   userName: string;
+  isStreet: boolean;
   location: string | null;
 }
 
 const BoardHeader = (props: BoardHeaderProps) => {
-  const { userId, boardId, userProfile, userName, location } = props;
+  const { userId, boardId, userProfile, userName, isStreet, location } = props;
   const [menuHideOption, setMenuHideOption] = useState(true);
 
   const onClickMenu = () => {
@@ -27,7 +28,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
   };
 
   const onClickUserInfo = () => {
-    /* 해당 유저 페이지로 이동 */
+    /* TODO: 해당 유저 페이지로 이동 */
   };
 
   return (
@@ -39,7 +40,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
           </UserProfileImageContainer>
           <BoardHeaderInfoContainer>
             <div className="user-name">{userName}</div>
-            {location !== null ? (
+            {isStreet === true ? (
               <div>
                 <img src={pinIcon} alt="pin icon" />
                 <div className="location">{location}</div>

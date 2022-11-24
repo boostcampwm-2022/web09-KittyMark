@@ -17,40 +17,55 @@ const timeStamp = `${today.getFullYear()}.${
 }.${today.getDate()}`;
 const boards: Board[] = [
   {
-    userId: 1,
-    userName: 'Test User1',
-    userProfile: '../../defaultProfile.svg',
-    boardId: '1',
+    id: '1',
     content: '게시글 테스트1',
-    url: [testImage],
+    isStreet: true,
     like: 2,
     comment: 2,
     createAt: timeStamp,
     location: '서울특별시 역삼동',
+    photos: {
+      url: [testImage],
+    },
+    user: {
+      id: 1,
+      name: 'Test User1',
+      profileUrl: '../../defaultProfile.svg',
+    },
   },
   {
-    userId: 2,
-    userName: 'Test User2',
-    userProfile: '../../defaultProfile.svg',
-    boardId: '2',
+    id: '2',
     content: '게시글 테스트2',
-    url: [testImage],
+    isStreet: false,
     like: 0,
     comment: 0,
     createAt: timeStamp,
     location: null,
+    photos: {
+      url: [testImage],
+    },
+    user: {
+      id: 2,
+      name: 'Test User2',
+      profileUrl: '../../defaultProfile.svg',
+    },
   },
   {
-    userId: 3,
-    userName: 'Test User3',
-    userProfile: '../../defaultProfile.svg',
-    boardId: '3',
+    id: '3',
     content: 'sdasdasdasdsadasdsadadsadasdsadasdadsdadadadsdasdadaddssadsd',
-    url: [testImage],
+    isStreet: true,
     like: 123,
     comment: 0,
     createAt: timeStamp,
     location: '동탄 어딘가',
+    photos: {
+      url: [testImage],
+    },
+    user: {
+      id: 3,
+      name: 'Test User3',
+      profileUrl: '../../defaultProfile.svg',
+    },
   },
 ];
 
@@ -72,7 +87,6 @@ const HomePage = () => {
           <p>모든 게시물을 확인했습니다</p>
         </BoardEnd>
       </BoardContainer>
-      {/* <TempBody src={tempHomeBody} alt="Temp" /> */}
       <NavBar />
     </>
   );
