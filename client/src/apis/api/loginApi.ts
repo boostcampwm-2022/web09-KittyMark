@@ -24,33 +24,6 @@ export const postAuthInfo = async (
   return data;
 };
 
-// 사용 안함
-/**
- * @param email 서버에서 받은 email 정보를 기입한다.
- * @param imageURL 오브젝트 스토리지에 올리고 받은 사진 위치 정보 기입 (변경 예정)
- * @param userName 사용자 입력 닉네임 기입
- * @param oauthInfo NAVER 혹은 KAKAO
- * @returns 서버와의 통신 이후 결과를 보내준다.
- */
-// TODO 이미지 url 을 보내는 것이 아닌 form 으로 사진 데이터를 보내야한다.
-export const postRegisterInfo = async (
-  email: string,
-  imageURL: string,
-  userName: string,
-  oauthInfo: 'NAVER' | 'KAKAO',
-) => {
-  const { data }: AxiosResponse<Api> = await defaultInstance.post(
-    `/api/auth/register`,
-    {
-      email,
-      imageURL,
-      userName,
-      oauthInfo,
-    },
-  );
-  return data;
-};
-
 /**
  * @param email 서버에서 받은 email 정보를 기입한다.
  * @param image 사용자 입력 이미지 기입
@@ -58,12 +31,12 @@ export const postRegisterInfo = async (
  * @param oauthInfo NAVER 혹은 KAKAO
  * @returns 서버와의 통신 이후 결과를 보내준다.
  */
-export const newPostRegisterInfo = async (
+export const postRegisterInfo = async (
   email: string,
   image: File,
   userName: string,
   oauthInfo: 'NAVER' | 'KAKAO',
-) => {
+): Promise<Api> => {
   const formData = new FormData();
   // TODO key 이름이 바뀔 수 있음
   formData.append('email', email);

@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+// recoil
+import user from '../../store/userAtom';
 // api
 import { postAuthInfo } from '../../apis/api/loginApi';
 // style
@@ -9,6 +12,9 @@ import loadingCat from '../../static/loadingCat.gif';
 
 const LoadingPage = () => {
   const navigation = useNavigate();
+
+  const setUserData = useSetRecoilState(user);
+
   const getSocialName = (url: URL): 'naver' | 'kakao' => {
     const callback = url.pathname.split('/')[2];
     let name: 'naver' | 'kakao' = 'kakao';
@@ -16,6 +22,7 @@ const LoadingPage = () => {
     return name;
   };
 
+  // TODO 여기 너무 else 덩어리인 것 같음
   const postAuthrizationInfo = async (
     socialName: 'naver' | 'kakao',
     authorizationCode: string,
@@ -23,12 +30,15 @@ const LoadingPage = () => {
   ) => {
     try {
       const data = await postAuthInfo(socialName, authorizationCode, state);
-      if (data.code !== 200) navigation('/');
-      else if (data.email)
+      if (data.statusCode !== 200) navigation('/');
+      else if (data.redirect)
         navigation('/register', {
           state: { email: data.email, ouathInfo: 'NAVER' },
         });
-      else navigation('/home');
+      else if (data.data) {
+        setUserData({ userId: data.data.userId });
+        navigation('/home');
+      } else navigation('/');
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import uploadFile from '../../utils/awsUpload';
 // api
 import { postRegisterInfo } from '../../apis/api/loginApi';
 // style
@@ -62,16 +61,23 @@ const RegisterPage = () => {
     setNickname(event.target.value);
 
   const onClickRegisterBtn = async () => {
-    let imageUrl = '../../defaultProfile.svg';
-    if (profileImage) imageUrl = await uploadFile(profileImage);
-    try {
-      const data = await postRegisterInfo(email, imageUrl, nickname, oauthInfo);
-      if (data.code === 200) navigate('/home');
-      // TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
+    if (profileImage)
+      try {
+        const data = await postRegisterInfo(
+          email,
+          profileImage,
+          nickname,
+          oauthInfo,
+        );
+        // 일단 회원가입 하고 다시 홈으로 보내자 그냥
+        if (data.statusCode === 201) navigate('/');
+        // TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
+        // eslint-disable-next-line no-alert
+        else alert(data.message);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
   };
 
   return (
@@ -109,7 +115,7 @@ const RegisterPage = () => {
             className="submit-button"
             type="button"
             onClick={onClickRegisterBtn}
-            disabled={!nickname}
+            disabled={!nickname || !profileImage}
           >
             회원가입
           </button>

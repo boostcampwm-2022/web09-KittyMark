@@ -30,12 +30,14 @@ const CommentPage = () => {
   useEffect(() => {
     const getFunc = async () => {
       let data: Comments[] = [];
-      if (boardId)
-        data = await getCommentInfo(Number(boardId)).then(
-          (result) => result.comments,
-        );
+      if (boardId) {
+        const result = await getCommentInfo(Number(boardId));
+        if (result.statusCode !== 200) throw new Error(result.message);
+        data = result.data.comments;
+      }
       setCommentList(data);
     };
+
     try {
       getFunc();
     } catch (error) {
@@ -44,10 +46,17 @@ const CommentPage = () => {
     }
   }, []);
 
-  const onClickSendBtn = () => {
+  const onClickSendBtn = async () => {
     if (boardId)
       try {
-        postCommentInfo(userData.userId, Number(boardId), comment, null);
+        const data = await postCommentInfo(
+          userData.userId,
+          Number(boardId),
+          comment,
+          null,
+        );
+        if (data.statusCode !== 201) throw new Error(data.message);
+        // 그리고 commentId 데이터가 날라오는데 이걸 어디에 써먹는담..
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
