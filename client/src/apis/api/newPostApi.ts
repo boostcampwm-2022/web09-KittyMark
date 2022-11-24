@@ -18,8 +18,8 @@ const postNewPostInfo = async (
   formData.append('content', content);
   formData.append('isStreet', String(isStreet));
   formData.append('location', location || '');
-  formData.append('latitude', latitude ? String(latitude) : '');
-  formData.append('longitude', longitude ? String(longitude) : '');
+  formData.append('latitude', latitude ? String(latitude) : '-1');
+  formData.append('longitude', longitude ? String(longitude) : '-1');
 
   const { data }: AxiosResponse<NewPostApi> = await defaultFormInstance.post(
     `/api/board`,

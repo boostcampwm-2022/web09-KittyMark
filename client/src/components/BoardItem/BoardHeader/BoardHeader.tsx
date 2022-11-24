@@ -40,7 +40,6 @@ const BoardHeader = (props: BoardHeaderProps) => {
     /* TODO: 해당 유저 페이지로 이동 */
     navigate('/home');
   };
-
   return (
     <>
       <BoardHeaderWrapper>

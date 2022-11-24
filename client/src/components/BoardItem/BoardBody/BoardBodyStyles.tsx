@@ -50,6 +50,7 @@ const BoardBodyInfoContainer = styled.div`
     padding-left: 3%;
     display: flex;
     gap: 0.5rem;
+    white-space: nowrap;
   }
 `;
 

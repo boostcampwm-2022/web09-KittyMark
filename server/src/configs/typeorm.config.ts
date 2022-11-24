@@ -18,4 +18,7 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   entities: [User, Board, Photo, Comment],
   synchronize: true,
   namingStrategy: new SnakeNamingStrategy(),
+  dropSchema: false,
+  timezone: 'z',
+  charset: 'utf8mb4',
 };

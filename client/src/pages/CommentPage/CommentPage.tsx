@@ -73,17 +73,17 @@ const CommentPage = () => {
               data &&
               data.map((commentData) => (
                 <CommentUnit
-                  key={commentData.commentId}
-                  commentId={commentData.commentId}
-                  userName={commentData.userName}
+                  key={commentData.id}
+                  commentId={commentData.id}
+                  userName={commentData.user.name}
                   createdAt={commentData.createdAt}
                   content={commentData.content}
                   userProfile={
-                    commentData.userProfile === ''
+                    commentData.user.profileUrl === ''
                       ? '../../defaultProfile.svg'
-                      : commentData.userProfile
+                      : commentData.user.profileUrl
                   }
-                  isModal={modal === commentData.commentId}
+                  isModal={modal === commentData.id}
                   setModal={setModal}
                 />
               ))}

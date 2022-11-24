@@ -88,7 +88,7 @@ const deleteLikeBoard = async (
  */
 const getLikeList = async (boardId: string) => {
   const { data }: AxiosResponse<LikeListApi> = await defaultInstance.get(
-    `/api/board/like?=${boardId}`,
+    `/api/board/like?boardId=${boardId}`,
     {},
   );
   return data;

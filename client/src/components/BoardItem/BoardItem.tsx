@@ -27,7 +27,7 @@ const BoardItem = (props: Board) => {
         isStreet={isStreet}
         location={location}
       />
-      <BoardImages src={photos.url[0]} />
+      <BoardImages src={photos[0].url} />
       <BoardBody
         boardId={id}
         content={content}
