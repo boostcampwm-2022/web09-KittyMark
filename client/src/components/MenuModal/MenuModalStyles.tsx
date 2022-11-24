@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const MenuModalContainer = styled.div<{ top: number; left: number }>`
+  z-index: 10;
   display: flex;
   flex-direction: column;
   justify-content: center;

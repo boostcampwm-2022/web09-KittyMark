@@ -78,6 +78,11 @@ const CommentPage = () => {
                   userName={commentData.userName}
                   createdAt={commentData.createdAt}
                   content={commentData.content}
+                  userProfile={
+                    commentData.userProfile === ''
+                      ? '../../defaultProfile.svg'
+                      : commentData.userProfile
+                  }
                   isModal={modal === commentData.commentId}
                   setModal={setModal}
                 />

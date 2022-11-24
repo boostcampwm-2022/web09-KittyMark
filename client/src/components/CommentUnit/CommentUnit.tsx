@@ -1,4 +1,3 @@
-/* eslint-disable react/require-default-props */
 import React from 'react';
 import ProfileIcon from '../ProfileIcon/ProfileIcon';
 // style
@@ -18,7 +17,7 @@ interface CommentUnitProps {
   commentId: number;
   createdAt: string;
   content: string;
-  userProfile?: string;
+  userProfile: string;
   isModal: boolean;
   setModal: React.Dispatch<React.SetStateAction<number>>;
 }
@@ -30,7 +29,7 @@ const CommentUnit = ({
   commentId,
   createdAt,
   content,
-  userProfile = '../../defaultProfile.svg',
+  userProfile,
   isModal,
   setModal,
 }: CommentUnitProps) => {

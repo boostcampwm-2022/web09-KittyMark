@@ -33,16 +33,16 @@ export const postAuthInfo = async (
  */
 export const postRegisterInfo = async (
   email: string,
-  image: File,
   userName: string,
   oauthInfo: 'NAVER' | 'KAKAO',
+  image?: File,
 ): Promise<Api> => {
   const formData = new FormData();
   // TODO key 이름이 바뀔 수 있음
   formData.append('email', email);
   formData.append('nickname', userName);
   formData.append('outhInfo', oauthInfo);
-  formData.append('image', image);
+  formData.append('image', image || '');
 
   const { data }: AxiosResponse<Api> = await defaultFormInstance.post(
     `/api/auth/register`,
