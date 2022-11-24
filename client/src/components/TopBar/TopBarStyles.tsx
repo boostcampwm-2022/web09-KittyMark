@@ -48,15 +48,15 @@ const TopBarCheckButton = styled.button`
 
   &:enabled {
     img {
-      filter: invert(39%) sepia(27%) saturate(1836%) hue-rotate(321deg)
-        brightness(112%) contrast(107%);
+      filter: invert(35%) sepia(48%) saturate(3576%) hue-rotate(338deg)
+        brightness(107%) contrast(100%);
     }
   }
 
   &:disabled {
     img {
-      filter: invert(99%) sepia(5%) saturate(485%) hue-rotate(184deg)
-        brightness(117%) contrast(100%);
+      filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg)
+        brightness(102%) contrast(102%);
     }
   }
 `;

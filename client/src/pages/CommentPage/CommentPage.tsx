@@ -1,66 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { AxiosError } from 'axios';
 // recoil
 import { useRecoilValue } from 'recoil';
 import user from '../../store/userAtom';
 // api
 import { getCommentInfo, postCommentInfo } from '../../apis/api/commentApi';
 // style
-import { CommentPageBody, CommentListContainer } from './CommentPageStyles';
+import {
+  CommentPageBody,
+  CommentListContainer,
+  CommentPageStatus,
+} from './CommentPageStyles';
 // component
 import TopBar from '../../components/TopBar/TopBar';
 import MessageForm from '../../components/MessageBox/MessageForm';
 import NavBar from '../../components/NavBar/NavBar';
 import CommentUnit from '../../components/CommentUnit/CommentUnit';
 // type
-import { Comments } from '../../types/responseData';
+import { Comments, NewCommentApi } from '../../types/responseData';
 
-// TODO react-query 를 활용해서 해당 부분을 custom hook 으로 빼낸다.
+// TODO custom hook 으로 빼낸다.
 const CommentPage = () => {
-  const { boardId } = useParams(); // url 에서 board 정보
-  const location = useLocation();
+  const { boardId } = useParams();
   const navigation = useNavigate();
 
-  // TODO userData 내부의 userId 가 필요한데 이는 로그인 때 받아와야 한다.
   const userData = useRecoilValue(user);
   const [comment, setComment] = useState<string>(''); // 사용자 입력 정보 받아오기
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [commentList, setCommentList] = useState<Comments[]>([]);
+  const [modal, setModal] = useState<number>(-1);
 
-  useEffect(() => {
-    const getFunc = async () => {
-      let data: Comments[] = [];
-      if (boardId) {
-        const result = await getCommentInfo(Number(boardId));
-        if (result.statusCode !== 200) throw new Error(result.message);
-        data = result.data.comments;
-      }
-      setCommentList(data);
-    };
+  // TODO react-query 에러 처리 방식에 대해서 고민해볼 필요가 있다.
+  const queryClient = useQueryClient();
+  const { isLoading, isError, data, error } = useQuery<Comments[], AxiosError>(
+    'comments',
+    () => getCommentInfo(Number(boardId)).then((res) => res.data.comments),
+  );
 
-    try {
-      getFunc();
-    } catch (error) {
+  const { mutate } = useMutation<NewCommentApi, AxiosError>(
+    () => postCommentInfo(userData.userId, Number(boardId), comment, null),
+    {
+      onSuccess: () => queryClient.invalidateQueries('comments'),
       // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  }, []);
+      onError: (e) => console.log(e.message),
+    },
+  );
 
   const onClickSendBtn = async () => {
-    if (boardId)
-      try {
-        const data = await postCommentInfo(
-          userData.userId,
-          Number(boardId),
-          comment,
-          null,
-        );
-        if (data.statusCode !== 201) throw new Error(data.message);
-        // 그리고 commentId 데이터가 날라오는데 이걸 어디에 써먹는담..
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      }
+    mutate();
     setComment('');
   };
 
@@ -70,7 +57,7 @@ const CommentPage = () => {
         isBack
         title="댓글"
         isCheck={false}
-        backFunc={() => navigation(location)}
+        backFunc={() => navigation(-1)}
       />
       <CommentPageBody>
         <MessageForm
@@ -80,13 +67,24 @@ const CommentPage = () => {
         />
         <CommentListContainer>
           <div className="inner-container">
-            {commentList &&
-              commentList.map((commentData) => (
+            {isLoading && <CommentPageStatus>Loading...</CommentPageStatus>}
+            {isError && <CommentPageStatus>{error.message}</CommentPageStatus>}
+            {!(isError || isLoading) &&
+              data &&
+              data.map((commentData) => (
                 <CommentUnit
                   key={commentData.commentId}
+                  commentId={commentData.commentId}
                   userName={commentData.userName}
                   createdAt={commentData.createdAt}
                   content={commentData.content}
+                  userProfile={
+                    commentData.userProfile === ''
+                      ? '../../defaultProfile.svg'
+                      : commentData.userProfile
+                  }
+                  isModal={modal === commentData.commentId}
+                  setModal={setModal}
                 />
               ))}
           </div>

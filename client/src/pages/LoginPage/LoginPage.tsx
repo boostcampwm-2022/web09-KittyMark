@@ -2,7 +2,7 @@ import React from 'react';
 // style
 import { LoginPageContainer, OauthButton } from './LoginPageStyles';
 // img
-import logo from '../../static/logo.png';
+import logo from '../../static/whiteLogo.png';
 import appName from '../../static/logoName.png';
 import kakaoOauth from '../../static/kakao_oauth.png';
 import naverOauth from '../../static/naver_oauth.png';

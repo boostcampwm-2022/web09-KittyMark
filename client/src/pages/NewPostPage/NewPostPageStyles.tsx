@@ -48,7 +48,7 @@ const NewPostCategoryButton = styled.button<{ checked: boolean }>`
   width: 8rem;
   height: 2rem;
   border-radius: 0.5rem;
-  border: 1px solid #7e7656;
+  border: 1px solid ${(props) => props.theme.palette.border};
   margin-right: 1rem;
 
   font-family: 'Jua';
@@ -61,18 +61,20 @@ const NewPostCategoryButton = styled.button<{ checked: boolean }>`
 `;
 
 const NewPostTextarea = styled.textarea`
-  width: calc(100% - 2rem);
+  width: calc(100% - 3rem);
   height: 10rem;
-  background-color: ${(props) => props.theme.palette.inner};
-  border: 1px solid #7e7656;
+  background-color: ${(props) => props.theme.palette.back};
+  border: 1px solid ${(props) => props.theme.palette.border};
   border-radius: 2rem;
-  padding: 1rem;
+  padding: 1.5rem;
 
   resize: none;
 
   font-family: 'Jua';
   font-style: normal;
   font-weight: 400;
+
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
 
 export {

@@ -16,6 +16,8 @@ const Background = styled.div`
 
 const LoadingText = styled.div`
   padding-top: 5%;
+  font-family: 'Jua';
+  font-style: normal;
   font-weight: 700;
   font-size: 18px;
 `;

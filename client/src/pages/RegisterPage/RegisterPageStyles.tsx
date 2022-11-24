@@ -16,8 +16,10 @@ const RegisterPageBody = styled.div`
 const RegisterForm = styled.form`
   width: 17rem;
   height: 27rem;
-  background: ${(props) => props.theme.palette.main};
+  background: ${(props) => props.theme.palette.inner};
+  border: 1px solid ${(props) => props.theme.palette.border};
   border-radius: 35px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -64,16 +66,19 @@ const RegisterForm = styled.form`
   .submit-button {
     width: 9.5rem;
     height: 3rem;
-    background: #ff9c9c;
+    background: ${(props) => props.theme.palette.main};
+    color: #ffffff;
     border: 1px solid ${(props) => props.theme.palette.border};
     border-radius: 1rem;
     font-size: 20px;
     line-height: 25px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
     cursor: pointer;
 
     &:disabled {
       background-color: #d4d4d4;
+      color: #000000;
     }
   }
 `;

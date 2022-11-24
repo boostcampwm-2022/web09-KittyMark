@@ -61,23 +61,22 @@ const RegisterPage = () => {
     setNickname(event.target.value);
 
   const onClickRegisterBtn = async () => {
-    if (profileImage)
-      try {
-        const data = await postRegisterInfo(
-          email,
-          profileImage,
-          nickname,
-          oauthInfo,
-        );
-        // 일단 회원가입 하고 다시 홈으로 보내자 그냥
-        if (data.statusCode === 201) navigate('/');
-        // TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
-        // eslint-disable-next-line no-alert
-        else alert(data.message);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      }
+    try {
+      const data = await postRegisterInfo(
+        email,
+        nickname,
+        oauthInfo,
+        profileImage,
+      );
+      // 일단 회원가입 하고 다시 홈으로 보내자 그냥
+      if (data.statusCode === 201) navigate('/');
+      // TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
+      // eslint-disable-next-line no-alert
+      else alert(data.message);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
   };
 
   return (

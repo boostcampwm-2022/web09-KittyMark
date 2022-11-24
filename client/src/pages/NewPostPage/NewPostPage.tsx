@@ -133,6 +133,7 @@ const NewPostPage = () => {
           {imgBase64 &&
             imgBase64.map((image, index) => (
               <ImageSlot
+                key={image}
                 imgSrc={image}
                 index={index}
                 onClickFun={onClickImageDelBtn}
@@ -146,6 +147,7 @@ const NewPostPage = () => {
           name="category"
           checked={post.category}
           style={{ display: 'none' }}
+          readOnly
         />
         <div>
           <NewPostCategoryButton
