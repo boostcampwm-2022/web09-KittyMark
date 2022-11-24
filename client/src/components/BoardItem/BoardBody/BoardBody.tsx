@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   BoardBodyWrapper,
   BoardBodyContainer,
@@ -11,6 +12,7 @@ import likeButton from '../../../static/emptyHeart.svg';
 import commentButton from '../../../static/commentBtn.svg';
 
 interface BoardBodyProps {
+  boardId: string;
   content: string;
   like: number;
   comment: number;
@@ -18,14 +20,15 @@ interface BoardBodyProps {
 }
 
 const BoardBody = (props: BoardBodyProps) => {
-  const { content, like, comment, createAt } = props;
+  const { boardId, content, like, comment, createAt } = props;
+  const navigate = useNavigate();
 
   const onClickCommentIcon = () => {
-    /* 해당 게시글의 댓글 창으로 이동 */
+    navigate(`/comment/${boardId}`);
   };
 
   const onClickHeartIcon = () => {
-    /* 이 게시글에 대한 좋아요 요청 */
+    /* TODO: 이 게시글에 대한 좋아요 요청 */
   };
 
   return (

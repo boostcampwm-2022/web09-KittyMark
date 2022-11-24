@@ -1,65 +1,117 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // img
 import testImage from '../../static/testImage.png';
 import catFootprint from '../../static/catFootprint.svg';
+import addPostButtonImg from '../../static/addPost.svg';
 // component
 import NavBar from '../../components/NavBar/NavBar';
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
+import BoardItem from '../../components/BoardItem/BoardItem';
 // style
 import { BoardContainer, BoardEnd } from './HomePageStyles';
-import BoardItem from '../../components/BoardItem/BoardItem';
+// type
 import { Board } from '../../types/responseData';
+// api
+import { getBoardData } from '../../apis/api/BoardApi';
 
 /* Test Data */
 const today = new Date(Date.now());
 const timeStamp = `${today.getFullYear()}.${
   today.getMonth() + 1
 }.${today.getDate()}`;
-const boards: Board[] = [
+const dummyBoards: Board[] = [
   {
-    userId: 1,
-    userName: 'Test User1',
-    userProfile: '../../defaultProfile.svg',
-    boardId: '1',
+    id: '1',
     content: '게시글 테스트1',
-    url: [testImage],
+    isStreet: true,
     like: 2,
     comment: 2,
     createAt: timeStamp,
     location: '서울특별시 역삼동',
+    photos: {
+      url: [testImage],
+    },
+    user: {
+      id: 1,
+      name: 'Test User1',
+      profileUrl: '../../defaultProfile.svg',
+    },
   },
   {
-    userId: 2,
-    userName: 'Test User2',
-    userProfile: '../../defaultProfile.svg',
-    boardId: '2',
+    id: '2',
     content: '게시글 테스트2',
-    url: [testImage],
+    isStreet: false,
     like: 0,
     comment: 0,
     createAt: timeStamp,
     location: null,
+    photos: {
+      url: [testImage],
+    },
+    user: {
+      id: 2,
+      name: 'Test User2',
+      profileUrl: '../../defaultProfile.svg',
+    },
   },
   {
-    userId: 3,
-    userName: 'Test User3',
-    userProfile: '../../defaultProfile.svg',
-    boardId: '3',
+    id: '3',
     content: 'sdasdasdasdsadasdsadadsadasdsadasdadsdadadadsdasdadaddssadsd',
-    url: [testImage],
+    isStreet: true,
     like: 123,
     comment: 0,
     createAt: timeStamp,
     location: '동탄 어딘가',
+    photos: {
+      url: [testImage],
+    },
+    user: {
+      id: 3,
+      name: 'Test User3',
+      profileUrl: '../../defaultProfile.svg',
+    },
   },
 ];
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const [boards, setBoards] = useState<Board[]>([]);
+  const requestCount = 10000;
+  const addPostButton = {
+    buttonImg: addPostButtonImg,
+    eventHandler: () => {
+      navigate('/new-post');
+    },
+    description: '게시물을 추가할래요.',
+  };
+  const getData = async () => {
+    const { statusCode, message, data } = await getBoardData(
+      requestCount,
+      '-1',
+    );
+    if (statusCode !== 200) throw new Error(message);
+    if (data === undefined) return;
+    setBoards(boards.concat(data.boards));
+  };
+
+  useEffect(() => {
+    try {
+      getData();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  }, []);
+
   return (
     <>
-      <NormalTopBar />
+      <NormalTopBar buttonData={addPostButton} />
       <BoardContainer>
         {boards.map((board) => {
+          return BoardItem(board);
+        })}
+        {dummyBoards.map((board) => {
           return BoardItem(board);
         })}
         <BoardEnd>
@@ -72,7 +124,6 @@ const HomePage = () => {
           <p>모든 게시물을 확인했습니다</p>
         </BoardEnd>
       </BoardContainer>
-      {/* <TempBody src={tempHomeBody} alt="Temp" /> */}
       <NavBar />
     </>
   );
