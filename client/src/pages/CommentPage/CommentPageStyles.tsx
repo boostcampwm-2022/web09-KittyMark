@@ -35,7 +35,7 @@ const CommentListContainer = styled.div`
   }
 `;
 
-const CommentPageLoading = styled.p`
+const CommentPageStatus = styled.p`
   font-family: 'Jua';
   font-style: normal;
   font-weight: 400;
@@ -45,4 +45,4 @@ const CommentPageLoading = styled.p`
   margin: 5rem auto;
 `;
 
-export { CommentPageBody, CommentListContainer, CommentPageLoading };
+export { CommentPageBody, CommentListContainer, CommentPageStatus };
