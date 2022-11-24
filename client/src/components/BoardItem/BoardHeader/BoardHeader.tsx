@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+// recoil
+import { useRecoilValue } from 'recoil';
+import user from '../../../store/userAtom';
+// style
 import {
   BoardHeaderWrapper,
   BoardHeaderContainer,
@@ -22,6 +26,8 @@ interface BoardHeaderProps {
 const BoardHeader = (props: BoardHeaderProps) => {
   const { userId, boardId, userProfile, userName, isStreet, location } = props;
   const [menuHideOption, setMenuHideOption] = useState(true);
+  const userData = useRecoilValue(user);
+  const loginedUserId = userData.userId;
 
   const onClickMenu = () => {
     setMenuHideOption(!menuHideOption);
@@ -50,9 +56,13 @@ const BoardHeader = (props: BoardHeaderProps) => {
             )}
           </BoardHeaderInfoContainer>
         </BoardHeaderContainer>
-        <button type="button" onClick={onClickMenu}>
-          <img src={menuButton} alt="Create/Delete DropDown" />
-        </button>
+        {/* // 현재 로그인한 계정의 게시글만 수정/삭제할 수 있도록 함
+        {loginedUserId === userId ? ( */}
+        {loginedUserId !== null ? ( // 테스트용
+          <button type="button" onClick={onClickMenu}>
+            <img src={menuButton} alt="Create/Delete DropDown" />
+          </button>
+        ) : null}
       </BoardHeaderWrapper>
       {menuHideOption ? null : (
         <BoardMenu
