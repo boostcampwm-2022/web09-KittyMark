@@ -35,4 +35,14 @@ const CommentListContainer = styled.div`
   }
 `;
 
-export { CommentPageBody, CommentListContainer };
+const CommentPageLoading = styled.p`
+  font-family: 'Jua';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+
+  text-align: center;
+  margin: 5rem auto;
+`;
+
+export { CommentPageBody, CommentListContainer, CommentPageLoading };
