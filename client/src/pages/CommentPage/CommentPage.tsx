@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
 // recoil
@@ -24,11 +24,11 @@ import { Comments, NewCommentApi } from '../../types/responseData';
 // TODO custom hook 으로 빼낸다.
 const CommentPage = () => {
   const { boardId } = useParams();
-  const location = useLocation();
   const navigation = useNavigate();
 
   const userData = useRecoilValue(user);
   const [comment, setComment] = useState<string>(''); // 사용자 입력 정보 받아오기
+  const [modal, setModal] = useState<number>(-1);
 
   // TODO react-query 에러 처리 방식에 대해서 고민해볼 필요가 있다.
   const queryClient = useQueryClient();
@@ -57,7 +57,7 @@ const CommentPage = () => {
         isBack
         title="댓글"
         isCheck={false}
-        backFunc={() => navigation(location)}
+        backFunc={() => navigation(-1)}
       />
       <CommentPageBody>
         <MessageForm
@@ -74,9 +74,12 @@ const CommentPage = () => {
               data.map((commentData) => (
                 <CommentUnit
                   key={commentData.commentId}
+                  commentId={commentData.commentId}
                   userName={commentData.userName}
                   createdAt={commentData.createdAt}
                   content={commentData.content}
+                  isModal={modal === commentData.commentId}
+                  setModal={setModal}
                 />
               ))}
           </div>
