@@ -10,9 +10,9 @@ export class CommentService {
   constructor(private readonly commentRepository: CommentRepository) {}
 
   async getComments(getCommentsDto: GetCommentsDto) {
-    const { boardId, count, max_id } = getCommentsDto;
+    const { board_id, count, max_id } = getCommentsDto;
     return await this.commentRepository.findCommentListBy(
-      boardId,
+      board_id,
       count,
       max_id,
     );

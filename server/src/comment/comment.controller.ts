@@ -1,7 +1,7 @@
 import { Query } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common';
 import { Body } from '@nestjs/common';
-import { Get, Post, Delete, Patch } from '@nestjs/common';
+import { Get, Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { GetCommentsDto } from './dto/get-comments.dto';
@@ -21,9 +21,9 @@ export class CommentController {
     return this.commentService.createComment(createCommentDto);
   }
 
-  @Delete('')
-  deleteComment() {}
+  // @Delete('')
+  // deleteComment() {}
 
-  @Patch('')
-  updateComment() {}
+  // @Patch('')
+  // updateComment() {}
 }

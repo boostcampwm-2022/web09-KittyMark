@@ -3,7 +3,7 @@ import { IsNotEmpty } from 'class-validator';
 
 export class GetCommentsDto {
   @IsNotEmpty()
-  boardId: number;
+  board_id: number;
 
   @IsNotEmpty()
   count: number;
