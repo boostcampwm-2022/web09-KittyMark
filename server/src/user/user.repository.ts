@@ -34,12 +34,7 @@ export class UserRepository {
     });
   }
 
-  async save(user: {
-    name: string;
-    email: string;
-    oauth_info: OauthInfo;
-    profile_url: string;
-  }) {
+  async save(user: User) {
     return await this.userRepository.save(user);
   }
 }
