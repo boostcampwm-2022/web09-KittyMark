@@ -4,13 +4,15 @@ import {
   Post,
   Body,
   Req,
-  UsePipes,
+  UseInterceptors,
+  UploadedFile,
   ValidationPipe,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { RegisterUserDto } from './dto/user-register.dto';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
 import { AuthService } from './auth.service';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('auth')
 export class AuthController {
@@ -22,9 +24,12 @@ export class AuthController {
   }
 
   @Post('/register')
-  @UsePipes(ValidationPipe)
-  register(@Body() registerUserDto: RegisterUserDto) {
-    return this.authService.register(registerUserDto);
+  @UseInterceptors(FileInterceptor('image'))
+  register(
+    @UploadedFile() image: Express.Multer.File,
+    @Body(new ValidationPipe()) registerUserDto: RegisterUserDto,
+  ) {
+    return this.authService.register(image, registerUserDto);
   }
 
   @Get('/logout')
