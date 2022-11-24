@@ -8,6 +8,7 @@ import { typeORMConfig } from './configs/typeorm.config';
 import { AuthModule } from './auth/auth.module';
 import { BoardModule } from './board/board.module';
 import { ResponseInterceptor } from './interceptor/responseInterceptor';
+import { S3Module } from './S3/S3.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ResponseInterceptor } from './interceptor/responseInterceptor';
     HttpModule,
     AuthModule,
     BoardModule,
+    S3Module,
   ],
   controllers: [AppController],
   providers: [AppService, ResponseInterceptor],
