@@ -7,6 +7,8 @@ import { RegisterUserDto } from './dto/user-register.dto';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
 import { UserRepository } from 'src/user/user.repository';
 import { firstValueFrom, map } from 'rxjs';
+import { plainToInstance } from 'class-transformer';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +28,7 @@ export class AuthService {
 
   async register(registerUserDto: RegisterUserDto) {
     // TODO: OauthInfo 추가
-    const { email } = registerUserDto;
+    const { email, imageURL, userName } = registerUserDto;
 
     const find = await this.userRepository.findByOauthInfo(
       email,
@@ -37,7 +39,13 @@ export class AuthService {
       throw new ConflictException('이미 존재하는 유저입니다.');
     }
 
-    const user = registerUserDto.toEntity();
+    const userInfo = {
+      name: userName,
+      email: email,
+      oauth_info: OauthInfo.NAVER,
+      profile_url: imageURL,
+    };
+    const user = plainToInstance(User, userInfo);
     this.userRepository.save(user);
 
     return { code: 200, message: 'Success' };
