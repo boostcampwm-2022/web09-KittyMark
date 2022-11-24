@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Photo } from './photo.entity';
+import { Comment } from 'src/comment/comment.entity';
 
 @Entity()
 export class Board {
@@ -33,10 +34,6 @@ export class Board {
   @Column({ nullable: true })
   like: number;
 
-  // Todo 연관관계 매핑필요
-  @Column({ nullable: true })
-  comment: number;
-
   @CreateDateColumn({
     type: 'timestamp',
   })
@@ -47,4 +44,7 @@ export class Board {
 
   @OneToMany(() => Photo, (photo) => photo.board)
   photos: Photo[];
+
+  @OneToMany(() => Comment, (comment) => comment.board)
+  comments: Comment[];
 }
