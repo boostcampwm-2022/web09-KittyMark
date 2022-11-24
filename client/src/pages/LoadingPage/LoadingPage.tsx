@@ -33,10 +33,14 @@ const LoadingPage = () => {
       if (data.statusCode !== 200) navigation('/');
       else if (data.redirect)
         navigation('/register', {
-          state: { email: data.email, ouathInfo: 'NAVER' },
+          state: { email: data.email, oauthInfo: 'NAVER' },
         });
       else if (data.data) {
+        // eslint-disable-next-line no-console
+        console.log(data.data);
         setUserData({ userId: data.data.userId });
+        // eslint-disable-next-line no-console
+        console.log(data.data);
         navigation('/home');
       } else navigation('/');
     } catch (error) {

@@ -13,6 +13,7 @@ export class CommentController {
 
   @Get('')
   getComments(@Query(new ValidationPipe()) getCommentsDto: GetCommentsDto) {
+    console.log(getCommentsDto);
     return this.commentService.getComments(getCommentsDto);
   }
 

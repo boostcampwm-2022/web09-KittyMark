@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -21,13 +22,13 @@ export class Board {
   @Column()
   isStreet: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   location: string;
 
-  @Column()
+  @Column({ nullable: true })
   latitude: number;
 
-  @Column()
+  @Column({ nullable: true })
   longitude: number;
 
   // Todo 연관관계 매핑필요
@@ -40,6 +41,7 @@ export class Board {
   createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.boards)
+  @JoinColumn()
   user: User;
 
   @OneToMany(() => Photo, (photo) => photo.board)

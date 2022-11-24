@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // img
-import testImage from '../../static/testImage.png';
+// import testImage from '../../static/testImage.png';
 import catFootprint from '../../static/catFootprint.svg';
 import addPostButtonImg from '../../static/addPost.svg';
 // component
@@ -16,63 +16,75 @@ import { Board } from '../../types/responseData';
 import { getBoardData } from '../../apis/api/BoardApi';
 
 /* Test Data */
-const today = new Date(Date.now());
-const timeStamp = `${today.getFullYear()}.${
-  today.getMonth() + 1
-}.${today.getDate()}`;
-const dummyBoards: Board[] = [
-  {
-    id: '1',
-    content: '게시글 테스트1',
-    isStreet: true,
-    like: 2,
-    comment: 2,
-    createAt: timeStamp,
-    location: '서울특별시 역삼동',
-    photos: {
-      url: [testImage],
-    },
-    user: {
-      id: 1,
-      name: 'Test User1',
-      profileUrl: '../../defaultProfile.svg',
-    },
-  },
-  {
-    id: '2',
-    content: '게시글 테스트2',
-    isStreet: false,
-    like: 0,
-    comment: 0,
-    createAt: timeStamp,
-    location: null,
-    photos: {
-      url: [testImage],
-    },
-    user: {
-      id: 2,
-      name: 'Test User2',
-      profileUrl: '../../defaultProfile.svg',
-    },
-  },
-  {
-    id: '3',
-    content: 'sdasdasdasdsadasdsadadsadasdsadasdadsdadadadsdasdadaddssadsd',
-    isStreet: true,
-    like: 123,
-    comment: 0,
-    createAt: timeStamp,
-    location: '동탄 어딘가',
-    photos: {
-      url: [testImage],
-    },
-    user: {
-      id: 3,
-      name: 'Test User3',
-      profileUrl: '../../defaultProfile.svg',
-    },
-  },
-];
+// const today = new Date(Date.now());
+// const timeStamp = `${today.getFullYear()}.${
+//   today.getMonth() + 1
+// }.${today.getDate()}`;
+// const dummyBoards: Board[] = [
+//   {
+//     id: '1',
+//     content: '게시글 테스트1',
+//     isStreet: true,
+//     like: 2,
+//     comment: 2,
+//     createAt: timeStamp,
+//     location: '서울특별시 역삼동',
+//     latitude: 127,
+//     longitude: 86,
+//     photos: [
+//       {
+//         url: testImage,
+//       },
+//     ],
+//     user: {
+//       id: 1,
+//       name: 'Test User1',
+//       profileUrl: '../../defaultProfile.svg',
+//     },
+//   },
+//   {
+//     id: '2',
+//     content: '게시글 테스트2',
+//     isStreet: false,
+//     like: 0,
+//     comment: 0,
+//     createAt: timeStamp,
+//     location: null,
+//     latitude: -1,
+//     longitude: -1,
+//     photos: [
+//       {
+//         url: testImage,
+//       },
+//     ],
+//     user: {
+//       id: 2,
+//       name: 'Test User2',
+//       profileUrl: '../../defaultProfile.svg',
+//     },
+//   },
+//   {
+//     id: '3',
+//     content: 'sdasdasdasdsadasdsadadsadasdsadasdadsdadadadsdasdadaddssadsd',
+//     isStreet: true,
+//     like: 123,
+//     comment: 0,
+//     createAt: timeStamp,
+//     location: '동탄 어딘가',
+//     latitude: 127,
+//     longitude: 78,
+//     photos: [
+//       {
+//         url: testImage,
+//       },
+//     ],
+//     user: {
+//       id: 3,
+//       name: 'Test User3',
+//       profileUrl: '../../defaultProfile.svg',
+//     },
+//   },
+// ];
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -108,12 +120,14 @@ const HomePage = () => {
     <>
       <NormalTopBar buttonData={addPostButton} />
       <BoardContainer>
-        {boards.map((board) => {
+        {boards.length > 0
+          ? boards.map((board) => {
+              return BoardItem(board);
+            })
+          : null}
+        {/* {dummyBoards.map((board) => {
           return BoardItem(board);
-        })}
-        {dummyBoards.map((board) => {
-          return BoardItem(board);
-        })}
+        })} */}
         <BoardEnd>
           <img
             src={catFootprint}

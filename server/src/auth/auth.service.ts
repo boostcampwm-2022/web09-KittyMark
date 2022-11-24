@@ -60,7 +60,7 @@ export class AuthService {
     const user = plainToInstance(User, userInfo);
     this.userRepository.save(user);
 
-    return { statusCode: 200, message: 'Success' };
+    return { statusCode: 201, message: 'Success' };
   }
 
   // // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
@@ -74,10 +74,9 @@ export class AuthService {
       await redisClient.set(request.sessionID, email);
       await redisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
       request.session.userEmail = email;
-
       return {
         statusCode: 200,
-        userId: user.id,
+        data: { userId: user.id },
         message: 'Success',
       };
     } else {

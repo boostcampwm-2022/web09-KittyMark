@@ -5,9 +5,6 @@ export class CreateBoardDto {
   userId: number;
 
   @IsNotEmpty()
-  images: string[];
-
-  @IsNotEmpty()
   content: string;
 
   @IsNotEmpty()
@@ -15,7 +12,7 @@ export class CreateBoardDto {
 
   location: string | null;
 
-  latitude: number | null;
+  latitude: number;
 
-  longitude: number | null;
+  longitude: number;
 }

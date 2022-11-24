@@ -38,6 +38,7 @@ export class S3Service {
           ACL: 'public-read',
           Key: object_key + '.jpg',
           Body: image.buffer,
+          ContentType: 'image/jpg',
         })
         .promise();
       return response.Location;

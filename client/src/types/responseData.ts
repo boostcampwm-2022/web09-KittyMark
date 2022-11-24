@@ -14,10 +14,12 @@ export interface LoginApi extends Api {
 export interface Comments {
   content: string; // 본문 내용
   createdAt: string; // 올린 시간
-  commentId: number; // 이 댓글의 고유 아이디
-  userId: number; // 유저 고유 번호
-  userName: string; // 유저의 닉네임
-  userProfile: string; // 유저의 프로필 이미지 경로
+  id: number; // 이 댓글의 고유 아이디
+  user: {
+    id: number;
+    name: string;
+    profileUrl: string;
+  };
 }
 
 export interface CommentApi extends Api {
@@ -48,10 +50,11 @@ export interface Board {
   comment: number;
   createAt: string;
   location: string | null;
-  // nextMaxId: number;
+  latitude: number | -1;
+  longitude: number | -1;
   photos: {
-    url: string[];
-  };
+    url: string;
+  }[];
   user: {
     id: number;
     name: string;

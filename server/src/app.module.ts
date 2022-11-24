@@ -10,6 +10,7 @@ import { BoardModule } from './board/board.module';
 import { ResponseInterceptor } from './interceptor/responseInterceptor';
 import { S3Module } from './S3/S3.module';
 import { AuthGuard } from './auth/auth.guard';
+import { CommentModule } from 'src/comment/comment.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AuthGuard } from './auth/auth.guard';
     HttpModule,
     AuthModule,
     BoardModule,
+    CommentModule,
     S3Module,
   ],
   controllers: [AppController],

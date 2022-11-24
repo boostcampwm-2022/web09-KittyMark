@@ -40,8 +40,8 @@ export const postRegisterInfo = async (
   const formData = new FormData();
   // TODO key 이름이 바뀔 수 있음
   formData.append('email', email);
-  formData.append('nickname', userName);
-  formData.append('outhInfo', oauthInfo);
+  formData.append('userName', userName);
+  formData.append('oauthInfo', oauthInfo);
   formData.append('image', image || '');
 
   const { data }: AxiosResponse<Api> = await defaultFormInstance.post(
