@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const TopBarContainer = styled.div`
+const Container = styled.div`
   width: calc(100% - 24px);
   height: calc(4rem - 18px);
   background-color: ${(props) => props.theme.palette.main};
@@ -23,7 +23,7 @@ const TopBarContainer = styled.div`
   }
 `;
 
-const TopBarBackButton = styled.button`
+const BackButton = styled.button`
   width: 1.5rem;
   height: 1.5rem;
   border: none;
@@ -35,7 +35,7 @@ const TopBarBackButton = styled.button`
   }
 `;
 
-const TopBarCheckButton = styled.button`
+const CheckButton = styled.button`
   width: 1.5rem;
   height: 1.5rem;
   border: none;
@@ -61,4 +61,4 @@ const TopBarCheckButton = styled.button`
   }
 `;
 
-export { TopBarContainer, TopBarBackButton, TopBarCheckButton };
+export default { Container, BackButton, CheckButton };
