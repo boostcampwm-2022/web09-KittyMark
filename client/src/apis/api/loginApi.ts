@@ -35,7 +35,7 @@ export const postRegisterInfo = async (
   email: string,
   userName: string,
   oauthInfo: 'NAVER' | 'KAKAO',
-  image?: File,
+  image: File | null,
 ): Promise<Api> => {
   const formData = new FormData();
   // TODO key 이름이 바뀔 수 있음
