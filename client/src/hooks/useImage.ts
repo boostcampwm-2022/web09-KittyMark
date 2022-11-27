@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 // type
-import Image from '../types/image';
+import { Image } from '../types/imageData';
 
 const useImage = (
   init: Image,
