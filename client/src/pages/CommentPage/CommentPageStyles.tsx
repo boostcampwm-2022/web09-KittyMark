@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const CommentPageBody = styled.div`
+const Body = styled.div`
   width: 100vw;
   height: calc(100vh - 10rem);
 
@@ -12,7 +12,7 @@ const CommentPageBody = styled.div`
   justify-content: space-between;
 `;
 
-const CommentListContainer = styled.div`
+const Container = styled.div`
   width: 90vw;
   height: calc((100vh - 10rem) / 10 * 8.5);
   background-color: ${(props) => props.theme.palette.inner};
@@ -37,7 +37,7 @@ const CommentListContainer = styled.div`
   }
 `;
 
-const CommentPageStatus = styled.p`
+const Status = styled.p`
   font-family: 'Jua';
   font-style: normal;
   font-weight: 400;
@@ -47,4 +47,4 @@ const CommentPageStatus = styled.p`
   margin: 5rem auto;
 `;
 
-export { CommentPageBody, CommentListContainer, CommentPageStatus };
+export default { Body, Container, Status };
