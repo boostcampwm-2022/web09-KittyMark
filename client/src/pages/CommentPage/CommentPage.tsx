@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
-// recoil
 import { useRecoilValue } from 'recoil';
+// recoil
 import user from '../../store/userAtom';
 // api
 import { getCommentInfo, postCommentInfo } from '../../apis/api/commentApi';

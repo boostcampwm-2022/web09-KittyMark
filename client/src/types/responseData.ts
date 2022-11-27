@@ -37,7 +37,7 @@ export interface NewCommentApi extends Api {
 }
 
 export interface NewPostApi extends Api {
-  data: {
+  data?: {
     boardId: number;
   };
 }
