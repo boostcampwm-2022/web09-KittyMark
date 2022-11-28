@@ -66,8 +66,8 @@ const RegisterPage = () => {
       <NormalTopBar buttonData={null} />
       <S.Body>
         <S.Form>
-          <p className="wellcome-title">신규 유저님 환영합니다!</p>
-          <p className="wellcome-info">유저님의 추가 정보를 작성해주세요!</p>
+          <S.Title>신규 유저님 환영합니다!</S.Title>
+          <S.Info>유저님의 추가 정보를 작성해주세요!</S.Info>
           <S.ProfileContainer>
             <img src={image.image64 as string} alt="Slot" />
             <input
@@ -77,28 +77,25 @@ const RegisterPage = () => {
               ref={profileImageBtn}
               onChange={onChangeImage}
             />
-            <button
-              className="input-button"
-              type="button"
-              onClick={onClickProfileImageBtn}
-            >
+            <button type="button" onClick={onClickProfileImageBtn}>
               <img src={plusBtn} alt="Add" />
             </button>
           </S.ProfileContainer>
-          <input
-            className="nickname-input"
-            type="text"
-            placeholder="당신의 별명은 무엇인가냥?"
-            onChange={onChangeNickname}
-          />
-          <button
-            className="submit-button"
+          <S.InputContainer>
+            <S.Input
+              type="text"
+              placeholder="당신의 별명은 무엇인가냥?"
+              onChange={onChangeNickname}
+            />
+            <button type="button">중복 체크</button>
+          </S.InputContainer>
+          <S.SubmitButton
             type="button"
             onClick={onClickRegisterBtn}
             disabled={!nickname}
           >
             회원가입
-          </button>
+          </S.SubmitButton>
         </S.Form>
       </S.Body>
     </>
