@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { defaultInstance } from '../utils';
 // type
-import { CommentApi, NewCommentApi } from '../../types/responseData';
+import { Api, CommentApi, NewCommentApi } from '../../types/responseData';
 
 const getCommentInfo = async (boardId: number): Promise<CommentApi> => {
   const { data }: AxiosResponse<CommentApi> = await defaultInstance.get(
@@ -23,4 +23,17 @@ const postCommentInfo = async (
   return data;
 };
 
-export { getCommentInfo, postCommentInfo };
+const patchCommentInfo = async (
+  commentId: number,
+  userId: number,
+  content: string,
+): Promise<Api> => {
+  const { data }: AxiosResponse<Api> = await defaultInstance.patch(
+    `/api/comment/${commentId}`,
+    { userId, content },
+  );
+
+  return data;
+};
+
+export { getCommentInfo, postCommentInfo, patchCommentInfo };
