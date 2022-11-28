@@ -15,6 +15,8 @@ import pinIcon from '../../../static/pinIcon.svg';
 import menuButton from '../../../static/menuBtn.svg';
 // component
 import MenuModal from '../../MenuModal/MenuModal';
+// API
+import { deleteBoardData } from '../../../apis/api/BoardApi';
 
 interface BoardHeaderProps {
   userId: number;
@@ -61,10 +63,10 @@ const BoardHeader = (props: BoardHeaderProps) => {
 
   const onClickDelete = async () => {
     try {
-      /* 게시글 삭제 요청 */
-      // if (data.statusCode === 200) {
-      //   setMenuHideOption(!menuHideOption);
-      // }
+      const data = await deleteBoardData(boardId, userId);
+      if (data.statusCode === 200) {
+        setMenuHideOption(!menuHideOption);
+      }
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
