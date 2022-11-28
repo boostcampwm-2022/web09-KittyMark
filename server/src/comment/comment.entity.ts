@@ -21,7 +21,7 @@ export class Comment {
   @CreateDateColumn({
     type: 'timestamp',
   })
-  createAt: Date;
+  createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.comments)
   @JoinColumn()
