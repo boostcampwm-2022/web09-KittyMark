@@ -1,5 +1,8 @@
 import React from 'react';
-import ProfileIcon from '../ProfileIcon/ProfileIcon';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+// recoil
+import user from '../../store/userAtom';
 // style
 import {
   CommentUnitWrap,
@@ -11,6 +14,7 @@ import {
 import menuBtn from '../../static/menuBtn.svg';
 // component
 import MenuModal from '../MenuModal/MenuModal';
+import ProfileIcon from '../ProfileIcon/ProfileIcon';
 
 interface CommentUnitProps {
   userName: string;
@@ -33,10 +37,27 @@ const CommentUnit = ({
   isModal,
   setModal,
 }: CommentUnitProps) => {
+  const navigation = useNavigate();
+  const { userId } = useRecoilValue(user);
+
   const onClickCommentMenuBtn = () => {
     setModal((prev) => {
       if (prev === commentId) return -1;
       return commentId;
+    });
+  };
+
+  const onModify = async () => {
+    navigation('/modify', {
+      state: {
+        title: '댓글 수정',
+        before: content,
+        apiType: 'comment',
+        apiData: {
+          commentId,
+          userId,
+        },
+      },
     });
   };
 
@@ -52,7 +73,12 @@ const CommentUnit = ({
         <img src={menuBtn} alt="Menu" />
       </CommentMenuBtn>
       {isModal && (
-        <MenuModal top={70} left={70} onClickCancel={() => setModal(-1)} />
+        <MenuModal
+          top={70}
+          left={70}
+          onClickCancel={() => setModal(-1)}
+          onModify={onModify}
+        />
       )}
     </CommentUnitWrap>
   );
