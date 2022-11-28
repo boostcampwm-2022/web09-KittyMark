@@ -62,4 +62,17 @@ export class CommentRepository {
       };
     }
   }
+
+  async findUserById(id: number): Promise<Comment> {
+    return await this.commentRepository
+      .createQueryBuilder('c')
+      .select(['c', 'u.id'])
+      .leftJoin('c.user', 'u')
+      .where('c.id = :id', { id: id })
+      .getOne();
+  }
+
+  async deleteById(id: number) {
+    return await this.commentRepository.delete({ id: id });
+  }
 }

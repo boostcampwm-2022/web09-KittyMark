@@ -1,13 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CommentRepository } from './comment.repository';
 import { GetCommentsDto } from './dto/get-comments.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Comment } from './comment.entity';
 import { plainToInstance } from 'class-transformer';
+import { DeleteCommentDto } from './dto/delete-comment.dto';
+import { BoardRepository } from 'board/board.repository';
 
 @Injectable()
 export class CommentService {
-  constructor(private readonly commentRepository: CommentRepository) {}
+  constructor(
+    private readonly commentRepository: CommentRepository,
+    private readonly boardRepository: BoardRepository,
+  ) {}
 
   async getComments(getCommentsDto: GetCommentsDto) {
     const { board_id, count, max_id } = getCommentsDto;
@@ -34,5 +44,28 @@ export class CommentService {
       message: 'Success',
       data: { commentId: comment.id },
     };
+  }
+
+  async deleteComment(commentId, deleteCommentDto: DeleteCommentDto) {
+    if (!commentId)
+      throw new BadRequestException(`'commentId'(path) should not be empty`);
+
+    const { boardId, userId } = deleteCommentDto;
+
+    const comment = await this.commentRepository.findUserById(commentId);
+
+    const board = await this.boardRepository.findUserById(boardId);
+
+    if (!comment || !board) {
+      throw new NotFoundException('댓글이 존재하지 않습니다.');
+    }
+
+    if (userId !== comment.user?.id && userId != board.user?.id) {
+      throw new ForbiddenException(
+        '댓글 작성자와 게시글 작성자 본인만 댓글을 삭제할 수 있습니다.',
+      );
+    }
+    await this.commentRepository.deleteById(commentId);
+    return { statusCode: 200, message: 'Success' };
   }
 }
