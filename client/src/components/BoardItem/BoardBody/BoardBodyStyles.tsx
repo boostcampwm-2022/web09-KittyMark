@@ -17,7 +17,7 @@ const BoardBodyContainer = styled.div`
 `;
 const BoardBodyButtonContainer = styled.div`
   display: flex;
-  align-items: left;
+  align-items: center;
   margin-top: 2%;
   padding-left: 3%;
 
@@ -50,6 +50,7 @@ const BoardBodyInfoContainer = styled.div`
     padding-left: 3%;
     display: flex;
     gap: 0.5rem;
+    white-space: nowrap;
   }
 `;
 

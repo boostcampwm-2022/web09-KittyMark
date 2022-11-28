@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateBoardDto } from './dto/createBoardDto';
 import { Board } from './board.entity';
 import { UserRepository } from '../user/user.repository';
@@ -8,6 +8,7 @@ import { DeleteBoardDto } from 'board/dto/deleteBoardDto';
 import { plainToInstance } from 'class-transformer';
 import { BoardRepository } from 'board/board.repository';
 import { PhotoRepository } from 'board/photo.repository';
+import { S3Service } from 'src/S3/S3.service';
 
 @Injectable()
 export class BoardService {
@@ -15,10 +16,18 @@ export class BoardService {
     private readonly boardRepository: BoardRepository,
     private readonly photoRepository: PhotoRepository,
     private readonly userRepository: UserRepository,
+    private readonly s3Service: S3Service,
   ) {}
 
-  async createBoard(createBoardDto: CreateBoardDto) {
-    const { content, images, isStreet, location, longitude, latitude, userId } =
+  async createBoard(
+    createBoardDto: CreateBoardDto,
+    images: Express.Multer.File[],
+  ) {
+    if (images.length === 0) {
+      throw new BadRequestException('images should not be empty');
+    }
+
+    const { content, isStreet, location, longitude, latitude, userId } =
       createBoardDto;
     const user = await this.userRepository.findById(userId);
     const boardInfo = {
@@ -33,7 +42,9 @@ export class BoardService {
     const board = plainToInstance(Board, boardInfo);
     await this.boardRepository.save(board);
 
-    images.forEach((url) => {
+    const urls = await this.s3Service.uploadFiles(images);
+
+    urls.forEach((url) => {
       const imageInfo = {
         url,
         board,

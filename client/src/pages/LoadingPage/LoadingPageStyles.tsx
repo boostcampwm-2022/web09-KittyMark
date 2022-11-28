@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Background = styled.div`
+const Body = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -14,10 +14,13 @@ const Background = styled.div`
   justify-content: center;
 `;
 
-const LoadingText = styled.div`
+const Text = styled.p`
+  margin: 0px;
   padding-top: 5%;
+  font-family: 'Jua';
+  font-style: normal;
   font-weight: 700;
   font-size: 18px;
 `;
 
-export { Background, LoadingText };
+export default { Body, Text };

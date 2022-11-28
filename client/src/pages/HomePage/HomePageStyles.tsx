@@ -8,6 +8,8 @@ const TempBody = styled.img`
 `;
 
 const BoardContainer = styled.div`
+  font-family: 'Jua';
+  font-style: normal;
   min-height: 100vh;
   overflow: hidden;
   width: 100vw;

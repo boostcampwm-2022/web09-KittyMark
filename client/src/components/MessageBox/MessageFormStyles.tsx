@@ -3,7 +3,9 @@ import styled from 'styled-components';
 const SendMessageContainer = styled.div`
   width: calc(90% - 2rem);
   height: 2rem;
-  background-color: ${(props) => props.theme.palette.main};
+  background-color: ${(props) => props.theme.palette.inner};
+  border: 1px solid ${(props) => props.theme.palette.border};
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 2.5rem;
   padding: 1rem;
 
@@ -17,7 +19,8 @@ const SendMessageContainer = styled.div`
 const MessageFormWrap = styled.div`
   width: calc(85% - 1.5rem);
   height: 2.5rem;
-  background-color: ${(props) => props.theme.palette.inner};
+  background-color: ${(props) => props.theme.palette.back};
+  border: 1px solid ${(props) => props.theme.palette.border};
   border-radius: 1.25rem;
   padding: 0px 0.75rem;
 

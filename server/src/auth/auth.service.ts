@@ -9,12 +9,20 @@ import { UserRepository } from 'src/user/user.repository';
 import { firstValueFrom, map } from 'rxjs';
 import { plainToInstance } from 'class-transformer';
 import { User } from 'src/user/user.entity';
+import { S3Service } from 'src/S3/S3.service';
+
+declare module 'express-session' {
+  export interface SessionData {
+    userEmail: string;
+  }
+}
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly httpService: HttpService,
+    private readonly s3Service: S3Service,
   ) {}
 
   // 홈페이지에서 로그인 확인 요청시 redis에서 세션 id 확인
@@ -26,29 +34,33 @@ export class AuthService {
     }
   }
 
-  async register(registerUserDto: RegisterUserDto) {
+  async register(image: Express.Multer.File, registerUserDto: RegisterUserDto) {
     // TODO: OauthInfo 추가
-    const { email, imageURL, userName } = registerUserDto;
+    const { email, userName, oauthInfo } = registerUserDto;
 
-    const find = await this.userRepository.findByOauthInfo(
-      email,
-      OauthInfo.NAVER,
-    );
+    const find = await this.userRepository.findByOauthInfo(email, oauthInfo);
 
     if (find) {
       throw new ConflictException('이미 존재하는 유저입니다.');
     }
 
+    let imageURL = '';
+
+    if (image) {
+      imageURL = await this.s3Service.uploadFile(image);
+    }
+
     const userInfo = {
       name: userName,
       email: email,
-      oauth_info: OauthInfo.NAVER,
-      profile_url: imageURL,
+      oauthInfo: oauthInfo,
+      profileUrl: imageURL,
     };
+
     const user = plainToInstance(User, userInfo);
     this.userRepository.save(user);
 
-    return { statusCode: 200, message: 'Success' };
+    return { statusCode: 201, message: 'Success' };
   }
 
   // // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
@@ -60,9 +72,11 @@ export class AuthService {
 
     if (user) {
       await redisClient.set(request.sessionID, email);
+      await redisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
+      request.session.userEmail = email;
       return {
         statusCode: 200,
-        userId: user.id,
+        data: { userId: user.id },
         message: 'Success',
       };
     } else {

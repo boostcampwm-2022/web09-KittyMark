@@ -5,7 +5,7 @@ import { CommentApi, NewCommentApi } from '../../types/responseData';
 
 const getCommentInfo = async (boardId: number): Promise<CommentApi> => {
   const { data }: AxiosResponse<CommentApi> = await defaultInstance.get(
-    `/api/comment?boardId=${boardId}&count=100000`,
+    `/api/comment?board_id=${boardId}&count=100000&max_id=-1`,
   );
   return data;
 };
@@ -14,11 +14,11 @@ const postCommentInfo = async (
   userId: number,
   boardId: number,
   content: string,
-  rootRecommentId: number | null,
+  rootCommentId: number | null,
 ): Promise<NewCommentApi> => {
   const { data }: AxiosResponse<NewCommentApi> = await defaultInstance.post(
     `/api/comment`,
-    { userId, boardId, content, rootRecommentId },
+    { userId, boardId, content, rootCommentId },
   );
   return data;
 };

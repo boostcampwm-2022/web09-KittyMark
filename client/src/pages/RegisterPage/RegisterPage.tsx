@@ -3,16 +3,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 // api
 import { postRegisterInfo } from '../../apis/api/loginApi';
 // style
-import {
-  RegisterPageBody,
-  RegisterForm,
-  ImageSlot,
-} from './RegisterPageStyles';
+import S from './RegisterPageStyles';
 // img
 import defaultProfile from '../../static/defaultProfile.svg';
 import plusBtn from '../../static/plusBtn.svg';
 // component
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
+// hook
+import useImage from '../../hooks/useImage';
 
 type LocationStateType = { email: string; oauthInfo: 'NAVER' | 'KAKAO' };
 
@@ -24,12 +22,12 @@ const RegisterPage = () => {
     : { email: '', oauthInfo: 'NAVER' };
 
   const profileImageBtn = useRef<HTMLInputElement>(null);
-  const registerBtn = useRef<HTMLButtonElement>(null);
 
-  const [profileImage, setProfileImage] = useState<File>();
-  const [base64Image, setBase64Image] = useState<string | ArrayBuffer>(
-    defaultProfile,
-  );
+  const { image, onChangeImage } = useImage({
+    image: null,
+    image64: defaultProfile,
+  });
+
   const [nickname, setNickname] = useState<string>('');
 
   useEffect(() => {
@@ -42,21 +40,6 @@ const RegisterPage = () => {
     }
   };
 
-  const onChangeProfileImage = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ): void => {
-    if (event.currentTarget.files) {
-      const file = event.currentTarget.files;
-      setProfileImage(file[0]);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result;
-        if (base64) setBase64Image(base64);
-      };
-      reader.readAsDataURL(file[0]);
-    }
-  };
-
   const onChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) =>
     setNickname(event.target.value);
 
@@ -66,9 +49,8 @@ const RegisterPage = () => {
         email,
         nickname,
         oauthInfo,
-        profileImage,
+        image.image,
       );
-      // 일단 회원가입 하고 다시 홈으로 보내자 그냥
       if (data.statusCode === 201) navigate('/');
       // TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
       // eslint-disable-next-line no-alert
@@ -82,18 +64,18 @@ const RegisterPage = () => {
   return (
     <>
       <NormalTopBar buttonData={null} />
-      <RegisterPageBody>
-        <RegisterForm>
+      <S.Body>
+        <S.Form>
           <p className="wellcome-title">신규 유저님 환영합니다!</p>
           <p className="wellcome-info">유저님의 추가 정보를 작성해주세요!</p>
-          <ImageSlot>
-            <img src={base64Image as string} alt="Slot" />
+          <S.ProfileContainer>
+            <img src={image.image64 as string} alt="Slot" />
             <input
               type="file"
               accept="image/*"
               style={{ display: 'none' }}
               ref={profileImageBtn}
-              onChange={onChangeProfileImage}
+              onChange={onChangeImage}
             />
             <button
               className="input-button"
@@ -102,7 +84,7 @@ const RegisterPage = () => {
             >
               <img src={plusBtn} alt="Add" />
             </button>
-          </ImageSlot>
+          </S.ProfileContainer>
           <input
             className="nickname-input"
             type="text"
@@ -110,16 +92,15 @@ const RegisterPage = () => {
             onChange={onChangeNickname}
           />
           <button
-            ref={registerBtn}
             className="submit-button"
             type="button"
             onClick={onClickRegisterBtn}
-            disabled={!nickname || !profileImage}
+            disabled={!nickname}
           >
             회원가입
           </button>
-        </RegisterForm>
-      </RegisterPageBody>
+        </S.Form>
+      </S.Body>
     </>
   );
 };
