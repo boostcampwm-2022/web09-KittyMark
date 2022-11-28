@@ -68,6 +68,7 @@ const ModifyPage = () => {
       }
 
     if (apiData && apiType === 'board') {
+      console.log('hello!');
     }
   };
 
