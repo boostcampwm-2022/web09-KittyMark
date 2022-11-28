@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { CreateBoardDto } from './dto/createBoardDto';
 import { Board } from './board.entity';
 import { UserRepository } from '../user/user.repository';
@@ -56,13 +61,30 @@ export class BoardService {
     return { boardId: board.id };
   }
 
-  updateBoard(updateBoardDto: UpdateBoardDto) {
-    const { boardId, content } = updateBoardDto;
+  async updateBoard(updateBoardDto: UpdateBoardDto) {
+    const { userId, boardId, content } = updateBoardDto;
+
+    const board = await this.boardRepository.findUserById(boardId);
+    if (!board) {
+      throw new NotFoundException('게시글을 찾을 수 없습니다.');
+    } else if (board.user.id !== userId) {
+      throw new ForbiddenException('게시글 작성자만 수정할 수 있습니다.');
+    }
+
     this.boardRepository.update(boardId, { content });
   }
 
-  deleteBoard(deleteBoardDto: DeleteBoardDto) {
-    this.boardRepository.delete({ id: deleteBoardDto.boardId });
+  async deleteBoard(deleteBoardDto: DeleteBoardDto) {
+    const { userId, boardId } = deleteBoardDto;
+
+    const board = await this.boardRepository.findUserById(boardId);
+    if (!board) {
+      throw new NotFoundException('게시글을 찾을 수 없습니다.');
+    } else if (board.user.id !== userId) {
+      throw new ForbiddenException('게시글 작성자만 수정할 수 있습니다.');
+    }
+
+    this.boardRepository.delete({ id: boardId });
   }
 
   async getLastBoardList(count: number, max_id: number) {
