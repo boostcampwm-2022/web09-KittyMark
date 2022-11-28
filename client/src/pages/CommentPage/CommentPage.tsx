@@ -70,6 +70,7 @@ const CommentPage = () => {
               data.map((commentData) => (
                 <CommentUnit
                   key={commentData.id}
+                  boardId={Number(boardId)}
                   commentId={commentData.id}
                   userName={commentData.user.name}
                   createdAt={commentData.createdAt}
