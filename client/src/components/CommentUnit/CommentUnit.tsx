@@ -1,8 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 import { useRecoilValue } from 'recoil';
 // recoil
 import user from '../../store/userAtom';
+// api
+import { deleteCommentInfo } from '../../apis/api/commentApi';
 // style
 import {
   CommentUnitWrap,
@@ -18,6 +21,7 @@ import ProfileIcon from '../ProfileIcon/ProfileIcon';
 
 interface CommentUnitProps {
   userName: string;
+  boardId: number;
   commentId: number;
   createdAt: string;
   content: string;
@@ -30,6 +34,7 @@ interface CommentUnitProps {
 // TODO 추후 답글 기능을 만든다면 commentId 를 props 로 받아오고 따로 버튼을 만들어야 한다.
 const CommentUnit = ({
   userName,
+  boardId,
   commentId,
   createdAt,
   content,
@@ -38,6 +43,7 @@ const CommentUnit = ({
   setModal,
 }: CommentUnitProps) => {
   const navigation = useNavigate();
+  const queryClient = useQueryClient();
   const { userId } = useRecoilValue(user);
 
   const onClickCommentMenuBtn = () => {
@@ -47,7 +53,7 @@ const CommentUnit = ({
     });
   };
 
-  const onModify = async () => {
+  const onClickModify = async () => {
     navigation('/modify', {
       state: {
         title: '댓글 수정',
@@ -59,6 +65,19 @@ const CommentUnit = ({
         },
       },
     });
+  };
+
+  const onClickDelete = async () => {
+    try {
+      const data = await deleteCommentInfo(commentId, userId, boardId);
+      if (data.statusCode === 200) {
+        setModal(-1);
+        queryClient.invalidateQueries('comments');
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
   };
 
   return (
@@ -77,7 +96,8 @@ const CommentUnit = ({
           top={70}
           left={70}
           onClickCancel={() => setModal(-1)}
-          onModify={onModify}
+          onClickModify={onClickModify}
+          onClickDelete={onClickDelete}
         />
       )}
     </CommentUnitWrap>
