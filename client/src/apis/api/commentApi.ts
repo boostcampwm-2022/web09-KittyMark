@@ -36,4 +36,17 @@ const patchCommentInfo = async (
   return data;
 };
 
-export { getCommentInfo, postCommentInfo, patchCommentInfo };
+const deleteCommentInfo = async (
+  commentId: number,
+  userId: number,
+  boardId: number,
+): Promise<Api> => {
+  const { data }: AxiosResponse<Api> = await defaultInstance.delete(
+    `/api/comment/${commentId}`,
+    { data: { boardId, userId } },
+  );
+
+  return data;
+};
+
+export { getCommentInfo, postCommentInfo, patchCommentInfo, deleteCommentInfo };
