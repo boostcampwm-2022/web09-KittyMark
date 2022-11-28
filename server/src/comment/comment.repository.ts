@@ -75,4 +75,8 @@ export class CommentRepository {
   async deleteById(id: number) {
     return await this.commentRepository.delete({ id: id });
   }
+
+  async updateById(id: number, updatedData) {
+    await this.commentRepository.update(id, updatedData);
+  }
 }
