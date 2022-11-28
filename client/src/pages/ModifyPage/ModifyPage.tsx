@@ -14,11 +14,16 @@ interface PatchCommentData {
   userId: number;
 }
 
+interface PatchBoardData {
+  boardId: number;
+  userId: number;
+}
+
 interface ModfiyPageState {
   title: string;
   before: string;
   apiType: 'comment' | 'board';
-  apiData?: PatchCommentData;
+  apiData?: PatchCommentData | PatchBoardData;
 }
 
 const ModifyPage = () => {
@@ -26,7 +31,11 @@ const ModifyPage = () => {
   const navigation = useNavigate();
   console.log(location);
 
-  const { title, before, apiData }: ModfiyPageState = location.state
+  // title: TopBar 에 적을 문구
+  // before: 이전 게시글 혹은 댓글의 글
+  // apiType: 이게 board 것인지 comment 것인지
+  // apiData: 각 타입에 맞는 데이터
+  const { title, before, apiType, apiData }: ModfiyPageState = location.state
     ? (location.state as ModfiyPageState)
     : {
         title: '',
@@ -44,11 +53,12 @@ const ModifyPage = () => {
   };
 
   const checkFuncComment = async () => {
-    if (apiData)
+    if (apiData && apiType === 'comment')
       try {
+        const commentData = apiData as PatchCommentData;
         const data = await patchCommentInfo(
-          apiData.commentId,
-          apiData.userId,
+          commentData.commentId,
+          commentData.userId,
           content,
         );
         if (data.statusCode === 200) navigation(-1);
@@ -56,6 +66,9 @@ const ModifyPage = () => {
         // eslint-disable-next-line no-console
         console.log(error);
       }
+
+    if (apiData && apiType === 'board') {
+    }
   };
 
   return (
