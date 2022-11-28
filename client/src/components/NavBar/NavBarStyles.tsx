@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const NavBarContainer = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 4rem;
   background-color: ${(props) => props.theme.palette.main};
@@ -15,7 +15,7 @@ const NavBarContainer = styled.div`
   bottom: 0;
 `;
 
-const NavBarIcon = styled.button`
+const Icon = styled.button`
   width: 2.25rem;
   height: 2.25rem;
   padding: 0px;
@@ -29,4 +29,4 @@ const NavBarIcon = styled.button`
   }
 `;
 
-export { NavBarContainer, NavBarIcon };
+export default { Container, Icon };

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const NewPostFrom = styled.form`
+const Form = styled.form`
   width: calc(100% - 2rem);
   height: calc(100vh - 10rem);
   display: flex;
@@ -15,7 +15,7 @@ const NewPostFrom = styled.form`
   font-weight: 400;
 `;
 
-const NewPostImageContainer = styled.div`
+const ImageContainer = styled.div`
   display: flex;
   flex-direction: row;
   height: 5.5rem;
@@ -44,7 +44,7 @@ const NewPostImageContainer = styled.div`
   }
 `;
 
-const NewPostCategoryButton = styled.button<{ checked: boolean }>`
+const CategoryButton = styled.button<{ checked: boolean }>`
   width: 8rem;
   height: 2rem;
   border-radius: 0.5rem;
@@ -60,7 +60,7 @@ const NewPostCategoryButton = styled.button<{ checked: boolean }>`
     props.checked ? props.theme.palette.main : '#d8d8d8'};
 `;
 
-const NewPostTextarea = styled.textarea`
+const Textarea = styled.textarea`
   width: calc(100% - 3rem);
   height: 10rem;
   background-color: ${(props) => props.theme.palette.back};
@@ -77,9 +77,4 @@ const NewPostTextarea = styled.textarea`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `;
 
-export {
-  NewPostFrom,
-  NewPostImageContainer,
-  NewPostCategoryButton,
-  NewPostTextarea,
-};
+export default { Form, ImageContainer, CategoryButton, Textarea };

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 // component
@@ -10,19 +10,16 @@ import ImageSlot from '../../components/ImageSlot/ImageSlot';
 import user from '../../store/userAtom';
 // api
 import postNewPostInfo from '../../apis/api/newPostApi';
+// hook
+import useImages from '../../hooks/useImages';
+import useInputs from '../../hooks/useInputs';
 // style
-import {
-  NewPostFrom,
-  NewPostImageContainer,
-  NewPostCategoryButton,
-  NewPostTextarea,
-} from './NewPostPageStyles';
+import S from './NewPostPageStyles';
 // img
 import addImgIcon from '../../static/addImgIcon.svg';
 import locationIcon from '../../static/locationIcon.svg';
 
-interface NewPostData {
-  images: File[];
+interface PostData {
   content: string;
   category: boolean;
 }
@@ -32,57 +29,22 @@ const NewPostPage = () => {
   const navigation = useNavigate();
 
   const userData = useRecoilValue(user);
-  const [imgBase64, setImgBase64] = useState<string[]>([]);
-  const [post, setPost] = useState<NewPostData>({
+  const { images, onChangeImage, onDeleteImage } = useImages({
     images: [],
+    image64: [],
+  });
+  const { form, onChangeForm, setForm } = useInputs<PostData>({
     content: '',
     category: false,
   });
-
-  const onChangeImageFile = (event: ChangeEvent<HTMLInputElement>) => {
-    const { files } = event.currentTarget;
-    if (files)
-      Array.from(files).forEach((file) => {
-        if (post.images.length < 10)
-          setPost((prev) => {
-            const newImages = prev.images.concat(file);
-            return { ...prev, images: newImages };
-          });
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          const base64 = reader.result;
-          if (base64) setImgBase64((prev) => [...prev, base64.toString()]);
-        };
-        reader.readAsDataURL(file);
-      });
-  };
-
-  const onChangeInput = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setPost((prev) => {
-      return { ...prev, [event.target.name]: event.target.value };
-    });
-  };
-
-  const onClickImageDelBtn = (index: number) => {
-    setPost((prev) => {
-      const newImages = prev.images.filter((_, idx) => idx !== index);
-      return { ...prev, images: newImages };
-    });
-    setImgBase64((prev) => {
-      const newImgBase64 = prev.filter((_, idx) => idx !== index);
-      return newImgBase64;
-    });
-  };
 
   const onClickSubmitBtn = async () => {
     try {
       const data = await postNewPostInfo(
         userData.userId,
-        post.images,
-        post.content,
-        post.category,
+        images.images,
+        form.content,
+        form.category,
       );
       if (data.statusCode === 201) navigation('/home');
       // eslint-disable-next-line no-alert
@@ -94,8 +56,8 @@ const NewPostPage = () => {
   };
 
   const disableBtn = () => {
-    if (post.images.length === 0) return true;
-    if (post.content.length === 0) return true;
+    if (images.images.length === 0) return true;
+    if (form.content.length === 0) return true;
     return false;
   };
 
@@ -109,64 +71,64 @@ const NewPostPage = () => {
         checkFunc={onClickSubmitBtn}
         checkDisableFunc={disableBtn}
       />
-      <NewPostFrom action="" method="POST">
+      <S.Form action="" method="POST">
         <label htmlFor="new-post-image">사진을 등록해주라냥</label>
         <input
           id="new-post-image"
           ref={imgInput}
           type="file"
           accept="image/*"
-          onChange={onChangeImageFile}
+          onChange={onChangeImage}
           required
           multiple
           style={{ display: 'none' }}
         />
-        <NewPostImageContainer>
+        <S.ImageContainer>
           <button
             className="add-btn"
             type="button"
             onClick={() => imgInput.current?.click()}
           >
             <img alt="Add Btn" src={addImgIcon} />
-            <p>{imgBase64.length}/10</p>
+            <p>{images.image64.length}/10</p>
           </button>
-          {imgBase64 &&
-            imgBase64.map((image, index) => (
+          {images.image64 &&
+            images.image64.map((image, index) => (
               <ImageSlot
                 key={image}
                 imgSrc={image}
                 index={index}
-                onClickFun={onClickImageDelBtn}
+                onClickFun={onDeleteImage}
               />
             ))}
-        </NewPostImageContainer>
+        </S.ImageContainer>
         <label htmlFor="new-post-category">이 귀여운 친구는 길고양이냥?</label>
         <input
           id="new-post-category"
           type="checkbox"
           name="category"
-          checked={post.category}
+          checked={form.category}
           style={{ display: 'none' }}
           readOnly
         />
         <div>
-          <NewPostCategoryButton
-            checked={post.category}
+          <S.CategoryButton
+            checked={form.category}
             type="button"
-            onClick={() => setPost((prev) => ({ ...prev, category: true }))}
+            onClick={() => setForm((prev) => ({ ...prev, category: true }))}
           >
             네, 맞습니다.
-          </NewPostCategoryButton>
-          <NewPostCategoryButton
-            checked={!post.category}
+          </S.CategoryButton>
+          <S.CategoryButton
+            checked={!form.category}
             type="button"
-            onClick={() => setPost((prev) => ({ ...prev, category: false }))}
+            onClick={() => setForm((prev) => ({ ...prev, category: false }))}
           >
             아닙니다.
-          </NewPostCategoryButton>
+          </S.CategoryButton>
         </div>
 
-        {post.category && (
+        {form.category && (
           <>
             <label htmlFor="new-post-location">귀여운 친구의 위치다옹</label>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -176,13 +138,13 @@ const NewPostPage = () => {
           </>
         )}
         <label htmlFor="new-post-location">글을 적어달라냥</label>
-        <NewPostTextarea
+        <S.Textarea
           id="new-post-content"
           name="content"
           placeholder="에옹!"
-          onChange={onChangeInput}
+          onChange={onChangeForm}
         />
-      </NewPostFrom>
+      </S.Form>
       <NavBar />
     </>
   );

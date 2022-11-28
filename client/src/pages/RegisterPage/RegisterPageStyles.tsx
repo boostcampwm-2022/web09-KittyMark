@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const RegisterPageBody = styled.div`
+const Body = styled.div`
   width: 100%;
   height: calc(100vh - 4rem);
   display: flex;
@@ -13,7 +13,7 @@ const RegisterPageBody = styled.div`
   font-weight: 400;
 `;
 
-const RegisterForm = styled.form`
+const Form = styled.form`
   width: 17rem;
   height: 27rem;
   background: ${(props) => props.theme.palette.inner};
@@ -83,7 +83,7 @@ const RegisterForm = styled.form`
   }
 `;
 
-const ImageSlot = styled.div`
+const ProfileContainer = styled.div`
   width: 6rem;
   height: 6rem;
   position: relative;
@@ -116,4 +116,4 @@ const ImageSlot = styled.div`
   }
 `;
 
-export { RegisterPageBody, RegisterForm, ImageSlot };
+export default { Body, Form, ProfileContainer };

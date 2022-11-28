@@ -1,10 +1,6 @@
 import React from 'react';
 // style
-import {
-  ImageSlotContainer,
-  ImageSlotDelBtn,
-  ImageSlotImage,
-} from './ImageSlotStyles';
+import S from './ImageSlotStyles';
 // image
 import delBtn from '../../static/delBtn.svg';
 
@@ -16,12 +12,12 @@ interface ImageSlotProps {
 
 const ImageSlot = ({ imgSrc, index, onClickFun }: ImageSlotProps) => {
   return (
-    <ImageSlotContainer className="preview-image-wrap">
-      <ImageSlotImage alt="preview" src={imgSrc} />
-      <ImageSlotDelBtn type="button" onClick={() => onClickFun(index)}>
+    <S.Container className="preview-image-wrap">
+      <S.Image alt="preview" src={imgSrc} />
+      <S.DeleteButton type="button" onClick={() => onClickFun(index)}>
         <img alt="delete button" src={delBtn} />
-      </ImageSlotDelBtn>
-    </ImageSlotContainer>
+      </S.DeleteButton>
+    </S.Container>
   );
 };
 

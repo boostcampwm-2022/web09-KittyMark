@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
-// recoil
 import { useRecoilValue } from 'recoil';
+// recoil
 import user from '../../store/userAtom';
 // api
 import { getCommentInfo, postCommentInfo } from '../../apis/api/commentApi';
 // style
-import {
-  CommentPageBody,
-  CommentListContainer,
-  CommentPageStatus,
-} from './CommentPageStyles';
+import S from './CommentPageStyles';
 // component
 import TopBar from '../../components/TopBar/TopBar';
 import MessageForm from '../../components/MessageBox/MessageForm';
@@ -59,16 +55,16 @@ const CommentPage = () => {
         isCheck={false}
         backFunc={() => navigation(-1)}
       />
-      <CommentPageBody>
+      <S.Body>
         <MessageForm
           data={comment}
           onClickSendBtn={onClickSendBtn}
           setFunc={setComment}
         />
-        <CommentListContainer>
+        <S.Container>
           <div className="inner-container">
-            {isLoading && <CommentPageStatus>Loading...</CommentPageStatus>}
-            {isError && <CommentPageStatus>{error.message}</CommentPageStatus>}
+            {isLoading && <S.Status>Loading...</S.Status>}
+            {isError && <S.Status>{error.message}</S.Status>}
             {!(isError || isLoading) &&
               data &&
               data.map((commentData) => (
@@ -88,8 +84,8 @@ const CommentPage = () => {
                 />
               ))}
           </div>
-        </CommentListContainer>
-      </CommentPageBody>
+        </S.Container>
+      </S.Body>
       <NavBar />
     </>
   );
