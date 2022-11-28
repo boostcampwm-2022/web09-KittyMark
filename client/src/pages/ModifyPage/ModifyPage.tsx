@@ -29,7 +29,6 @@ interface ModfiyPageState {
 const ModifyPage = () => {
   const location = useLocation();
   const navigation = useNavigate();
-  console.log(location);
 
   // title: TopBar 에 적을 문구
   // before: 이전 게시글 혹은 댓글의 글
@@ -43,7 +42,6 @@ const ModifyPage = () => {
         apiType: 'comment',
       };
 
-  console.log(title);
   const [content, setContent] = useState<string>(before);
 
   const disableBtn = () => {
@@ -68,6 +66,7 @@ const ModifyPage = () => {
       }
 
     if (apiData && apiType === 'board') {
+      // eslint-disable-next-line no-console
       console.log('hello!');
     }
   };
