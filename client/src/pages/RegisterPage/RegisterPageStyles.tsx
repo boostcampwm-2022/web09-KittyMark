@@ -50,26 +50,28 @@ const Info = styled.p`
 const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-items: center;
   align-items: center;
 
   width: 100%;
   gap: 1rem;
+`;
 
-  button {
-    cursor: pointer;
-    border: none;
-    padding: 0px;
+const NameCheckButton = styled.button<{ checked: boolean }>`
+  cursor: pointer;
+  border: none;
+  padding: 0px;
 
-    width: 30%;
-    height: 2rem;
-    background: ${(props) => props.theme.palette.border};
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 0.625rem;
+  width: 30%;
+  height: 2rem;
+  background: ${(props) =>
+    props.checked ? '#3ae048' : props.theme.palette.border};
+  color: ${(props) => (props.checked ? '#ffffff' : '#000000')};
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 0.625rem;
 
-    font-size: 16px;
-    line-height: 20px;
-  }
+  font-size: 16px;
+  line-height: 20px;
 `;
 
 const Input = styled.input`
@@ -146,6 +148,7 @@ export default {
   ProfileContainer,
   Title,
   Info,
+  NameCheckButton,
   InputContainer,
   Input,
   SubmitButton,
