@@ -11,6 +11,7 @@ import LoadingPage from './pages/LoadingPage/LoadingPage';
 import CommentPage from './pages/CommentPage/CommentPage';
 import NewPostPage from './pages/NewPostPage/NewPostPage';
 import ModifyPage from './pages/ModifyPage/ModifyPage';
+import UserPage from './pages/UserPage/UserPage';
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/comment/:boardId" element={<CommentPage />} />
             <Route path="/new-post" element={<NewPostPage />} />
             <Route path="/modify" element={<ModifyPage />} />
+            <Route path="/userTest" element={<UserPage />} />
           </Routes>
         </QueryClientProvider>
       </RecoilRoot>
