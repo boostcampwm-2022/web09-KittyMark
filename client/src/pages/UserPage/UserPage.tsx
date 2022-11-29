@@ -35,6 +35,12 @@ const UserPage = () => {
             </S.InnerContainer>
           </S.InnerContainerWrap>
         </S.OuterContainer>
+        <S.ButtonContainer>
+          <S.FollowButton type="button" isFollow={false}>
+            팔로우
+          </S.FollowButton>
+          <S.DMButton type="button">메시지</S.DMButton>
+        </S.ButtonContainer>
         <S.Grid>
           {[...new Array(20)].map(() => (
             <S.GridSlot type="button" />

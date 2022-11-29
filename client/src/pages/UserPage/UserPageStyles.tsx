@@ -65,6 +65,7 @@ const CountSlot = styled.div`
 const Grid = styled.div`
   width: 85%;
   display: grid;
+  justify-content: center;
   grid-template-columns: repeat(3, 6.25rem);
   gap: 0.75rem;
 `;
@@ -78,6 +79,50 @@ const GridSlot = styled.button`
   background-color: #ffffff;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  width: calc(85% - 2rem);
+  height: 2.5rem;
+  background-color: ${(props) => props.theme.palette.inner};
+  border-radius: 2rem;
+  padding: 1rem;
+
+  button {
+    font-family: 'Jua';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 19px;
+  }
+`;
+
+const FollowButton = styled.button<{ isFollow: boolean }>`
+  width: 45%;
+  height: 2.5rem;
+
+  color: ${(props) => (props.isFollow ? '#000000' : '#ffffff')};
+  background: ${(props) => (props.isFollow ? '#ffffff' : '#ff4646')};
+  border: 1px solid
+    ${(props) => (props.isFollow ? '#ff4646' : props.theme.palette.inner)};
+  border-radius: 1rem;
+  padding: 0px;
+`;
+
+const DMButton = styled.button`
+  width: 45%;
+  height: 2.5rem;
+
+  color: #ffffff;
+  background: ${(props) => props.theme.palette.main};
+  border: 1px solid ${(props) => props.theme.palette.border};
+  border-radius: 1rem;
+  padding: 0px;
+`;
+
 export default {
   Body,
   OuterContainer,
@@ -87,4 +132,7 @@ export default {
   CountSlot,
   Grid,
   GridSlot,
+  ButtonContainer,
+  FollowButton,
+  DMButton,
 };

@@ -11,8 +11,8 @@ interface ProfileIconProps {
 }
 
 const ProfileIconContainer = styled.button<{ customLength: number }>`
-  width: ${(props) => props.customLength};
-  height: ${(props) => props.customLength};
+  width: ${(props) => `${props.customLength}rem`};
+  height: ${(props) => `${props.customLength}rem`};
   border: 1px solid ${(props) => props.theme.palette.border};
   background-color: #ffffff;
   border-radius: ${(props) => `${props.customLength / 2}rem`};
