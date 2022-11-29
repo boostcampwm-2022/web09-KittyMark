@@ -11,6 +11,12 @@ export interface LoginApi extends Api {
   };
 }
 
+export interface NameCheckApi extends Api {
+  data: {
+    isExist: boolean;
+  };
+}
+
 export interface Comments {
   content: string; // 본문 내용
   createdAt: string; // 올린 시간

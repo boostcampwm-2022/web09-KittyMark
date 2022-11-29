@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { defaultInstance, defaultFormInstance } from '../utils';
 // type
-import { LoginApi, Api } from '../../types/responseData';
+import { LoginApi, Api, NameCheckApi } from '../../types/responseData';
 
 /**
  * @param socialName 카카오나 네이버 사이트이름을 기입해준다.
@@ -47,6 +47,14 @@ export const postRegisterInfo = async (
   const { data }: AxiosResponse<Api> = await defaultFormInstance.post(
     `/api/auth/register`,
     formData,
+  );
+  return data;
+};
+
+export const postNameCheck = async (name: string): Promise<NameCheckApi> => {
+  const { data }: AxiosResponse<NameCheckApi> = await defaultInstance.post(
+    `/api/user/namecheck`,
+    { name },
   );
   return data;
 };
