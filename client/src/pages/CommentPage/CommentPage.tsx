@@ -16,6 +16,8 @@ import NavBar from '../../components/NavBar/NavBar';
 import CommentUnit from '../../components/CommentUnit/CommentUnit';
 // type
 import { Comments, NewCommentApi } from '../../types/responseData';
+// util
+import timeCalc from '../../utils/timeCalc';
 
 // TODO custom hook 으로 빼낸다.
 const CommentPage = () => {
@@ -73,7 +75,7 @@ const CommentPage = () => {
                   boardId={Number(boardId)}
                   commentId={commentData.id}
                   userName={commentData.user.name}
-                  createdAt={commentData.createdAt}
+                  createdAt={timeCalc(commentData.createdAt)}
                   content={commentData.content}
                   userProfile={
                     commentData.user.profileUrl === ''
