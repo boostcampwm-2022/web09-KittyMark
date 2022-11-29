@@ -21,13 +21,16 @@ export class Comment {
   @CreateDateColumn({
     type: 'timestamp',
   })
-  createAt: Date;
+  createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.comments)
   @JoinColumn()
   user: User;
 
-  @ManyToOne(() => Board, (board) => board.comments)
+  @ManyToOne(() => Board, (board) => board.comments, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   board: Board;
 

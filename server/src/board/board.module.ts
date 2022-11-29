@@ -12,5 +12,6 @@ import { PhotoRepository } from 'board/photo.repository';
   imports: [TypeOrmModule.forFeature([Board, Photo]), UserModule],
   controllers: [BoardController],
   providers: [BoardService, BoardRepository, PhotoRepository],
+  exports: [BoardRepository],
 })
 export class BoardModule {}

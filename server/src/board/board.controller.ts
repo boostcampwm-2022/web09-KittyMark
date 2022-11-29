@@ -37,15 +37,13 @@ export class BoardController {
   @Patch('/')
   @UsePipes(ValidationPipe)
   updateBoard(@Body() updateBoardDto: UpdateBoardDto) {
-    this.boardService.updateBoard(updateBoardDto);
-    return;
+    return this.boardService.updateBoard(updateBoardDto);
   }
 
   @Delete('/')
   @UsePipes(ValidationPipe)
   deleteBoard(@Body() deleteBoardDto: DeleteBoardDto) {
-    this.boardService.deleteBoard(deleteBoardDto);
-    return;
+    return this.boardService.deleteBoard(deleteBoardDto);
   }
 
   @Get('/')

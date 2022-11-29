@@ -27,7 +27,6 @@ export class BoardRepository {
 
   async findLastBoardList(count: number, max_id) {
     // limit 혹은 take 적용 필요할 듯..
-    console.log(1);
     const qb = await this.boardRepository
       .createQueryBuilder('board')
       .select(['board', 'user.id', 'user.name', 'user.profileUrl', 'photo.url'])
@@ -36,9 +35,7 @@ export class BoardRepository {
       .orderBy('board.createdAt', 'DESC');
 
     let boards;
-    console.log(2);
     if (max_id !== -1) {
-      console.log('id');
       const lastBoard = await this.boardRepository.findOneBy({ id: max_id });
       console.log(lastBoard);
       boards = await qb
@@ -47,7 +44,6 @@ export class BoardRepository {
         })
         .getMany();
     } else {
-      console.log(1);
       boards = await qb.getMany();
     }
     console.log(boards);
@@ -58,5 +54,14 @@ export class BoardRepository {
       return { boards, count: _count, nextMaxId };
     }
     return {};
+  }
+
+  async findUserById(id: number): Promise<Board> {
+    return await this.boardRepository
+      .createQueryBuilder('board')
+      .select(['board', 'user.id'])
+      .leftJoin('board.user', 'user')
+      .where('board.id = :id', { id: id })
+      .getOne();
   }
 }
