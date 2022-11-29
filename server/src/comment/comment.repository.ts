@@ -16,31 +16,28 @@ export class CommentRepository {
   async findCommentListBy(boardId: number, count: number, maxId: number) {
     let results;
 
+    const queryBuilder = this.commentRepository
+      .createQueryBuilder('c')
+      .select(['c', 'u.id', 'u.name', 'u.profileUrl'])
+      .innerJoin('c.board', 'b')
+      .innerJoin('c.user', 'u')
+      .where('c.board_id = :id', { id: boardId })
+      .orderBy('c.created_at', 'DESC');
+
     if (maxId == -1) {
-      results = await this.commentRepository
-        .createQueryBuilder('c')
-        .select(['c', 'u.id', 'u.name', 'u.profileUrl'])
-        .innerJoin('c.board', 'b')
-        .innerJoin('c.user', 'u')
-        .where('c.board_id = :id', { id: boardId })
-        .orderBy('c.created_at', 'DESC')
-        .getMany();
+      results = await queryBuilder.limit(count).getMany();
     } else {
-      results = await this.commentRepository
-        .createQueryBuilder('c')
-        .select(['c', 'u.id', 'u.name', 'u.profileUrl'])
-        .innerJoin('c.board', 'b')
-        .innerJoin('c.user', 'u')
-        .where('c.board_id = :id', { id: boardId })
-        .andWhere('c.id > :id', { id: maxId })
-        .orderBy('c.created_at', 'DESC')
+      const lastComment = await this.commentRepository.findOneBy({ id: maxId });
+      results = await queryBuilder
+        .andWhere('c.created_at < :created_at', {
+          created_at: lastComment.createdAt,
+        })
         .getMany();
     }
 
     if (results.length !== 0) {
-      results = results.slice(0, count);
       const _count = results.length;
-      const nestMaxId = results[_count - 1].id;
+      const nextMaxId = results[_count - 1].id;
       return {
         statusCode: 200,
         message: 'Success',
@@ -49,7 +46,7 @@ export class CommentRepository {
           comments: results,
           board_id: boardId,
           count: _count,
-          next_max_id: nestMaxId,
+          next_max_id: nextMaxId,
         },
       };
     } else {
@@ -64,5 +61,22 @@ export class CommentRepository {
         },
       };
     }
+  }
+
+  async findUserById(id: number): Promise<Comment> {
+    return await this.commentRepository
+      .createQueryBuilder('c')
+      .select(['c', 'u.id'])
+      .leftJoin('c.user', 'u')
+      .where('c.id = :id', { id: id })
+      .getOne();
+  }
+
+  async deleteById(id: number) {
+    return await this.commentRepository.delete({ id: id });
+  }
+
+  async updateById(id: number, updatedData) {
+    await this.commentRepository.update(id, updatedData);
   }
 }
