@@ -106,8 +106,8 @@ const BoardHeader = (props: BoardHeaderProps) => {
       </BoardHeaderWrapper>
       {menuHideOption ? null : (
         <MenuModal
-          top={70}
-          left={70}
+          top={15}
+          left={75}
           onClickCancel={() => setMenuHideOption(!menuHideOption)}
           onClickModify={onClickModify}
           onClickDelete={onClickDelete}
