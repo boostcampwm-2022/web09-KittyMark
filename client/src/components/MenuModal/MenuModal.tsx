@@ -6,9 +6,17 @@ interface MenuModalProps {
   top: number;
   left: number;
   onClickCancel: () => void;
+  onClickModify: () => void;
+  onClickDelete: () => void;
 }
 
-const MenuModal = ({ top, left, onClickCancel }: MenuModalProps) => {
+const MenuModal = ({
+  top,
+  left,
+  onClickCancel,
+  onClickModify,
+  onClickDelete,
+}: MenuModalProps) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,8 +37,12 @@ const MenuModal = ({ top, left, onClickCancel }: MenuModalProps) => {
 
   return (
     <MenuModalContainer top={top} left={left} ref={modalRef}>
-      <button type="button">수정하기</button>
-      <button type="button">삭제하기</button>
+      <button type="button" onClick={onClickModify}>
+        수정하기
+      </button>
+      <button type="button" onClick={onClickDelete}>
+        삭제하기
+      </button>
       <button type="button" onClick={onClickCancel}>
         취소
       </button>
