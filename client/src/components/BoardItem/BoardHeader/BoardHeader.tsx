@@ -16,7 +16,7 @@ import menuButton from '../../../static/menuBtn.svg';
 // component
 import MenuModal from '../../MenuModal/MenuModal';
 // API
-import { deleteBoardData } from '../../../apis/api/BoardApi';
+import { deleteBoardData } from '../../../apis/api/boardApi';
 
 interface BoardHeaderProps {
   userId: number;

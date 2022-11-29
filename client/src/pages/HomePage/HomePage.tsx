@@ -12,7 +12,7 @@ import { BoardContainer, BoardEnd } from './HomePageStyles';
 // type
 import { Board } from '../../types/responseData';
 // api
-import { getBoardData } from '../../apis/api/BoardApi';
+import { getBoardData } from '../../apis/api/boardApi';
 
 /* Test Data */
 // const today = new Date(Date.now());
