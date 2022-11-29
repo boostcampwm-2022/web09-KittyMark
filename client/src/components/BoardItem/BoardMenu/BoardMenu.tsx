@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { deleteBoardData } from '../../../apis/api/BoardApi';
+import { deleteBoardData } from '../../../apis/api/boardApi';
 import BoardMenuModal from './BoardMenuStyles';
 
 interface BoardMenuProps {

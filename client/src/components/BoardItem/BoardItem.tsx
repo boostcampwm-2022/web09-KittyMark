@@ -6,6 +6,8 @@ import BoardImages from './BoardImages/BoardImages';
 import BoardBackground from './BoardItemStyles';
 
 const BoardItem = (props: Board) => {
+  if (props === undefined) return null;
+
   const {
     id,
     content,
@@ -26,6 +28,7 @@ const BoardItem = (props: Board) => {
         userName={user.name}
         isStreet={isStreet}
         location={location}
+        content={content}
       />
       <BoardImages src={photos[0].url} />
       <BoardBody

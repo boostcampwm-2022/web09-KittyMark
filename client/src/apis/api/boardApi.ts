@@ -22,8 +22,6 @@ const getBoardData = async (
  * @param userId 해당 게시물을 작성한 user ID
  * @returns 서버와의 통신 이후 결과를 보내준다.
  */
-
-// 이거 약간 궁금한게 있습니다.
 const deleteBoardData = async (
   boardId: string,
   userId: number,
