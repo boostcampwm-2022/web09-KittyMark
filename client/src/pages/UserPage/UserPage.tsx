@@ -35,9 +35,11 @@ const UserPage = () => {
             </S.InnerContainer>
           </S.InnerContainerWrap>
         </S.OuterContainer>
-        <div className="gird-line">
-          <div className="solt" />
-        </div>
+        <S.Grid>
+          {[...new Array(20)].map(() => (
+            <S.GridSlot type="button" />
+          ))}
+        </S.Grid>
       </S.Body>
       <NavBar />
     </>

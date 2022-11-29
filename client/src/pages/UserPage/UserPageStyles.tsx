@@ -8,6 +8,7 @@ const Body = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: start;
+  gap: 2rem;
 
   overflow-y: auto;
 
@@ -61,6 +62,22 @@ const CountSlot = styled.div`
   }
 `;
 
+const Grid = styled.div`
+  width: 85%;
+  display: grid;
+  grid-template-columns: repeat(3, 6.25rem);
+  gap: 0.75rem;
+`;
+
+const GridSlot = styled.button`
+  cursor: pointer;
+  width: 6.25rem;
+  height: 6.25rem;
+  border: 1px solid ${(props) => props.theme.palette.border};
+  border-radius: 1.25rem;
+  background-color: #ffffff;
+`;
+
 export default {
   Body,
   OuterContainer,
@@ -68,4 +85,6 @@ export default {
   Name,
   InnerContainer,
   CountSlot,
+  Grid,
+  GridSlot,
 };
