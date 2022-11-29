@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const BoardBackground = styled.div`
   margin-top: 5%;
   padding-bottom: 3%;
-  max-width: 800px;
+  /* max-width: 800px; */
   width: 93%;
   border-radius: 15px;
   background-color: ${(props) => props.theme.palette.inner};
