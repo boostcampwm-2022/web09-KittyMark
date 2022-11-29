@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,28 +7,37 @@ import styled from 'styled-components';
 interface ProfileIconProps {
   userName: string;
   userProfile: string;
+  customLength?: number;
 }
 
-const ProfileIconContainer = styled.button`
-  width: 2.5rem;
-  height: 2.5rem;
+const ProfileIconContainer = styled.button<{ customLength: number }>`
+  width: ${(props) => props.customLength};
+  height: ${(props) => props.customLength};
   border: 1px solid ${(props) => props.theme.palette.border};
   background-color: #ffffff;
-  border-radius: 1.25rem;
+  border-radius: ${(props) => `${props.customLength / 2}rem`};
   padding: 0px;
   cursor: pointer;
 
   img {
     width: 100%;
     height: 100%;
-    border-radius: 1.25rem;
+    border-radius: ${(props) => `${props.customLength / 2}rem`};
   }
 `;
 
-const ProfileIcon = ({ userName, userProfile }: ProfileIconProps) => {
+const ProfileIcon = ({
+  userName,
+  userProfile,
+  customLength,
+}: ProfileIconProps) => {
   const navigation = useNavigate();
   return (
-    <ProfileIconContainer type="button" onClick={() => navigation(userName)}>
+    <ProfileIconContainer
+      type="button"
+      onClick={() => navigation(userName)}
+      customLength={customLength || 2.5}
+    >
       <img src={userProfile} alt="Profile" />
     </ProfileIconContainer>
   );
