@@ -21,7 +21,7 @@ declare global {
 const MapPage = () => {
   const navigation = useNavigate();
   const { naver } = window;
-  const [myLocation, setMyLocation] = useState<
+  const [currentLocation, setCurrentLocation] = useState<
     { latitude: number; longitude: number } | string
   >('');
 
@@ -37,7 +37,7 @@ const MapPage = () => {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        setMyLocation({
+        setCurrentLocation({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
@@ -48,10 +48,13 @@ const MapPage = () => {
     }
   }, []);
 
-  /* 내 위치 마커 표시하기 */
+  /* 위치 마커 표시하기 */
   useEffect(() => {
-    if (typeof myLocation !== 'string') {
-      const currentPosition = [myLocation.latitude, myLocation.longitude];
+    if (typeof currentLocation !== 'string') {
+      const currentPosition = [
+        currentLocation.latitude,
+        currentLocation.longitude,
+      ];
 
       const map = new naver.maps.Map('map', {
         center: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
@@ -80,7 +83,7 @@ const MapPage = () => {
       };
       currentMarker();
     }
-  }, [myLocation]);
+  }, [currentLocation]);
 
   return (
     <>
