@@ -111,10 +111,18 @@ export interface UserInfoApi extends Api {
 export interface UserPost {
   id: string;
   content: string;
-  created_at: string;
+  isStreet: boolean;
   location: string | null;
   latitude: number;
   longitude: number;
+  like: number;
+  created_at: string;
+  photos: [{ url: string }];
+  user: {
+    id: number;
+    name: string;
+    profileUrl: string;
+  };
 }
 
 export interface UserPostApi extends Api {

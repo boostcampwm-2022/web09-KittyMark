@@ -24,9 +24,17 @@ const GridSlot = styled.button`
   cursor: pointer;
   width: 6.25rem;
   height: 6.25rem;
+  padding: 0px;
   border: 1px solid ${(props) => props.theme.palette.border};
   border-radius: 1.25rem;
   background-color: #ffffff;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border: 1px solid ${(props) => props.theme.palette.border};
+    border-radius: 1.25rem;
+  }
 `;
 
 export default {

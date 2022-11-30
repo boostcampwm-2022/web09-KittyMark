@@ -29,10 +29,14 @@ const UserPostContainer = ({ targetId }: { targetId: number }) => {
     );
   }
 
+  const { boards } = userPost.data.data;
+
   return (
     <S.Grid>
-      {[...new Array(20)].map(() => (
-        <S.GridSlot type="button" />
+      {boards.map((board) => (
+        <S.GridSlot key={board.id} type="button">
+          <img alt="Thumbnail" src={board.photos[0].url} />
+        </S.GridSlot>
       ))}
     </S.Grid>
   );
