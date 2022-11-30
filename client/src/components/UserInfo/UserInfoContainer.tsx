@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 // api
 import { getUserInfo } from '../../apis/api/userApi';
 // style
-import S from './UserInfoStyles';
+import S from './UserInfoContainerStyles';
 // component
 import ProfileIcon from '../ProfileIcon/ProfileIcon';
 import { UserInfo } from '../../types/responseData';
