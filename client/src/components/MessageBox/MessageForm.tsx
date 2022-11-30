@@ -11,16 +11,26 @@ import {
 import sendBtn from '../../static/sendBtn.svg';
 
 interface MessageFormProps {
+  targetId: number;
   data: string;
   onClickSendBtn: MouseEventHandler<HTMLElement>;
   setFunc: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // 공통으로 DM 과 댓글에서 사용 가능하게 생성했다.
-const MessageForm = ({ data, onClickSendBtn, setFunc }: MessageFormProps) => {
+const MessageForm = ({
+  targetId,
+  data,
+  onClickSendBtn,
+  setFunc,
+}: MessageFormProps) => {
   return (
     <SendMessageContainer>
-      <ProfileIcon userName="hello" userProfile="../../defaultProfile.svg" />
+      <ProfileIcon
+        targetId={targetId}
+        userName="hello"
+        userProfile="../../defaultProfile.svg"
+      />
       <MessageFormWrap>
         <input
           type="text"

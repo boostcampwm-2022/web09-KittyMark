@@ -73,6 +73,7 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
     <>
       <S.OuterContainer>
         <ProfileIcon
+          targetId={userInfo.data.userId}
           userName={userInfo.data.userName}
           userProfile={
             userInfo.data.userProfileUrl || '../../defaultProfile.svg'

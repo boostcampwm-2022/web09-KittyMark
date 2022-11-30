@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 // TODO userName 대신에 userId 를 사용해야 할 것으로 보인다.
 interface ProfileIconProps {
+  targetId: number;
   userName: string;
   userProfile: string;
   customLength?: number;
@@ -27,6 +28,7 @@ const ProfileIconContainer = styled.button<{ customLength: number }>`
 `;
 
 const ProfileIcon = ({
+  targetId,
   userName,
   userProfile,
   customLength,
@@ -35,7 +37,7 @@ const ProfileIcon = ({
   return (
     <ProfileIconContainer
       type="button"
-      onClick={() => navigation(userName)}
+      onClick={() => navigation(`/user/${userName}`, { state: { targetId } })}
       customLength={customLength || 2.5}
     >
       <img src={userProfile} alt="Profile" />

@@ -59,6 +59,7 @@ const CommentPage = () => {
       />
       <S.Body>
         <MessageForm
+          targetId={userData.userId}
           data={comment}
           onClickSendBtn={onClickSendBtn}
           setFunc={setComment}
@@ -74,6 +75,7 @@ const CommentPage = () => {
                   key={commentData.id}
                   boardId={Number(boardId)}
                   commentId={commentData.id}
+                  targetId={commentData.user.id}
                   userName={commentData.user.name}
                   createdAt={timeCalc(commentData.createdAt)}
                   content={commentData.content}
