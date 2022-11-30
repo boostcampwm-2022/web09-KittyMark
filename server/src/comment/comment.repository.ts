@@ -32,6 +32,7 @@ export class CommentRepository {
         .andWhere('c.created_at < :created_at', {
           created_at: lastComment.createdAt,
         })
+        .limit(count)
         .getMany();
     }
 
