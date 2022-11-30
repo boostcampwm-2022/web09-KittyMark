@@ -16,6 +16,8 @@ import NavBar from '../../components/NavBar/NavBar';
 import CommentUnit from '../../components/CommentUnit/CommentUnit';
 // type
 import { Comments, NewCommentApi } from '../../types/responseData';
+// util
+import timeCalc from '../../utils/timeCalc';
 
 // TODO custom hook 으로 빼낸다.
 const CommentPage = () => {
@@ -57,6 +59,7 @@ const CommentPage = () => {
       />
       <S.Body>
         <MessageForm
+          targetId={userData.userId}
           data={comment}
           onClickSendBtn={onClickSendBtn}
           setFunc={setComment}
@@ -72,8 +75,9 @@ const CommentPage = () => {
                   key={commentData.id}
                   boardId={Number(boardId)}
                   commentId={commentData.id}
+                  targetId={commentData.user.id}
                   userName={commentData.user.name}
-                  createdAt={commentData.createdAt}
+                  createdAt={timeCalc(commentData.createdAt)}
                   content={commentData.content}
                   userProfile={
                     commentData.user.profileUrl === ''

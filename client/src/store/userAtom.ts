@@ -4,6 +4,7 @@ const user = atom({
   key: 'user',
   default: {
     userId: 1,
+    userName: '',
   },
 });
 
