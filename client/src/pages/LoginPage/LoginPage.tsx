@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+// recoil
+import user from '../../store/userAtom';
 // style
 import S from './LoginPageStyles';
 // img
@@ -16,6 +20,11 @@ const onClickNaverLogin = () => {
 };
 
 const LoginPage = () => {
+  const userData = useRecoilValue(user);
+  const navigation = useNavigate();
+  useEffect(() => {
+    if (userData.userId !== -1 && userData.userName !== '') navigation('/home');
+  }, []);
   return (
     <S.Container>
       <img alt="Logo" src={logo} style={{ width: '5rem', height: '5rem' }} />
