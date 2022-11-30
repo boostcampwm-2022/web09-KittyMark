@@ -39,7 +39,7 @@ const App = () => {
             <Route path="/new-post" element={<NewPostPage />} />
             <Route path="/modify" element={<ModifyPage />} />
             <Route path="/user/:userName" element={<UserPage />} />
-            <Route path="/followTest" element={<FollowPage />} />
+            <Route path="/follow/:userName/:userId" element={<FollowPage />} />
           </Routes>
         </QueryClientProvider>
       </RecoilRoot>

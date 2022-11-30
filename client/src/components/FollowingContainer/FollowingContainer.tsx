@@ -30,8 +30,8 @@ const FollowingContainer = ({
         </S.Button>
       </S.ButtonContainer>
       <S.UnitContainer>
-        <FollowUnit targetId={1} userName="Other User 1" isFollow />
-        <FollowUnit targetId={2} userName="Other User 2" isFollow={false} />
+        <FollowUnit targetId={1} userName="Other User 1" isFollow={false} />
+        <FollowUnit targetId={2} userName="Other User 2" isFollow />
       </S.UnitContainer>
     </S.Body>
   );
