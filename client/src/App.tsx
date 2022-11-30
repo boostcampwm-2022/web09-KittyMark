@@ -38,7 +38,7 @@ const App = () => {
             <Route path="/comment/:boardId" element={<CommentPage />} />
             <Route path="/new-post" element={<NewPostPage />} />
             <Route path="/modify" element={<ModifyPage />} />
-            <Route path="/userTest/:userName" element={<UserPage />} />
+            <Route path="/user/:userName" element={<UserPage />} />
             <Route path="/followTest" element={<FollowPage />} />
           </Routes>
         </QueryClientProvider>
