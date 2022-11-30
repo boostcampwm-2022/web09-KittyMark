@@ -1,0 +1,15 @@
+version: "3"
+services:
+  react:
+    image: "ghcr.io/wooseongshin/client:latest"
+    restart: always
+    build:
+        dockerfile: Dockerfile
+        context: ../client
+  nest:
+    image: "ghcr.io/wooseongshin/server:latest"
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ../server
+

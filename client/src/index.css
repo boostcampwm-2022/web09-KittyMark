@@ -1,13 +1,15 @@
 html {
-  font-size: 16px;
+	font-size: 16px;
+	height: 100vh;
 }
 
 body {
-  margin: 0px;
-  padding: 0px;
+	margin: 0px;
+	padding: 0px;
+	height: 100vh;
 }
 
 @font-face {
-  font-family: "Jua";
-  src: url("./fonts/BMJUA_ttf.ttf");
+	font-family: 'Jua';
+	src: url('./fonts/BMJUA_ttf.ttf');
 }
