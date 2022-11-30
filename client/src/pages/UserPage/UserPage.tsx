@@ -1,5 +1,8 @@
 import React from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+// recoil
+import user from '../../store/userAtom';
 // style
 import S from './UserPageStyles';
 // component
@@ -11,20 +14,21 @@ import UserPostContainer from '../../components/UserPostContainer/UserPostContai
 // TODO 리엑트 쿼리로 받아온 것에 대해서 계속 undefind 를 고려해야 한다.
 const UserPage = () => {
   const location = useLocation();
+  const navigation = useNavigate();
   const { targetId } = location.state;
   const { userName } = useParams<{ userName: string }>();
+  const { userId } = useRecoilValue(user);
 
   return (
     <>
-      <TopBar isBack={false} title={userName || 'error'} isCheck={false} />
+      <TopBar
+        isBack={userId !== targetId}
+        title={userName || 'error'}
+        isCheck={false}
+        backFunc={() => navigation(-1)}
+      />
       <S.Body>
         <UserInfoContainer targetId={targetId} />
-        <S.ButtonContainer>
-          <S.FollowButton type="button" isFollow={false}>
-            팔로우
-          </S.FollowButton>
-          <S.DMButton type="button">메시지</S.DMButton>
-        </S.ButtonContainer>
         <UserPostContainer targetId={targetId} />
       </S.Body>
       <NavBar />
