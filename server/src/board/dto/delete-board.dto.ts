@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsInt } from 'class-validator';
 
-export class CreateCommentDto {
+export class DeleteBoardDto {
   @IsNotEmpty()
   @IsInt()
   @Transform(({ value }) => parseInt(value, 10))
@@ -11,12 +11,4 @@ export class CreateCommentDto {
   @IsInt()
   @Transform(({ value }) => parseInt(value, 10))
   boardId: number;
-
-  @IsOptional()
-  content: string;
-
-  @IsOptional()
-  @IsInt()
-  @Transform(({ value }) => parseInt(value, 10))
-  rootCommentId: number;
 }

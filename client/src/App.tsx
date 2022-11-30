@@ -11,6 +11,8 @@ import LoadingPage from './pages/LoadingPage/LoadingPage';
 import CommentPage from './pages/CommentPage/CommentPage';
 import NewPostPage from './pages/NewPostPage/NewPostPage';
 import ModifyPage from './pages/ModifyPage/ModifyPage';
+import UserPage from './pages/UserPage/UserPage';
+import FollowPage from './pages/FollowPage/FollowPage';
 import MapPage from './pages/MapPage/MapPage';
 
 const queryClient = new QueryClient();
@@ -37,6 +39,8 @@ const App = () => {
             <Route path="/comment/:boardId" element={<CommentPage />} />
             <Route path="/new-post" element={<NewPostPage />} />
             <Route path="/modify" element={<ModifyPage />} />
+            <Route path="/user/:userName" element={<UserPage />} />
+            <Route path="/follow/:userName/:userId" element={<FollowPage />} />
             <Route path="/map" element={<MapPage />} />
           </Routes>
         </QueryClientProvider>

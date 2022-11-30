@@ -1,5 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+// recoil
+import user from '../../store/userAtom';
 // img
 import homeIcon from '../../static/homeIcon.svg';
 import mapIcon from '../../static/mapIcon.svg';
@@ -10,6 +13,7 @@ import S from './NavBarStyles';
 
 const NavBar = () => {
   const navigation = useNavigate();
+  const userData = useRecoilValue(user);
 
   return (
     <S.Container>
@@ -17,13 +21,20 @@ const NavBar = () => {
         <img src={homeIcon} alt="Home" />
       </S.Icon>
       <S.Icon type="button" onClick={() => navigation('/map')}>
-        <img src={mapIcon} alt="Home" />
+        <img src={mapIcon} alt="Map" />
       </S.Icon>
       <S.Icon type="button">
-        <img src={messageIcon} alt="Home" />
+        <img src={messageIcon} alt="Message" />
       </S.Icon>
-      <S.Icon type="button">
-        <img src={userIcon} alt="Home" />
+      <S.Icon
+        type="button"
+        onClick={() =>
+          navigation(`/user/${userData.userName}`, {
+            state: { targetId: userData.userId },
+          })
+        }
+      >
+        <img src={userIcon} alt="User" />
       </S.Icon>
     </S.Container>
   );

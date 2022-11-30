@@ -12,7 +12,10 @@ import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 // hook
 import useImage from '../../hooks/useImage';
 
-type LocationStateType = { email: string; oauthInfo: 'NAVER' | 'KAKAO' };
+interface LocationStateType {
+  email: string;
+  oauthInfo: 'NAVER' | 'KAKAO';
+}
 
 // TODO 내부에 이름 체크 로직이 아직 완벽하지 않고, 해당 로직을 custom hook 으로 빼자
 const RegisterPage = () => {

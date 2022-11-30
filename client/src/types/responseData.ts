@@ -1,6 +1,7 @@
 export interface Api {
   statusCode: number;
   message: string;
+  error?: string;
 }
 
 export interface LoginApi extends Api {
@@ -8,6 +9,7 @@ export interface LoginApi extends Api {
   redirect?: boolean;
   data?: {
     userId: number;
+    userName: string;
   };
 }
 
@@ -86,8 +88,52 @@ export interface LikeListApi extends Api {
   };
 }
 
+export interface UserInfo {
+  userId: number;
+  userName: string;
+  userProfileUrl: string;
+  follow: {
+    count: number;
+  };
+  followed_by: {
+    count: number;
+  };
+  followed_by_viewer: boolean;
+  follows_viewer: boolean;
+}
+
+export interface UserInfoApi extends Api {
+  data: UserInfo;
+}
+
+// TODO 보드 관련 인터페이스가 두개인게 이거 일을 반복하는 일 같음
+
+export interface UserPost {
+  id: string;
+  content: string;
+  isStreet: boolean;
+  location: string | null;
+  latitude: number;
+  longitude: number;
+  like: number;
+  created_at: string;
+  photos: [{ url: string }];
+  user: {
+    id: number;
+    name: string;
+    profileUrl: string;
+  };
+}
+
+export interface UserPostApi extends Api {
+  data: {
+    boards: [UserPost];
+    count: number;
+    next_max_id: number;
+  };
+}
+
 export interface MapApi extends Api {
   data?: {
     boards: [Board];
-  };
 }
