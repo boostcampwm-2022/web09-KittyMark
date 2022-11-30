@@ -44,7 +44,7 @@ const LoadingPage = () => {
       }
       // 로그인 성공인 경우를 처리한다.
       if (data.data) {
-        setUserData({ userId: data.data.userId });
+        setUserData({ userId: data.data.userId, userName: data.data.userName });
         navigation('/home');
         return;
       }
