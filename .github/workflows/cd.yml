@@ -50,7 +50,8 @@ jobs:
         username: ${{ secrets.DEPLOYMENT_USERNAME }}
         password: ${{ secrets.DEPLOYMENT_PASSWORD }}
         port: 22
-        source: "environment"
+        source: "environment/docker-compose.yml,environment/default.conf"
+
         target: "kittymark"
         
     - name: Run Docker Compose on the Server
@@ -64,6 +65,6 @@ jobs:
         envs: TOKEN
         script: |
           docker login https://ghcr.io -u wooseongshin -p "$TOKEN"
-          cd kittymark/environment 
+          cd kittymark
           docker-compose pull
           docker-compose up -d
