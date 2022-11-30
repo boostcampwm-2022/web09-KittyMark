@@ -51,7 +51,6 @@ jobs:
         password: ${{ secrets.DEPLOYMENT_PASSWORD }}
         port: 22
         source: "environment/docker-compose.yml,environment/default.conf"
-
         target: "kittymark"
         
     - name: Run Docker Compose on the Server
