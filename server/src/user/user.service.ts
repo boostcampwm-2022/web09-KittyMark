@@ -28,7 +28,7 @@ export class UserService {
 
   async getUserInfo(getProfileInfoDto: GetProfileInfoDto) {
     const { userId } = getProfileInfoDto;
-    const user = await this.userRepository.findById(userId);
+    const user = await this.userRepository.findUserSummaryById(userId);
 
     if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
 
@@ -36,9 +36,10 @@ export class UserService {
       statusCode: 200,
       message: 'Success',
       data: {
-        userId: user.id,
-        userName: user.name,
-        userProfileUrl: user.profileUrl,
+        userId: user.user_id,
+        userName: user.user_name,
+        userProfileUrl: user.profile_url,
+        boards: { count: user.boardCount },
         follow: { count: 0 },
         followed_by: { count: 0 },
         followed_by_viewer: false,
