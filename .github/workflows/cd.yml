@@ -1,4 +1,4 @@
-name: deploy
+name: KittyMark CD
 on:
   push:
     branches: ["dev"]
@@ -52,6 +52,7 @@ jobs:
         port: 22
         source: "environment/docker-compose.yml,environment/default.conf"
         target: "kittymark"
+        strip_components: 1
         
     - name: Run Docker Compose on the Server
       uses: appleboy/ssh-action@master
