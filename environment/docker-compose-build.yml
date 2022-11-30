@@ -5,11 +5,11 @@ services:
     restart: always
     build:
         dockerfile: Dockerfile
-        context: ./client
+        context: ../client
   nest:
     image: "ghcr.io/wooseongshin/server:latest"
     restart: always
     build:
       dockerfile: Dockerfile
-      context: ./server
+      context: ../server
 
