@@ -1,25 +1,45 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
 import { useRecoilValue } from 'recoil';
 // recoil
 import user from '../../store/userAtom';
 // api
-import { getUserInfo } from '../../apis/api/userApi';
+import { getUserInfo, postFollow, deleteFollow } from '../../apis/api/userApi';
 // style
 import S from './UserInfoContainerStyles';
 // component
 import ProfileIcon from '../ProfileIcon/ProfileIcon';
-import { UserInfo } from '../../types/responseData';
+import { Api, UserInfo } from '../../types/responseData';
 
 const UserInfoContainer = ({ targetId }: { targetId: number }) => {
   const navigation = useNavigate();
+  const queryClient = useQueryClient();
 
   const { userId } = useRecoilValue(user);
 
   const userInfo = useQuery<UserInfo, AxiosError>('userInfo', () =>
     getUserInfo(targetId).then((res) => res.data),
+  );
+
+  const { mutate: delFol } = useMutation<Api, AxiosError>(
+    () => deleteFollow(userId, targetId),
+    {
+      onSuccess: () => queryClient.invalidateQueries('userInfo'),
+      // eslint-disable-next-line no-console
+      onError: (e) => console.log(e.message),
+    },
+  );
+
+  const { mutate: postFol } = useMutation<Api, AxiosError>(
+    () => postFollow(userId, targetId),
+    {
+      onSuccess: () => queryClient.invalidateQueries('userInfo'),
+      // eslint-disable-next-line no-console
+      onError: (e) => console.log(e.message),
+    },
   );
 
   if (userInfo.isLoading || userInfo.isIdle) {
@@ -38,10 +58,15 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
     );
   }
 
-  const onClickFollow = () => {
+  const onClickFollowCnt = () => {
     navigation('/followTest', {
       state: { userName: userInfo.data.userName, userId: userInfo.data.userId },
     });
+  };
+
+  const onClickFollowBtn = () => {
+    if (userInfo.data.followed_by_viewer) delFol();
+    else postFol();
   };
 
   return (
@@ -62,7 +87,7 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
               <p>게시물</p>
             </S.CountSlot>
             <S.CountSlot>
-              <button type="button" onClick={onClickFollow}>
+              <button type="button" onClick={onClickFollowCnt}>
                 {userInfo.data.follow.count}
               </button>
               <p>팔로워</p>
@@ -79,8 +104,9 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
           <S.FollowButton
             type="button"
             isFollow={userInfo.data.followed_by_viewer}
+            onClick={onClickFollowBtn}
           >
-            팔로우
+            {userInfo.data.followed_by_viewer ? '팔로잉' : '팔로우'}
           </S.FollowButton>
           <S.DMButton type="button">메시지</S.DMButton>
         </S.ButtonContainer>
