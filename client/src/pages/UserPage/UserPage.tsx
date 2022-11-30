@@ -1,40 +1,23 @@
 import React from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 // style
 import S from './UserPageStyles';
 // component
 import TopBar from '../../components/TopBar/TopBar';
 import NavBar from '../../components/NavBar/NavBar';
-import ProfileIcon from '../../components/ProfileIcon/ProfileIcon';
+import UserInfoContainer from '../../components/UserInfo/UserInfoContainer';
 
+// TODO 리엑트 쿼리로 받아온 것에 대해서 계속 undefind 를 고려해야 한다.
 const UserPage = () => {
+  const location = useLocation();
+  const { targetId } = location.state;
+  const { userName } = useParams<{ userName: string }>();
+
   return (
     <>
-      <TopBar isBack={false} title="Test User" isCheck={false} />
+      <TopBar isBack={false} title={userName || 'error'} isCheck={false} />
       <S.Body>
-        <S.OuterContainer>
-          <ProfileIcon
-            userName="Test"
-            userProfile="../../defaultProfile.svg"
-            customLength={4}
-          />
-          <S.InnerContainerWrap>
-            <S.Name>Test User</S.Name>
-            <S.InnerContainer>
-              <S.CountSlot>
-                <p>11</p>
-                <p>게시물</p>
-              </S.CountSlot>
-              <S.CountSlot>
-                <p>13</p>
-                <p>게시물</p>
-              </S.CountSlot>
-              <S.CountSlot>
-                <p>15</p>
-                <p>게시물</p>
-              </S.CountSlot>
-            </S.InnerContainer>
-          </S.InnerContainerWrap>
-        </S.OuterContainer>
+        <UserInfoContainer targetId={targetId} />
         <S.ButtonContainer>
           <S.FollowButton type="button" isFollow={false}>
             팔로우

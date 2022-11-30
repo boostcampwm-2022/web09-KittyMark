@@ -11,10 +11,11 @@ const Body = styled.div`
   gap: 2rem;
 
   overflow-y: auto;
-
-  font-family: 'Jua';
-  font-style: normal;
-  font-weight: 400;
+  * {
+    font-family: 'Jua';
+    font-style: normal;
+    font-weight: 400;
+  }
 `;
 
 const OuterContainer = styled.div`
@@ -53,8 +54,16 @@ const InnerContainer = styled.div`
 `;
 
 const CountSlot = styled.div`
-  p:first-child {
-    margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  button {
+    font-size: 16px;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
   }
   p {
     text-align: center;
