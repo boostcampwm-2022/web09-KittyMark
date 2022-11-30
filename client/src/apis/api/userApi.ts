@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { UserInfoApi, UserPostApi } from '../../types/responseData';
+import { Api, UserInfoApi, UserPostApi } from '../../types/responseData';
 import { defaultInstance } from '../utils';
 // type
 
@@ -18,4 +18,22 @@ const getUserPost = async (userId: number): Promise<UserPostApi> => {
   return data;
 };
 
-export { getUserInfo, getUserPost };
+const postFollow = async (userId: number, followId: number): Promise<Api> => {
+  const { data }: AxiosResponse<Api> = await defaultInstance.post(
+    `/api/user/follow`,
+    { userId, followId },
+  );
+  return data;
+};
+
+const deleteFollow = async (userId: number, followId: number): Promise<Api> => {
+  const { data }: AxiosResponse<Api> = await defaultInstance.delete(
+    `/api/user/follow`,
+    {
+      data: { userId, followId },
+    },
+  );
+  return data;
+};
+
+export { getUserInfo, getUserPost, postFollow, deleteFollow };
