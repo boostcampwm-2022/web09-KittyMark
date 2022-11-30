@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StatusContainer = styled.div`
+const StatusWrap = styled.div`
   width: calc(85% - 3rem);
   height: calc(7.5rem - 2rem);
   padding: 1rem 1.5rem;
@@ -113,7 +113,7 @@ const DMButton = styled.button`
 `;
 
 export default {
-  StatusContainer,
+  StatusWrap,
   OuterContainer,
   InnerContainerWrap,
   Name,

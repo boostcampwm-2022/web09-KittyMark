@@ -19,17 +19,17 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
 
   if (userInfo.isLoading || userInfo.isIdle) {
     return (
-      <S.StatusContainer>
+      <S.StatusWrap>
         <p>Loading...</p>
-      </S.StatusContainer>
+      </S.StatusWrap>
     );
   }
 
   if (userInfo.isError) {
     return (
-      <S.StatusContainer>
+      <S.StatusWrap>
         <p>{userInfo.error.message}</p>
-      </S.StatusContainer>
+      </S.StatusWrap>
     );
   }
 
