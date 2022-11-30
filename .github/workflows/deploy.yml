@@ -23,7 +23,7 @@ jobs:
         FRONTEND_SECRET: ${{ secrets.REACT_APP_SECRETS }}
       run: |
         echo "$FRONTEND_SECRET" > .env
-        npm i
+        npm ci
         npm run build 
         
     - name: Login to Github Container Registry
