@@ -5,7 +5,8 @@ import S from './UserPageStyles';
 // component
 import TopBar from '../../components/TopBar/TopBar';
 import NavBar from '../../components/NavBar/NavBar';
-import UserInfoContainer from '../../components/UserInfo/UserInfoContainer';
+import UserInfoContainer from '../../components/UserInfoContainer/UserInfoContainer';
+import UserPostContainer from '../../components/UserPostContainer/UserPostContainer';
 
 // TODO 리엑트 쿼리로 받아온 것에 대해서 계속 undefind 를 고려해야 한다.
 const UserPage = () => {
@@ -24,11 +25,7 @@ const UserPage = () => {
           </S.FollowButton>
           <S.DMButton type="button">메시지</S.DMButton>
         </S.ButtonContainer>
-        <S.Grid>
-          {[...new Array(20)].map(() => (
-            <S.GridSlot type="button" />
-          ))}
-        </S.Grid>
+        <UserPostContainer targetId={targetId} />
       </S.Body>
       <NavBar />
     </>
