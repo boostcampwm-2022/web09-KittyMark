@@ -16,7 +16,7 @@ const NavBar = () => {
       <S.Icon type="button" onClick={() => navigation('/home')}>
         <img src={homeIcon} alt="Home" />
       </S.Icon>
-      <S.Icon type="button">
+      <S.Icon type="button" onClick={() => navigation('/map')}>
         <img src={mapIcon} alt="Home" />
       </S.Icon>
       <S.Icon type="button">
