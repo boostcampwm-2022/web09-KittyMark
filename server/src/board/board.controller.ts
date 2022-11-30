@@ -16,8 +16,9 @@ import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { ResponseInterceptor } from '../interceptor/responseInterceptor';
-import { DeleteBoardDto } from 'board/dto/delete-board.dto';
+import { DeleteBoardDto } from './dto/delete-board.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { GetUserBoardsDto } from './dto/get-user-boards.dto';
 
 @Controller('board')
 @UseInterceptors(ResponseInterceptor)
@@ -52,6 +53,11 @@ export class BoardController {
     @Query('max_id', ParseIntPipe) maxId: number,
   ) {
     return this.boardService.getLastBoardList(count, maxId);
+  }
+
+  @Get('/user')
+  getUserBoardList(@Query(ValidationPipe) getUserBoardsDto: GetUserBoardsDto) {
+    return this.boardService.getUserBoards(getUserBoardsDto);
   }
 
   // @Get('/:boardId/comment')
