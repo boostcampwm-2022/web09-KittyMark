@@ -37,4 +37,8 @@ export class UserRepository {
   async save(user: User) {
     return await this.userRepository.save(user);
   }
+
+  async update(id: number, updatedData) {
+    await this.userRepository.update(id, updatedData);
+  }
 }

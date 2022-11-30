@@ -1,11 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
+import { S3Service } from 'src/S3/S3.service';
 import { CheckNameDto } from './dto/check-name.dto';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
+import { UpdateUserInfoDto } from './dto/update-user-info.dto';
 import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly s3Service: S3Service,
+  ) {}
   async checkName(checkNameDto: CheckNameDto) {
     const { name } = checkNameDto;
 
@@ -36,5 +45,32 @@ export class UserService {
         follows_viewer: false,
       },
     };
+  }
+
+  async updateUserInfo(
+    updateUserInfoDto: UpdateUserInfoDto,
+    image: Express.Multer.File,
+  ) {
+    const { userId, userName } = updateUserInfoDto;
+
+    let profileUrl = null;
+    if (image) {
+      profileUrl = await this.s3Service.uploadFile(image);
+    }
+
+    if (userName) {
+      const name = await this.userRepository.findByName(userName);
+      if (name) throw new ConflictException('이미 존재하는 닉네임입니다.');
+    }
+
+    if (profileUrl && userName) {
+      this.userRepository.update(userId, { profileUrl, name: userName });
+    } else if (profileUrl) {
+      this.userRepository.update(userId, { profileUrl });
+    } else if (userName) {
+      this.userRepository.update(userId, { name: userName });
+    }
+
+    return { statusCode: 200, message: 'Success' };
   }
 }
