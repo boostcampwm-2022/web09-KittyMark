@@ -21,4 +21,5 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   dropSchema: false,
   timezone: 'z',
   charset: 'utf8mb4',
+  legacySpatialSupport: false,
 };
