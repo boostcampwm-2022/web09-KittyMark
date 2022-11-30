@@ -14,7 +14,9 @@ import {
 import pinIcon from '../../../static/pinIcon.svg';
 import menuButton from '../../../static/menuBtn.svg';
 // component
-import BoardMenu from '../BoardMenu/BoardMenu';
+import MenuModal from '../../MenuModal/MenuModal';
+// API
+import { deleteBoardData } from '../../../apis/api/boardApi';
 
 interface BoardHeaderProps {
   userId: number;
@@ -23,11 +25,20 @@ interface BoardHeaderProps {
   userName: string;
   isStreet: boolean;
   location: string | null;
+  content: string;
 }
 
 const BoardHeader = (props: BoardHeaderProps) => {
-  const navigate = useNavigate();
-  const { userId, boardId, userProfile, userName, isStreet, location } = props;
+  const navigation = useNavigate();
+  const {
+    userId,
+    boardId,
+    userProfile,
+    userName,
+    isStreet,
+    location,
+    content,
+  } = props;
   const [menuHideOption, setMenuHideOption] = useState(true);
   const userData = useRecoilValue(user);
   const loginedUserId = userData.userId;
@@ -36,9 +47,35 @@ const BoardHeader = (props: BoardHeaderProps) => {
     setMenuHideOption(!menuHideOption);
   };
 
+  const onClickModify = async () => {
+    navigation('/modify', {
+      state: {
+        title: '게시글 수정',
+        before: content,
+        apiType: 'board',
+        apiData: {
+          boardId,
+          userId,
+        },
+      },
+    });
+  };
+
+  const onClickDelete = async () => {
+    try {
+      const data = await deleteBoardData(boardId, userId);
+      if (data.statusCode === 200) {
+        setMenuHideOption(!menuHideOption);
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
+
   const onClickUserInfo = () => {
     /* TODO: 해당 유저 페이지로 이동 */
-    navigate('/home');
+    navigation('/home');
   };
   return (
     <>
@@ -68,10 +105,12 @@ const BoardHeader = (props: BoardHeaderProps) => {
         ) : null}
       </BoardHeaderWrapper>
       {menuHideOption ? null : (
-        <BoardMenu
-          userId={userId}
-          boardId={boardId}
-          changeHideOption={onClickMenu}
+        <MenuModal
+          top={15}
+          left={75}
+          onClickCancel={() => setMenuHideOption(!menuHideOption)}
+          onClickModify={onClickModify}
+          onClickDelete={onClickDelete}
         />
       )}
     </>
