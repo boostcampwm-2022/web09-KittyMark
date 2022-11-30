@@ -132,3 +132,9 @@ export interface UserPostApi extends Api {
     next_max_id: number;
   };
 }
+
+export interface MapApi extends Api {
+  data?: {
+    boards: [Board];
+  };
+}
