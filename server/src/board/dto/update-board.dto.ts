@@ -1,19 +1,17 @@
 import { IsNotEmpty, IsInt } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-export class GetCommentsDto {
+export class UpdateBoardDto {
   @IsNotEmpty()
   @IsInt()
   @Transform(({ value }) => parseInt(value, 10))
-  board_id: number;
+  userId: number;
 
   @IsNotEmpty()
   @IsInt()
   @Transform(({ value }) => parseInt(value, 10))
-  count: number;
+  boardId: number;
 
   @IsNotEmpty()
-  @IsInt()
-  @Transform(({ value }) => parseInt(value, 10))
-  max_id: number;
+  content: string;
 }

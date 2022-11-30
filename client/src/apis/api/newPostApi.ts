@@ -17,9 +17,11 @@ const postNewPostInfo = async (
   images.forEach((image) => formData.append('images', image));
   formData.append('content', content);
   formData.append('isStreet', String(isStreet));
-  formData.append('location', location || '');
-  formData.append('latitude', latitude ? String(latitude) : '-1');
-  formData.append('longitude', longitude ? String(longitude) : '-1');
+  if (location && latitude && longitude) {
+    formData.append('location', location);
+    formData.append('latitude', String(latitude));
+    formData.append('longitude', String(longitude));
+  }
 
   const { data }: AxiosResponse<NewPostApi> = await defaultFormInstance.post(
     `/api/board`,
