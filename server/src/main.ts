@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as session from 'express-session';
@@ -25,6 +26,11 @@ async function bootstrap() {
   );
 
   app.useGlobalGuards(new AuthGuard());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
 
   await app.listen(4000);
 }
