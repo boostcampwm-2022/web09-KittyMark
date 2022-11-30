@@ -76,7 +76,7 @@ export class AuthService {
       request.session.userEmail = email;
       return {
         statusCode: 200,
-        data: { userId: user.id },
+        data: { userId: user.id, userName: user.name },
         message: 'Success',
       };
     } else {

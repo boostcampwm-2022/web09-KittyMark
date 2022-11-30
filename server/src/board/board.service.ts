@@ -4,12 +4,12 @@ import {
   NotFoundException,
   ForbiddenException,
 } from '@nestjs/common';
-import { CreateBoardDto } from './dto/createBoardDto';
+import { CreateBoardDto } from './dto/create-board.dto';
 import { Board } from './board.entity';
 import { UserRepository } from '../user/user.repository';
 import { Photo } from './photo.entity';
-import { UpdateBoardDto } from './dto/updateBoaedDto';
-import { DeleteBoardDto } from 'board/dto/deleteBoardDto';
+import { UpdateBoardDto } from './dto/update-board.dto';
+import { DeleteBoardDto } from './dto/delete-board.dto';
 import { plainToInstance } from 'class-transformer';
 import { BoardRepository } from 'board/board.repository';
 import { PhotoRepository } from 'board/photo.repository';

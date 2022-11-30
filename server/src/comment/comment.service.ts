@@ -76,13 +76,11 @@ export class CommentService {
     if (!commentId)
       throw new BadRequestException(`'commentId'(path) should not be empty`);
 
-    const { boardId, userId, content } = updateCommentDto;
+    const { userId, content } = updateCommentDto;
 
     const comment = await this.commentRepository.findUserById(commentId);
 
-    const board = await this.boardRepository.findUserById(boardId);
-
-    if (!comment || !board) {
+    if (!comment) {
       throw new NotFoundException('댓글이 존재하지 않습니다.');
     }
 

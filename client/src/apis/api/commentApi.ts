@@ -16,9 +16,12 @@ const postCommentInfo = async (
   content: string,
   rootCommentId: number | null,
 ): Promise<NewCommentApi> => {
+  const reqBody = rootCommentId
+    ? { userId, boardId, content, rootCommentId }
+    : { userId, boardId, content };
   const { data }: AxiosResponse<NewCommentApi> = await defaultInstance.post(
     `/api/comment`,
-    { userId, boardId, content, rootCommentId },
+    reqBody,
   );
   return data;
 };

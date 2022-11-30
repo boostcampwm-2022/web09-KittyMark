@@ -13,10 +13,10 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { BoardService } from './board.service';
-import { CreateBoardDto } from './dto/createBoardDto';
-import { UpdateBoardDto } from './dto/updateBoaedDto';
+import { CreateBoardDto } from './dto/create-board.dto';
+import { UpdateBoardDto } from './dto/update-board.dto';
 import { ResponseInterceptor } from '../interceptor/responseInterceptor';
-import { DeleteBoardDto } from 'board/dto/deleteBoardDto';
+import { DeleteBoardDto } from 'board/dto/delete-board.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('board')
