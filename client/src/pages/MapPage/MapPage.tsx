@@ -35,14 +35,24 @@ const MapPage = () => {
     description: '게시물을 추가할래요.',
   };
 
-  const getData = async (queryMap: naver.maps.Map) => {
-    const range = getQueryMapRange(queryMap);
+  const getData = async () => {
+    if (map === null) return;
+    const range = getQueryMapRange(map);
     const { statusCode, message, data } = await getMapData(range);
 
     if (statusCode !== 200) throw new Error(message);
     if (data === undefined) return;
 
     setBoards(data.boards);
+  };
+
+  const requestData = () => {
+    try {
+      getData();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
   };
 
   const currentMarker = ({ latitude, longitude }: Coordinate) => {
@@ -93,16 +103,19 @@ const MapPage = () => {
     }
   }, [currentLocation]);
 
-  /* 서버로부터 게시글 정보를 받아옴 */
+  /* 지도에 이벤트 추가 */
   useEffect(() => {
     if (map === null) return;
 
-    try {
-      getData(map);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
+    naver.maps.Event.addListener(map, 'dragend', () => {
+      requestData();
+    });
+  }, [map]);
+
+  /* 서버로부터 게시글 정보를 받아옴 */
+  useEffect(() => {
+    if (map === null) return;
+    requestData();
   }, [map]);
 
   /* 서버에서 받아온 게시글 정보를 기반으로 마킹 */

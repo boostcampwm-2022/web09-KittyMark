@@ -5,28 +5,16 @@ export interface Coordinate {
   longitude: number;
 }
 
-const createPointFromSize = (width: number, height: number) => {
-  return new naver.maps.Point(width, height);
-};
-
-const convertPointToCoord = (map: naver.maps.Map, point: naver.maps.Point) => {
-  const mapProjection = map.getProjection();
-  const coord = mapProjection.fromOffsetToCoord(point);
-  return coord;
-};
-
-const getCoord = (map: naver.maps.Map, width: number, height: number) => {
-  const point = createPointFromSize(width, height);
-  const coord = convertPointToCoord(map, point);
-  const { y: latitude, x: longitude } = coord;
-  return { latitude, longitude };
+const getCoord = (bound: naver.maps.Point) => {
+  const { x, y } = bound;
+  return { latitude: y, longitude: x };
 };
 
 const getQueryMapRange = (map: naver.maps.Map) => {
-  const { width, height } = map.getSize();
-  const leftTop = getCoord(map, 0, 0);
-  const rightDown = getCoord(map, width, height);
-  return { leftTop, rightDown };
+  const bounds = map.getBounds();
+  const leftDown = getCoord(bounds.getMin());
+  const rightTop = getCoord(bounds.getMax());
+  return { leftDown, rightTop };
 };
 
 const extractCoord = (boards: Board[]) => {

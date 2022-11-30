@@ -3,11 +3,11 @@ import { defaultInstance } from '../utils';
 import { MapApi } from '../../types/responseData';
 
 interface QueryMapRange {
-  leftTop: {
+  leftDown: {
     latitude: number;
     longitude: number;
   };
-  rightDown: {
+  rightTop: {
     latitude: number;
     longitude: number;
   };
