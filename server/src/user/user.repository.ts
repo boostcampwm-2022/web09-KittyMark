@@ -7,7 +7,7 @@ import { OauthInfo } from '../auth/model/oauth-info.enum';
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
   async findAll(): Promise<User[]> {
     return await this.userRepository.find();

@@ -1,4 +1,4 @@
-name: deploy
+name: KittyMark CD
 on:
   push:
     branches: ["dev"]
@@ -23,7 +23,7 @@ jobs:
         FRONTEND_SECRET: ${{ secrets.REACT_APP_SECRETS }}
       run: |
         echo "$FRONTEND_SECRET" > .env
-        npm i
+        npm ci
         npm run build 
         
     - name: Login to Github Container Registry
@@ -34,12 +34,12 @@ jobs:
         password: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
         
     - name: Docker-compose Build and Push
-      working-directory: .
+      working-directory: ./environment
       env:
         CI: ""
         SERVER_SECRET: ${{ secrets.API_SERVER_SECRETS }}
       run: |
-        echo "$SERVER_SECRET" > ./server/.env
+        echo "$SERVER_SECRET" > ../server/.env
         docker-compose -f docker-compose-build.yml build
         docker-compose -f docker-compose-build.yml push
 
@@ -50,8 +50,9 @@ jobs:
         username: ${{ secrets.DEPLOYMENT_USERNAME }}
         password: ${{ secrets.DEPLOYMENT_PASSWORD }}
         port: 22
-        source: "docker-compose.yml"
+        source: "environment/docker-compose.yml,environment/default.conf"
         target: "kittymark"
+        strip_components: 1
         
     - name: Run Docker Compose on the Server
       uses: appleboy/ssh-action@master

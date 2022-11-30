@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // img
-// import testImage from '../../static/testImage.png';
 import catFootprint from '../../static/catFootprint.svg';
 import addPostButtonImg from '../../static/addPost.svg';
 // component
@@ -13,7 +12,7 @@ import { BoardContainer, BoardEnd } from './HomePageStyles';
 // type
 import { Board } from '../../types/responseData';
 // api
-import { getBoardData } from '../../apis/api/BoardApi';
+import { getBoardData } from '../../apis/api/boardApi';
 
 /* Test Data */
 // const today = new Date(Date.now());
@@ -86,6 +85,13 @@ import { getBoardData } from '../../apis/api/BoardApi';
 //   },
 // ];
 
+const makeBoarList = (boards: Board[]) => {
+  const boardList = boards.map((board) => {
+    return BoardItem(board);
+  });
+  return boardList;
+};
+
 const HomePage = () => {
   const navigate = useNavigate();
   const [boards, setBoards] = useState<Board[]>([]);
@@ -97,6 +103,7 @@ const HomePage = () => {
     },
     description: '게시물을 추가할래요.',
   };
+
   const getData = async () => {
     const { statusCode, message, data } = await getBoardData(
       requestCount,
@@ -104,6 +111,7 @@ const HomePage = () => {
     );
     if (statusCode !== 200) throw new Error(message);
     if (data === undefined) return;
+
     setBoards(boards.concat(data.boards));
   };
 
@@ -120,14 +128,7 @@ const HomePage = () => {
     <>
       <NormalTopBar buttonData={addPostButton} />
       <BoardContainer>
-        {boards.length > 0
-          ? boards.map((board) => {
-              return BoardItem(board);
-            })
-          : null}
-        {/* {dummyBoards.map((board) => {
-          return BoardItem(board);
-        })} */}
+        {boards.length !== 0 ? makeBoarList(boards) : null}
         <BoardEnd>
           <img
             src={catFootprint}
