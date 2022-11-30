@@ -34,7 +34,7 @@ jobs:
         password: ${{ secrets.CONTAINER_REGISTRY_TOKEN }}
         
     - name: Docker-compose Build and Push
-      working-directory: .
+      working-directory: ./environment
       env:
         CI: ""
         SERVER_SECRET: ${{ secrets.API_SERVER_SECRETS }}
@@ -50,7 +50,7 @@ jobs:
         username: ${{ secrets.DEPLOYMENT_USERNAME }}
         password: ${{ secrets.DEPLOYMENT_PASSWORD }}
         port: 22
-        source: "docker-compose.yml"
+        source: "environment"
         target: "kittymark"
         
     - name: Run Docker Compose on the Server
