@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 // img
 import addPostButtonImg from '../../static/addPost.svg';
+// style
+import NaverMap from './MapPageStyles';
 // component
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import NavBar from '../../components/NavBar/NavBar';
-
-const NaverMap = styled.div`
-  width: 100vw;
-  height: calc(100vh - 8rem);
-`;
 
 declare global {
   interface Window {
