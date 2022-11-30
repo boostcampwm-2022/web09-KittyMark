@@ -85,3 +85,9 @@ export interface LikeListApi extends Api {
     };
   };
 }
+
+export interface MapApi extends Api {
+  data?: {
+    boards: [Board];
+  };
+}
