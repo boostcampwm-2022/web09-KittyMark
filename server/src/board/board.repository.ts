@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Board } from './board.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { GetMapDto } from '../map/dto/get-map.dto';
 
 @Injectable()
 export class BoardRepository {
@@ -36,6 +37,12 @@ export class BoardRepository {
       .select(['board', 'user.id', 'user.name', 'user.profileUrl', 'photo.url'])
       .leftJoin('board.photos', 'photo')
       .leftJoin('board.user', 'user')
+      .loadRelationCountAndMap(
+        'board.comment',
+        'board.comments',
+        'commentCount',
+      )
+      .loadRelationCountAndMap('board.like', 'board.likes', 'likeCount')
       .orderBy('board.createdAt', 'DESC');
 
     let boards;
@@ -81,6 +88,12 @@ export class BoardRepository {
       .leftJoin('board.photos', 'photo')
       .leftJoin('board.user', 'user')
       .where('user.id = :id', { id: userId })
+      .loadRelationCountAndMap(
+        'board.comment',
+        'board.comments',
+        'commentCount',
+      )
+      .loadRelationCountAndMap('board.like', 'board.likes', 'likeCount')
       .orderBy('board.created_at', 'DESC');
 
     let boards;
@@ -105,5 +118,40 @@ export class BoardRepository {
       return { boards, count: _count, next_max_id: nextMaxId };
     }
     return { boards: null, count: 0, next_max_id: -1 };
+  }
+
+  async findWithInRange({ leftDown: l, rightTop: r }: GetMapDto) {
+    const polygon = `POLYGON((${l.latitude} ${l.longitude},${l.latitude} ${r.longitude},${r.latitude} ${r.longitude},${r.latitude} ${l.longitude},${l.latitude} ${l.longitude}))`;
+    const qb = this.boardRepository
+      .createQueryBuilder('board')
+      .select(['board', 'user.id', 'user.name', 'user.profileUrl', 'photo.url'])
+      .leftJoin('board.photos', 'photo')
+      .leftJoin('board.user', 'user')
+      .loadRelationCountAndMap(
+        'board.comment',
+        'board.comments',
+        'commentCount',
+      )
+      .loadRelationCountAndMap('board.like', 'board.likes', 'likeCount')
+      .where(
+        () => `ST_Within(board.coordinate,ST_GeomFromText('${polygon}'))=1`,
+      );
+
+    return await qb.getMany();
+  }
+
+  async findLikeListByBoardId(boardId: number) {
+    const data = await this.boardRepository
+      .createQueryBuilder('board')
+      .leftJoinAndSelect('board.likes', 'like')
+      .leftJoinAndSelect('like.user', 'user')
+      .select([
+        'user.id as id',
+        'user.name as name',
+        'user.profileUrl as profileUrl',
+      ])
+      .where('board_id = :boardId', { boardId: boardId })
+      .execute();
+    return { users: data };
   }
 }

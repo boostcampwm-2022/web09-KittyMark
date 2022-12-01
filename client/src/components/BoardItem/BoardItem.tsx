@@ -33,7 +33,7 @@ const BoardItem = (props: Board) => {
       <BoardHeader
         userId={user.id}
         boardId={id}
-        userProfile={user.profileUrl}
+        userProfile={user.profileUrl || '../../defaultProfile.svg'}
         userName={user.name}
         isStreet={isStreet}
         location={location}

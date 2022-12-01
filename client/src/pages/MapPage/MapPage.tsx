@@ -40,10 +40,10 @@ const MapPage = () => {
     const range = getQueryMapRange(map);
     const { statusCode, message, data } = await getMapData(range);
 
-    if (statusCode !== 200) throw new Error(message);
+    if (statusCode !== 201) throw new Error(message);
     if (data === undefined) return;
 
-    setBoards(data.boards);
+    if (data.boards !== undefined) setBoards(data.boards);
   };
 
   const requestData = () => {

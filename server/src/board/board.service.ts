@@ -15,6 +15,7 @@ import { BoardRepository } from 'board/board.repository';
 import { PhotoRepository } from 'board/photo.repository';
 import { S3Service } from 'src/S3/S3.service';
 import { GetUserBoardsDto } from './dto/get-user-boards.dto';
+import { toPoint } from 'board/board.util';
 
 @Injectable()
 export class BoardService {
@@ -36,12 +37,12 @@ export class BoardService {
     const { content, isStreet, location, longitude, latitude, userId } =
       createBoardDto;
     const user = await this.userRepository.findById(userId);
+    const coordinate = toPoint(latitude, longitude);
     const boardInfo = {
       content,
       isStreet,
       location,
-      latitude,
-      longitude,
+      coordinate,
       user,
     };
 
