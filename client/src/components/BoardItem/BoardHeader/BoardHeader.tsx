@@ -24,7 +24,7 @@ interface BoardHeaderProps {
   userProfile: string;
   userName: string;
   isStreet: boolean;
-  location: string | null;
+  location: string | '';
   content: string;
 }
 
@@ -89,7 +89,9 @@ const BoardHeader = (props: BoardHeaderProps) => {
             {isStreet === true ? (
               <div>
                 <img src={pinIcon} alt="pin icon" />
-                <div className="location">{location}</div>
+                {location !== null && location.length > 0 ? (
+                  <div className="location">{location}</div>
+                ) : null}
               </div>
             ) : (
               ''
