@@ -14,6 +14,7 @@ import { plainToInstance } from 'class-transformer';
 import { BoardRepository } from 'board/board.repository';
 import { PhotoRepository } from 'board/photo.repository';
 import { S3Service } from 'src/S3/S3.service';
+import { GetUserBoardsDto } from './dto/get-user-boards.dto';
 
 @Injectable()
 export class BoardService {
@@ -89,5 +90,15 @@ export class BoardService {
 
   async getLastBoardList(count: number, max_id: number) {
     return await this.boardRepository.findLastBoardList(count, max_id);
+  }
+
+  async getUserBoards(getUserBoardsDto: GetUserBoardsDto) {
+    const { userId, count, maxId } = getUserBoardsDto;
+
+    return await this.boardRepository.findLastBoardListByUserId(
+      count,
+      maxId,
+      userId,
+    );
   }
 }
