@@ -65,7 +65,6 @@ const getReverseGeoData = async (
         'X-NCP-APIGW-API-KEY-ID': process.env.REACT_APP_NAVER_MAPS_CLIENT_ID,
         'X-NCP-APIGW-API-KEY': process.env.REACT_APP_NAVER_MAPS_CLIENT_SECRET,
       },
-      withCredentials: true,
     },
   );
   return data;
