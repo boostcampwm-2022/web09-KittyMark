@@ -3,6 +3,7 @@ import {
   Post,
   Get,
   Patch,
+  Delete,
   Body,
   Query,
   UploadedFile,
@@ -14,7 +15,7 @@ import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AddFollowDto } from './dto/add-follow.dto';
+import { FollowDto } from './dto/follow.dto';
 
 @Controller('user')
 export class UserController {
@@ -40,7 +41,12 @@ export class UserController {
   }
 
   @Post('/follow')
-  addFollow(@Body(ValidationPipe) addFollowDto: AddFollowDto) {
-    return this.userService.addFollow(addFollowDto);
+  addFollow(@Body(ValidationPipe) followDto: FollowDto) {
+    return this.userService.addFollow(followDto);
+  }
+
+  @Delete('/follow')
+  deleteFolllow(@Body(ValidationPipe) followDto: FollowDto) {
+    return this.userService.deleteFollow(followDto);
   }
 }

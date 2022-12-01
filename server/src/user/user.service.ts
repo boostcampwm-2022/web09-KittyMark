@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { S3Service } from 'src/S3/S3.service';
-import { AddFollowDto } from './dto/add-follow.dto';
+import { FollowDto } from './dto/follow.dto';
 import { CheckNameDto } from './dto/check-name.dto';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
@@ -81,11 +81,11 @@ export class UserService {
     return { statusCode: 200, message: 'Success' };
   }
 
-  async addFollow(addFollowDto: AddFollowDto) {
-    const { userId, followedUserId } = addFollowDto;
+  async addFollow(followDto: FollowDto) {
+    const { userId, followedUserId } = followDto;
 
     if (userId === followedUserId)
-      throw new BadRequestException('본인을 팔로우할 수 없습니다.');
+      throw new BadRequestException('스스로를 팔로우할 수 없습니다.');
 
     const user = await this.userRepository.findById(userId);
     const followedUser = await this.userRepository.findById(followedUserId);
@@ -103,6 +103,30 @@ export class UserService {
     });
 
     await this.followRepository.save(follow);
-    return;
+    return {
+      statusCode: 200,
+      message: 'Success',
+      data: { followId: follow.id },
+    };
+  }
+
+  async deleteFollow(followDto: FollowDto) {
+    const { userId, followedUserId } = followDto;
+
+    if (userId === followedUserId)
+      throw new BadRequestException('스스로를 팔로우 취소할 수 없습니다.');
+
+    const user = await this.userRepository.findById(userId);
+    const followedUser = await this.userRepository.findById(followedUserId);
+
+    if (!user || !followedUser)
+      throw new NotFoundException('사용자를 찾을 수 없습니다.');
+
+    await this.followRepository.delete({
+      user: userId,
+      followedUser: followedUserId,
+    });
+
+    return { statusCode: 200, message: 'Success' };
   }
 }

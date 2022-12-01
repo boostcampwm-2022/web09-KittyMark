@@ -26,4 +26,8 @@ export class FollowRepository {
   async save(follow: Follow) {
     return await this.followRepository.save(follow);
   }
+
+  async delete(idInfo) {
+    await this.followRepository.delete(idInfo);
+  }
 }
