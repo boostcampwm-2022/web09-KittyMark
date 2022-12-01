@@ -5,13 +5,15 @@ import { ValueTransformer } from 'typeorm';
 export class GeometryTransformer implements ValueTransformer {
   to(geojson: Geometry): string {
     if (!geojson) return null;
+    console.log('to', geojson);
 
     return wkx.Geometry.parseGeoJSON(geojson).toWkt();
   }
 
-  from(wkb: string): Record<string, null> | undefined {
-    if (!wkb) return null;
-    return wkx.Geometry.parse(wkb).toGeoJSON();
+  from(wkb: string): Record<string, any> | undefined {
+    if (!wkb) return [];
+    const geo: Geometry = wkx.Geometry.parse(wkb).toGeoJSON();
+    return geo.coordinates;
   }
 }
 
