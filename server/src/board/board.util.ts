@@ -10,9 +10,10 @@ export class GeometryTransformer implements ValueTransformer {
     return wkx.Geometry.parseGeoJSON(geojson).toWkt();
   }
 
-  from(wkb: string): Record<string, any> | undefined {
+  from(wkb: string): Record<string, number[]> | undefined[] {
     if (!wkb) return [];
     const geo: Geometry = wkx.Geometry.parse(wkb).toGeoJSON();
+    console.log(geo.coordinates);
     return geo.coordinates;
   }
 }
