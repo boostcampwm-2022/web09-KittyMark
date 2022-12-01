@@ -7,7 +7,6 @@ import user from '../../../store/userAtom';
 import {
   BoardHeaderWrapper,
   BoardHeaderContainer,
-  // UserProfileImageContainer,
   BoardHeaderInfoContainer,
 } from './BoardHeaderStyles';
 // img
@@ -87,9 +86,6 @@ const BoardHeader = (props: BoardHeaderProps) => {
             userName={userName}
             userProfile={userProfile}
           />
-          {/* <UserProfileImageContainer>
-            <img src={userProfile} alt="user profile" />
-          </UserProfileImageContainer> */}
           <BoardHeaderInfoContainer>
             <div className="user-name">{userName}</div>
             {isStreet === true ? (
