@@ -12,6 +12,7 @@ import { Photo } from './photo.entity';
 import { Comment } from 'src/comment/comment.entity';
 import { Geometry } from 'geojson';
 import { GeometryTransformer } from 'board/board.util';
+import { Like } from '../like/like.entity';
 
 @Entity()
 export class Board {
@@ -35,10 +36,6 @@ export class Board {
   })
   coordinate: Geometry;
 
-  // Todo 연관관계 매핑필요
-  @Column({ nullable: true })
-  like: number;
-
   @CreateDateColumn({
     type: 'timestamp',
   })
@@ -53,4 +50,7 @@ export class Board {
 
   @OneToMany(() => Comment, (comment) => comment.board)
   comments: Comment[];
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes: Like[];
 }
