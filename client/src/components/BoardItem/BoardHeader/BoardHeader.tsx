@@ -66,6 +66,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
       const data = await deleteBoardData(boardId, userId);
       if (data.statusCode === 200) {
         setMenuHideOption(!menuHideOption);
+        window.location.replace('/home');
       }
     } catch (error) {
       // eslint-disable-next-line no-console
