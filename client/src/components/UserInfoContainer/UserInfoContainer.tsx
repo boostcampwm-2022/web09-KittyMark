@@ -82,7 +82,7 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
           <S.Name>{userInfo.data.userName}</S.Name>
           <S.InnerContainer>
             <S.CountSlot>
-              <button type="button">11</button>
+              <button type="button">{userInfo.data.boards.count}</button>
               <p>게시물</p>
             </S.CountSlot>
             <S.CountSlot>
