@@ -13,6 +13,7 @@ import { RegisterUserDto } from './dto/user-register.dto';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
 import { AuthService } from './auth.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CheckNameDto } from '../auth/dto/check-name.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -40,5 +41,10 @@ export class AuthController {
   @Post('/oauth/naver')
   loginNaver(@Body() oauthNaverDto: OauthNaverDto, @Req() request: Request) {
     return this.authService.loginNaver(oauthNaverDto, request);
+  }
+
+  @Post('/nameCheck')
+  checkName(@Body(ValidationPipe) checkNameDto: CheckNameDto) {
+    return this.authService.checkName(checkNameDto);
   }
 }
