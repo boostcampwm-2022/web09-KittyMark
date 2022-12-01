@@ -7,7 +7,7 @@ import user from '../../../store/userAtom';
 import {
   BoardHeaderWrapper,
   BoardHeaderContainer,
-  UserProfileImageContainer,
+  // UserProfileImageContainer,
   BoardHeaderInfoContainer,
 } from './BoardHeaderStyles';
 // img
@@ -17,6 +17,7 @@ import menuButton from '../../../static/menuBtn.svg';
 import MenuModal from '../../MenuModal/MenuModal';
 // API
 import { deleteBoardData } from '../../../apis/api/boardApi';
+import ProfileIcon from '../../ProfileIcon/ProfileIcon';
 
 interface BoardHeaderProps {
   userId: number;
@@ -81,9 +82,14 @@ const BoardHeader = (props: BoardHeaderProps) => {
     <>
       <BoardHeaderWrapper>
         <BoardHeaderContainer onClick={onClickUserInfo}>
-          <UserProfileImageContainer>
+          <ProfileIcon
+            targetId={userId}
+            userName={userName}
+            userProfile={userProfile}
+          />
+          {/* <UserProfileImageContainer>
             <img src={userProfile} alt="user profile" />
-          </UserProfileImageContainer>
+          </UserProfileImageContainer> */}
           <BoardHeaderInfoContainer>
             <div className="user-name">{userName}</div>
             {isStreet === true ? (
