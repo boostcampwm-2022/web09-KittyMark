@@ -8,9 +8,12 @@ import {
 import { defaultInstance } from '../utils';
 // type
 
-const getUserInfo = async (userId: number): Promise<UserInfoApi> => {
+const getUserInfo = async (
+  userId: number,
+  viewerId: number,
+): Promise<UserInfoApi> => {
   const { data }: AxiosResponse<UserInfoApi> = await defaultInstance.get(
-    `/api/user/profile-info/?userId=${userId}`,
+    `/api/user/profile-info/?userId=${userId}&viewerId=${viewerId}`,
   );
   return data;
 };

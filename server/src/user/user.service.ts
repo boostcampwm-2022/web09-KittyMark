@@ -7,7 +7,6 @@ import {
 import { plainToInstance } from 'class-transformer';
 import { S3Service } from 'src/S3/S3.service';
 import { FollowDto } from './dto/follow.dto';
-import { CheckNameDto } from './dto/check-name.dto';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
 import { Follow } from './follow/follow.entity';
@@ -21,19 +20,9 @@ export class UserService {
     private readonly s3Service: S3Service,
     private readonly followRepository: FollowRepository,
   ) {}
-  async checkName(checkNameDto: CheckNameDto) {
-    const { name } = checkNameDto;
-
-    const user = await this.userRepository.findByName(name);
-    if (user) {
-      return { statusCode: 200, message: 'Success', data: { isExist: true } };
-    } else {
-      return { statusCode: 200, message: 'Success', data: { isExist: false } };
-    }
-  }
 
   async getUserInfo(getProfileInfoDto: GetProfileInfoDto) {
-    const { userId } = getProfileInfoDto;
+    const { userId, viewerId } = getProfileInfoDto;
     const user = await this.userRepository.findUserSummaryById(userId);
 
     if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
@@ -41,6 +30,17 @@ export class UserService {
     const follow = await this.followRepository.findFollowingCnt(userId);
     const follower = await this.followRepository.findFollowerCnt(userId);
 
+    const followedByViewer = await this.followRepository.findFollow(
+      viewerId,
+      userId,
+    );
+    const followsViewer = await this.followRepository.findFollow(
+      userId,
+      viewerId,
+    );
+
+    console.log(followedByViewer);
+    console.log(followsViewer);
     return {
       statusCode: 200,
       message: 'Success',
@@ -51,8 +51,8 @@ export class UserService {
         boards: { count: user.boardCount },
         follow: { count: follow[0].count },
         followed_by: { count: follower[0].count },
-        followed_by_viewer: false,
-        follows_viewer: false,
+        followed_by_viewer: followedByViewer ? true : false,
+        follows_viewer: followsViewer ? true : false,
       },
     };
   }

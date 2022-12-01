@@ -40,7 +40,7 @@ const deleteBoardData = async (
  * @returns 서버와의 통신 이후 결과를 보내준다.
  */
 const updateBoardData = async (
-  boardId: string,
+  boardId: number,
   userId: number,
   content: string,
 ): Promise<Api> => {

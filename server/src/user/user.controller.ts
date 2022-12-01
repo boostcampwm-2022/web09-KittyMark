@@ -6,12 +6,12 @@ import {
   Delete,
   Body,
   Query,
+  Param,
   UploadedFile,
   UseInterceptors,
   ValidationPipe,
   ParseIntPipe,
 } from '@nestjs/common';
-import { CheckNameDto } from './dto/check-name.dto';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
 import { UserService } from './user.service';
@@ -21,11 +21,6 @@ import { FollowDto } from './dto/follow.dto';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @Post('/nameCheck')
-  checkName(@Body(ValidationPipe) checkNameDto: CheckNameDto) {
-    return this.userService.checkName(checkNameDto);
-  }
 
   @Get('/profile-info')
   getUserInfo(@Query(ValidationPipe) getProfileInfoDto: GetProfileInfoDto) {
@@ -51,8 +46,8 @@ export class UserController {
     return this.userService.deleteFollow(followDto);
   }
 
-  @Get('/follow')
-  getFollowList(@Body('userId', ParseIntPipe) userId: number) {
+  @Get('/follow/:userId')
+  getFollowList(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.getFollowList(userId);
   }
 }

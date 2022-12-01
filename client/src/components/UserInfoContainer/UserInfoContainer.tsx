@@ -21,7 +21,7 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
   const { userId } = useRecoilValue(user);
 
   const userInfo = useQuery<UserInfo, AxiosError>('userInfo', () =>
-    getUserInfo(targetId).then((res) => res.data),
+    getUserInfo(targetId, userId).then((res) => res.data),
   );
 
   const { mutate: delFol } = useMutation<Api, AxiosError>(

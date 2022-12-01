@@ -8,6 +8,7 @@ import NavBar from '../../components/NavBar/NavBar';
 import { patchCommentInfo } from '../../apis/api/commentApi';
 // style
 import S from './ModifyPageStyles';
+import { updateBoardData } from '../../apis/api/boardApi';
 
 interface PatchCommentData {
   commentId: number;
@@ -67,7 +68,18 @@ const ModifyPage = () => {
 
     if (apiData && apiType === 'board') {
       // eslint-disable-next-line no-console
-      console.log('hello!');
+      try {
+        const boardData = apiData as PatchBoardData;
+        const data = await updateBoardData(
+          boardData.boardId,
+          boardData.userId,
+          content,
+        );
+        if (data.statusCode === 200) navigation(-1);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
     }
   };
 

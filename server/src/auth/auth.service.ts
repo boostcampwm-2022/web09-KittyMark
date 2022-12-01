@@ -10,6 +10,7 @@ import { firstValueFrom, map } from 'rxjs';
 import { plainToInstance } from 'class-transformer';
 import { User } from 'src/user/user.entity';
 import { S3Service } from 'src/S3/S3.service';
+import { CheckNameDto } from '../auth/dto/check-name.dto';
 
 declare module 'express-session' {
   export interface SessionData {
@@ -155,5 +156,16 @@ export class AuthService {
     const data = await firstValueFrom(response);
 
     return data.response.email;
+  }
+
+  async checkName(checkNameDto: CheckNameDto) {
+    const { name } = checkNameDto;
+
+    const user = await this.userRepository.findByName(name);
+    if (user) {
+      return { statusCode: 200, message: 'Success', data: { isExist: true } };
+    } else {
+      return { statusCode: 200, message: 'Success', data: { isExist: false } };
+    }
   }
 }
