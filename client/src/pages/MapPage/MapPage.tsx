@@ -11,6 +11,7 @@ import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import NavBar from '../../components/NavBar/NavBar';
 import getMapData from '../../apis/api/mapApi';
 import { Board } from '../../types/responseData';
+import BoardModal from '../../components/BoardModal/BoardModal';
 
 declare global {
   interface Window {
@@ -33,7 +34,6 @@ const createMarker = (
   map: naver.maps.Map,
   { latitude, longitude }: Coordinate,
 ) => {
-  if (map === null) return null;
   return new naver.maps.Marker({
     position: new naver.maps.LatLng(latitude, longitude),
     map,
@@ -55,6 +55,8 @@ const MapPage = () => {
   >('');
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [boards, setBoards] = useState<Board[]>([]);
+  const [clickedBoard, setClickedBoard] = useState<Board | null>(null);
+  const [markers, setMarkers] = useState<naver.maps.Marker[]>([]);
 
   const addPostButton = {
     buttonImg: addPostButtonImg,
@@ -72,7 +74,7 @@ const MapPage = () => {
     if (statusCode !== 201) throw new Error(message);
     if (data === undefined) return;
 
-    if (data.boards !== undefined) setBoards(data.boards);
+    if (data.length > 0) setBoards(data);
   };
 
   const requestData = () => {
@@ -128,13 +130,28 @@ const MapPage = () => {
     /* 게시글 데이터에서 index + 위/경도 추출 */
     const coords = extractCoord(boards);
     /* 추출한 위/경도를 지도에 Marker로 추가 */
-    coords.map((coord) => {
+    const newMarkers = coords.map((coord) => {
       return createMarker(map, coord);
     });
+    setMarkers(newMarkers);
   }, [boards]);
+
+  useEffect(() => {
+    const clickMarker = (board: Board) => {
+      return () => {
+        setClickedBoard(board);
+      };
+    };
+    for (let i = 0; i < markers.length; i += 1) {
+      naver.maps.Event.addListener(markers[i], 'click', clickMarker(boards[i]));
+    }
+  }, [markers]);
 
   return (
     <>
+      {clickedBoard !== null ? (
+        <BoardModal board={clickedBoard} setClickedBoard={setClickedBoard} />
+      ) : null}
       <NormalTopBar buttonData={addPostButton} />
       <NaverMap>
         <div id="map" style={{ width: '100%', height: '100%' }} />
