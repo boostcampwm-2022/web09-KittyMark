@@ -2,11 +2,16 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  BadRequestException,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { S3Service } from 'src/S3/S3.service';
+import { AddFollowDto } from './dto/add-follow.dto';
 import { CheckNameDto } from './dto/check-name.dto';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
+import { Follow } from './follow/follow.entity';
+import { FollowRepository } from './follow/follow.repository';
 import { UserRepository } from './user.repository';
 
 @Injectable()
@@ -14,6 +19,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly s3Service: S3Service,
+    private readonly followRepository: FollowRepository,
   ) {}
   async checkName(checkNameDto: CheckNameDto) {
     const { name } = checkNameDto;
@@ -73,5 +79,30 @@ export class UserService {
     }
 
     return { statusCode: 200, message: 'Success' };
+  }
+
+  async addFollow(addFollowDto: AddFollowDto) {
+    const { userId, followedUserId } = addFollowDto;
+
+    if (userId === followedUserId)
+      throw new BadRequestException('본인을 팔로우할 수 없습니다.');
+
+    const user = await this.userRepository.findById(userId);
+    const followedUser = await this.userRepository.findById(followedUserId);
+
+    if (!user || !followedUser)
+      throw new NotFoundException('사용자를 찾을 수 없습니다.');
+
+    const f = await this.followRepository.findFollow(userId, followedUserId);
+    if (f) {
+      throw new ConflictException('이미 팔로우가 되어 있습니다.');
+    }
+    const follow = plainToInstance(Follow, {
+      user: userId,
+      followedUser: followedUserId,
+    });
+
+    await this.followRepository.save(follow);
+    return;
   }
 }

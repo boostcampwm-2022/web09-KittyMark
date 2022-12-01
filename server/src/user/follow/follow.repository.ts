@@ -9,4 +9,21 @@ export class FollowRepository {
     @InjectRepository(Follow)
     private readonly followRepository: Repository<Follow>,
   ) {}
+
+  async findAll(): Promise<Follow[]> {
+    return await this.followRepository.find({
+      relations: ['user', 'followedUser'],
+    });
+  }
+
+  async findFollow(userId: number, followedUserId: number) {
+    return await this.followRepository.findOne({
+      where: { user: { id: userId }, followedUser: { id: followedUserId } },
+      relations: ['user', 'followedUser'],
+    });
+  }
+
+  async save(follow: Follow) {
+    return await this.followRepository.save(follow);
+  }
 }
