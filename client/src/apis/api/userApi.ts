@@ -1,5 +1,10 @@
 import { AxiosResponse } from 'axios';
-import { Api, UserInfoApi, UserPostApi } from '../../types/responseData';
+import {
+  Api,
+  FollowListApi,
+  UserInfoApi,
+  UserPostApi,
+} from '../../types/responseData';
 import { defaultInstance } from '../utils';
 // type
 
@@ -36,4 +41,11 @@ const deleteFollow = async (userId: number, followId: number): Promise<Api> => {
   return data;
 };
 
-export { getUserInfo, getUserPost, postFollow, deleteFollow };
+const getFollow = async (userId: number): Promise<FollowListApi> => {
+  const { data }: AxiosResponse<FollowListApi> = await defaultInstance.get(
+    `/api/user/follow/${userId}`,
+  );
+  return data;
+};
+
+export { getUserInfo, getUserPost, postFollow, deleteFollow, getFollow };

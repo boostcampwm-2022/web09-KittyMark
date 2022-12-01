@@ -92,6 +92,7 @@ export interface UserInfo {
   userId: number;
   userName: string;
   userProfileUrl: string;
+  boards: { count: number };
   follow: {
     count: number;
   };
@@ -136,5 +137,22 @@ export interface UserPostApi extends Api {
 export interface MapApi extends Api {
   data?: {
     boards: [Board];
+  };
+}
+
+export interface FollowListApi extends Api {
+  data: {
+    userId: number;
+    users_followed_by_user: {
+      id: number;
+      name: string;
+      profileUrl: string;
+    }[];
+    user_follow_user: {
+      id: number;
+      name: string;
+      profileUrl: string;
+      is_followed_by_user: boolean;
+    }[];
   };
 }
