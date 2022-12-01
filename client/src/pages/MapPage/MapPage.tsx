@@ -18,6 +18,35 @@ declare global {
   }
 }
 
+const createMap = ({ latitude, longitude }: Coordinate) => {
+  return new naver.maps.Map('map', {
+    center: new naver.maps.LatLng(latitude, longitude),
+    zoomControl: true,
+    zoomControlOptions: {
+      style: naver.maps.ZoomControlStyle.SMALL,
+      position: naver.maps.Position.TOP_RIGHT,
+    },
+  });
+};
+
+const createMarker = (
+  map: naver.maps.Map,
+  { latitude, longitude }: Coordinate,
+) => {
+  if (map === null) return null;
+  return new naver.maps.Marker({
+    position: new naver.maps.LatLng(latitude, longitude),
+    map,
+    // 원하는 이미지로 마커 커스텀
+    // icon: {
+    //     url: pinImage,
+    //     size: new naver.maps.Size(50, 52),
+    //     origin: new naver.maps.Point(0, 0),
+    //     anchor: new naver.maps.Point(25, 26),
+    //   },
+  });
+};
+
 const MapPage = () => {
   const navigation = useNavigate();
   const { naver } = window;
@@ -55,21 +84,6 @@ const MapPage = () => {
     }
   };
 
-  const currentMarker = ({ latitude, longitude }: Coordinate) => {
-    if (map === null) return null;
-    return new naver.maps.Marker({
-      position: new naver.maps.LatLng(latitude, longitude),
-      map,
-      // 원하는 이미지로 마커 커스텀
-      // icon: {
-      //     url: pinImage,
-      //     size: new naver.maps.Size(50, 52),
-      //     origin: new naver.maps.Point(0, 0),
-      //     anchor: new naver.maps.Point(25, 26),
-      //   },
-    });
-  };
-
   /* 사용자 현재 위치 가져오기 */
   useEffect(() => {
     if (navigator.geolocation) {
@@ -88,17 +102,7 @@ const MapPage = () => {
   /* 사용자 위치 기반 지도 만들기 */
   useEffect(() => {
     if (typeof currentLocation !== 'string') {
-      const { latitude: currentLatitude, longitude: currentLongitude } =
-        currentLocation;
-
-      const naverMap = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(currentLatitude, currentLongitude),
-        zoomControl: true,
-        zoomControlOptions: {
-          style: naver.maps.ZoomControlStyle.SMALL,
-          position: naver.maps.Position.TOP_RIGHT,
-        },
-      });
+      const naverMap = createMap(currentLocation);
       setMap(naverMap);
     }
   }, [currentLocation]);
@@ -120,11 +124,12 @@ const MapPage = () => {
 
   /* 서버에서 받아온 게시글 정보를 기반으로 마킹 */
   useEffect(() => {
+    if (map === null) return;
     /* 게시글 데이터에서 index + 위/경도 추출 */
     const coords = extractCoord(boards);
     /* 추출한 위/경도를 지도에 Marker로 추가 */
     coords.map((coord) => {
-      return currentMarker(coord);
+      return createMarker(map, coord);
     });
   }, [boards]);
 
