@@ -11,6 +11,7 @@ import { ResponseInterceptor } from './interceptor/responseInterceptor';
 import { S3Module } from './S3/S3.module';
 import { AuthGuard } from './auth/auth.guard';
 import { CommentModule } from 'src/comment/comment.module';
+import { FollowModule } from './user/follow/follow.module';
 import { MapModule } from './map/map.module';
 
 @Module({
@@ -22,6 +23,7 @@ import { MapModule } from './map/map.module';
     BoardModule,
     CommentModule,
     S3Module,
+    FollowModule,
     MapModule,
   ],
   controllers: [AppController],
