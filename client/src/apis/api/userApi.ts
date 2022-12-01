@@ -23,19 +23,25 @@ const getUserPost = async (userId: number): Promise<UserPostApi> => {
   return data;
 };
 
-const postFollow = async (userId: number, followId: number): Promise<Api> => {
+const postFollow = async (
+  userId: number,
+  followedUserId: number,
+): Promise<Api> => {
   const { data }: AxiosResponse<Api> = await defaultInstance.post(
     `/api/user/follow`,
-    { userId, followId },
+    { userId, followedUserId },
   );
   return data;
 };
 
-const deleteFollow = async (userId: number, followId: number): Promise<Api> => {
+const deleteFollow = async (
+  userId: number,
+  followedUserId: number,
+): Promise<Api> => {
   const { data }: AxiosResponse<Api> = await defaultInstance.delete(
     `/api/user/follow`,
     {
-      data: { userId, followId },
+      data: { userId, followedUserId },
     },
   );
   return data;

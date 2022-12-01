@@ -140,19 +140,25 @@ export interface MapApi extends Api {
   };
 }
 
+export interface FollowedByUser {
+  id: number;
+  name: string;
+  profileUrl: string;
+}
+
+export interface FollowUser {
+  id: number;
+  name: string;
+  profileUrl: string;
+  is_followed_by_user: boolean;
+}
+
+export interface FollowListData {
+  userId: number;
+  users_followed_by_user: FollowedByUser[];
+  users_follow_user: FollowUser[];
+}
+
 export interface FollowListApi extends Api {
-  data: {
-    userId: number;
-    users_followed_by_user: {
-      id: number;
-      name: string;
-      profileUrl: string;
-    }[];
-    user_follow_user: {
-      id: number;
-      name: string;
-      profileUrl: string;
-      is_followed_by_user: boolean;
-    }[];
-  };
+  data: FollowListData;
 }
