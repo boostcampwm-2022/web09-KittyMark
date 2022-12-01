@@ -10,6 +10,8 @@ import {
 import { User } from '../user/user.entity';
 import { Photo } from './photo.entity';
 import { Comment } from 'src/comment/comment.entity';
+import { Geometry } from 'geojson';
+import { GeometryTransformer } from 'board/board.util';
 
 @Entity()
 export class Board {
@@ -25,11 +27,13 @@ export class Board {
   @Column({ nullable: true })
   location: string;
 
-  @Column({ nullable: true })
-  latitude: number;
-
-  @Column({ nullable: true })
-  longitude: number;
+  @Column({
+    type: 'geometry',
+    spatialFeatureType: 'Point',
+    transformer: new GeometryTransformer(),
+    nullable: true,
+  })
+  coordinate: Geometry;
 
   // Todo 연관관계 매핑필요
   @Column({ nullable: true })
