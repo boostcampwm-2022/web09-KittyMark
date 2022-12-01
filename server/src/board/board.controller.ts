@@ -16,13 +16,19 @@ import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { ResponseInterceptor } from '../interceptor/responseInterceptor';
-import { DeleteBoardDto } from 'board/dto/delete-board.dto';
+import { DeleteBoardDto } from './dto/delete-board.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { GetUserBoardsDto } from './dto/get-user-boards.dto';
+import { LikeBoardDto } from 'board/dto/like-board.dto';
+import { LikeService } from '../like/like.service';
 
 @Controller('board')
 @UseInterceptors(ResponseInterceptor)
 export class BoardController {
-  constructor(private readonly boardService: BoardService) {}
+  constructor(
+    private readonly boardService: BoardService,
+    private readonly likeService: LikeService,
+  ) {}
 
   @Post('/')
   @UseInterceptors(FilesInterceptor('images'))
@@ -54,18 +60,25 @@ export class BoardController {
     return this.boardService.getLastBoardList(count, maxId);
   }
 
-  // @Get('/:boardId/comment')
-  // searchComment(
-  //   @Param('boardId', ParseIntPipe) boardId: number,
-  //   @Query('count', ParseIntPipe) count: number,
-  // ) {}
-  //
-  // @Get('/:boardId/like')
-  // searchLikePeople() {}
-  //
-  // @Post('/like')
-  // boardLike() {}
-  //
-  // @Delete('/like')
-  // boardLikeDelete() {}
+  @Get('/user')
+  getUserBoardList(@Query(ValidationPipe) getUserBoardsDto: GetUserBoardsDto) {
+    return this.boardService.getUserBoards(getUserBoardsDto);
+  }
+
+  @Get('/like')
+  searchLikePeople(@Query('boardId', ParseIntPipe) boardId: number) {
+    return this.likeService.getBoardLikeList(boardId);
+  }
+
+  @Post('/like')
+  @UsePipes(ValidationPipe)
+  boardLike(@Body() likeBoardDto: LikeBoardDto) {
+    return this.likeService.boardLike(likeBoardDto);
+  }
+
+  @Delete('/like')
+  @UsePipes(ValidationPipe)
+  boardLikeDelete(@Body() likeBoardDto: LikeBoardDto) {
+    return this.likeService.boardUnLike(likeBoardDto);
+  }
 }

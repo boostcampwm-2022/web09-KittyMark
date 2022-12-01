@@ -57,9 +57,8 @@ export interface Board {
   like: number;
   comment: number;
   createAt: string;
-  location: string | null;
-  latitude: number | -1;
-  longitude: number | -1;
+  location: string | '';
+  coordinate: number[];
   photos: {
     url: string;
   }[];
@@ -92,6 +91,7 @@ export interface UserInfo {
   userId: number;
   userName: string;
   userProfileUrl: string;
+  boards: { count: number };
   follow: {
     count: number;
   };
@@ -111,10 +111,18 @@ export interface UserInfoApi extends Api {
 export interface UserPost {
   id: string;
   content: string;
-  created_at: string;
+  isStreet: boolean;
   location: string | null;
   latitude: number;
   longitude: number;
+  like: number;
+  created_at: string;
+  photos: [{ url: string }];
+  user: {
+    id: number;
+    name: string;
+    profileUrl: string;
+  };
 }
 
 export interface UserPostApi extends Api {
@@ -123,4 +131,33 @@ export interface UserPostApi extends Api {
     count: number;
     next_max_id: number;
   };
+}
+
+export interface MapApi extends Api {
+  data?: {
+    boards: [Board];
+  };
+}
+
+export interface FollowedByUser {
+  id: number;
+  name: string;
+  profileUrl: string;
+}
+
+export interface FollowUser {
+  id: number;
+  name: string;
+  profileUrl: string;
+  is_followed_by_user: boolean;
+}
+
+export interface FollowListData {
+  userId: number;
+  users_followed_by_user: FollowedByUser[];
+  users_follow_user: FollowUser[];
+}
+
+export interface FollowListApi extends Api {
+  data: FollowListData;
 }

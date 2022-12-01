@@ -37,4 +37,26 @@ export class UserRepository {
   async save(user: User) {
     return await this.userRepository.save(user);
   }
+
+  async update(id: number, updatedData) {
+    await this.userRepository.update(id, updatedData);
+  }
+
+  async findUserSummaryById(userId: number) {
+    const result: {
+      user_id: number;
+      user_name: string;
+      profile_url: string;
+      boardCount: number;
+    } = await this.userRepository
+      .createQueryBuilder('user')
+      .select(['user.id', 'user.name', 'user.profile_url'])
+      .addSelect('COUNT(board.id)', 'boardCount')
+      .leftJoin('user.boards', 'board')
+      .where('user.id = :id', { id: userId })
+      .getRawOne();
+
+    console.log(result);
+    return result;
+  }
 }

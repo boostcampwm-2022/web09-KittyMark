@@ -1,5 +1,10 @@
 import { AxiosResponse } from 'axios';
-import { Api, UserInfoApi, UserPostApi } from '../../types/responseData';
+import {
+  Api,
+  FollowListApi,
+  UserInfoApi,
+  UserPostApi,
+} from '../../types/responseData';
 import { defaultInstance } from '../utils';
 // type
 
@@ -18,22 +23,35 @@ const getUserPost = async (userId: number): Promise<UserPostApi> => {
   return data;
 };
 
-const postFollow = async (userId: number, followId: number): Promise<Api> => {
+const postFollow = async (
+  userId: number,
+  followedUserId: number,
+): Promise<Api> => {
   const { data }: AxiosResponse<Api> = await defaultInstance.post(
     `/api/user/follow`,
-    { userId, followId },
+    { userId, followedUserId },
   );
   return data;
 };
 
-const deleteFollow = async (userId: number, followId: number): Promise<Api> => {
+const deleteFollow = async (
+  userId: number,
+  followedUserId: number,
+): Promise<Api> => {
   const { data }: AxiosResponse<Api> = await defaultInstance.delete(
     `/api/user/follow`,
     {
-      data: { userId, followId },
+      data: { userId, followedUserId },
     },
   );
   return data;
 };
 
-export { getUserInfo, getUserPost, postFollow, deleteFollow };
+const getFollow = async (userId: number): Promise<FollowListApi> => {
+  const { data }: AxiosResponse<FollowListApi> = await defaultInstance.get(
+    `/api/user/follow/${userId}`,
+  );
+  return data;
+};
+
+export { getUserInfo, getUserPost, postFollow, deleteFollow, getFollow };

@@ -59,9 +59,7 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
   }
 
   const onClickFollowCnt = () => {
-    navigation('/followTest', {
-      state: { userName: userInfo.data.userName, userId: userInfo.data.userId },
-    });
+    navigation(`/follow/${userInfo.data.userName}/${userInfo.data.userId}`);
   };
 
   const onClickFollowBtn = () => {
@@ -84,7 +82,7 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
           <S.Name>{userInfo.data.userName}</S.Name>
           <S.InnerContainer>
             <S.CountSlot>
-              <button type="button">11</button>
+              <button type="button">{userInfo.data.boards.count}</button>
               <p>게시물</p>
             </S.CountSlot>
             <S.CountSlot>
@@ -94,7 +92,9 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
               <p>팔로워</p>
             </S.CountSlot>
             <S.CountSlot>
-              <button type="button">{userInfo.data.followed_by.count}</button>
+              <button type="button" onClick={onClickFollowCnt}>
+                {userInfo.data.followed_by.count}
+              </button>
               <p>팔로잉</p>
             </S.CountSlot>
           </S.InnerContainer>

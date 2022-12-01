@@ -1,5 +1,12 @@
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsInt, IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsBoolean,
+  IsInt,
+  IsLatitude,
+  IsLongitude,
+  IsNotEmpty,
+  IsOptional,
+} from 'class-validator';
 
 export class CreateBoardDto {
   @IsNotEmpty()
@@ -19,12 +26,12 @@ export class CreateBoardDto {
   location: string;
 
   @IsOptional()
-  @IsInt()
-  @Transform(({ value }) => parseInt(value, 10))
+  @IsLatitude()
+  @Transform(({ value }) => parseFloat(value))
   latitude: number;
 
   @IsOptional()
-  @IsInt()
-  @Transform(({ value }) => parseInt(value, 10))
+  @IsLongitude()
+  @Transform(({ value }) => parseFloat(value))
   longitude: number;
 }

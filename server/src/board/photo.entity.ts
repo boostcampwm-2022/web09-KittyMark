@@ -10,7 +10,6 @@ export class Photo {
   url: string;
 
   @ManyToOne(() => Board, (board) => board.photos, {
-    cascade: true,
     onDelete: 'CASCADE',
   })
   board: Board;

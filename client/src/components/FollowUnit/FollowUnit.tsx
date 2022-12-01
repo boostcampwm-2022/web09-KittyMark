@@ -1,68 +1,69 @@
 import React from 'react';
-import styled from 'styled-components';
+import { useMutation, useQueryClient } from 'react-query';
+import { AxiosError } from 'axios';
+// style
+import S from './FollowUnitStyles';
 // component
 import ProfileIcon from '../ProfileIcon/ProfileIcon';
-
-const OuterContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-  height: 3rem;
-  width: 80%;
-  * {
-    font-family: 'Jua';
-    font-style: normal;
-    font-weight: 400;
-  }
-`;
-
-const InnerContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-`;
-
-const FollowButton = styled.button<{ isFollow: boolean }>`
-  width: 5rem;
-  height: 1.5rem;
-  border: 1px solid
-    ${(props) => (props.isFollow ? props.theme.palette.border : '#ff4646')};
-  border-radius: 1rem;
-  padding: 0px;
-
-  color: ${(props) => (props.isFollow ? '#000000' : '#ffffff')};
-  background: ${(props) => (props.isFollow ? '#ffffff' : '#ff4646')};
-
-  cursor: pointer;
-
-  font-size: 12px;
-  line-height: 15px;
-`;
+import { Api } from '../../types/responseData';
+import { deleteFollow, postFollow } from '../../apis/api/userApi';
 
 interface FollowUnitProps {
+  userId: number;
   targetId: number;
   userName: string;
   isFollow: boolean;
 }
+// TODO UserInfoContainer 의 이벤트와 유사해서 같이 써도 괜찮을듯 하다.
+const FollowUnit = ({
+  userId,
+  targetId,
+  userName,
+  isFollow,
+}: FollowUnitProps) => {
+  const queryClient = useQueryClient();
 
-const FollowUnit = ({ targetId, userName, isFollow }: FollowUnitProps) => {
+  const { mutate: postFol } = useMutation<Api, AxiosError>(
+    () => postFollow(userId, targetId),
+    {
+      onSuccess: () => queryClient.invalidateQueries('followList'),
+      // eslint-disable-next-line no-console
+      onError: (e) => console.log(e.message),
+    },
+  );
+
+  const { mutate: delFol } = useMutation<Api, AxiosError>(
+    () => deleteFollow(userId, targetId),
+    {
+      onSuccess: () => queryClient.invalidateQueries('followList'),
+      // eslint-disable-next-line no-console
+      onError: (e) => console.log(e.message),
+    },
+  );
+
+  const onClickFollowButton = () => {
+    if (isFollow) delFol();
+    else postFol();
+  };
+
   return (
-    <OuterContainer>
-      <InnerContainer>
+    <S.OuterContainer>
+      <S.InnerContainer>
         <ProfileIcon
           targetId={targetId}
           userName="test"
           userProfile="../../defaultProfile.svg"
         />
         <p>{userName}</p>
-      </InnerContainer>
-      <FollowButton type="button" isFollow={isFollow}>
+      </S.InnerContainer>
+      <S.FollowButton
+        type="button"
+        isFollow={isFollow}
+        onClick={onClickFollowButton}
+      >
         팔로잉
-      </FollowButton>
-    </OuterContainer>
+      </S.FollowButton>
+    </S.OuterContainer>
   );
 };
 

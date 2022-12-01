@@ -35,8 +35,8 @@ const Button = styled.button<{ isOn: boolean }>`
   padding: 0px;
   border-radius: 2rem;
   border: 1px solid #ffffff;
-  color: ${(props) => (props.isOn ? '#000000' : '#ffffff')};
-  background: ${(props) => (props.isOn ? '#ffffff' : '#ff4646')};
+  color: ${(props) => (props.isOn ? '#ffffff' : '#000000')};
+  background: ${(props) => (props.isOn ? '#ff4646' : '#ffffff')};
 `;
 
 const UnitContainer = styled.div`
