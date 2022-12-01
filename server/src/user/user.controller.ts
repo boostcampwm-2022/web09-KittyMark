@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Query,
+  Param,
   UploadedFile,
   UseInterceptors,
   ValidationPipe,
@@ -46,7 +47,7 @@ export class UserController {
   }
 
   @Get('/follow/:userId')
-  getFollowList(@Body('userId', ParseIntPipe) userId: number) {
+  getFollowList(@Param('userId', ParseIntPipe) userId: number) {
     return this.userService.getFollowList(userId);
   }
 }

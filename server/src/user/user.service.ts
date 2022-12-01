@@ -22,7 +22,7 @@ export class UserService {
   ) {}
 
   async getUserInfo(getProfileInfoDto: GetProfileInfoDto) {
-    const { userId } = getProfileInfoDto;
+    const { userId, viewerId } = getProfileInfoDto;
     const user = await this.userRepository.findUserSummaryById(userId);
 
     if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
@@ -30,6 +30,17 @@ export class UserService {
     const follow = await this.followRepository.findFollowingCnt(userId);
     const follower = await this.followRepository.findFollowerCnt(userId);
 
+    const followedByViewer = await this.followRepository.findFollow(
+      viewerId,
+      userId,
+    );
+    const followsViewer = await this.followRepository.findFollow(
+      userId,
+      viewerId,
+    );
+
+    console.log(followedByViewer);
+    console.log(followsViewer);
     return {
       statusCode: 200,
       message: 'Success',
@@ -40,8 +51,8 @@ export class UserService {
         boards: { count: user.boardCount },
         follow: { count: follow[0].count },
         followed_by: { count: follower[0].count },
-        followed_by_viewer: false,
-        follows_viewer: false,
+        followed_by_viewer: followedByViewer ? true : false,
+        follows_viewer: followsViewer ? true : false,
       },
     };
   }
