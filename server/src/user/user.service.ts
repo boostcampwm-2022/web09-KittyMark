@@ -38,6 +38,9 @@ export class UserService {
 
     if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
 
+    const follow = await this.followRepository.findFollowingCnt(userId);
+    const follower = await this.followRepository.findFollowerCnt(userId);
+
     return {
       statusCode: 200,
       message: 'Success',
@@ -46,8 +49,8 @@ export class UserService {
         userName: user.user_name,
         userProfileUrl: user.profile_url,
         boards: { count: user.boardCount },
-        follow: { count: 0 },
-        followed_by: { count: 0 },
+        follow: { count: follow[0].count },
+        followed_by: { count: follower[0].count },
         followed_by_viewer: false,
         follows_viewer: false,
       },
