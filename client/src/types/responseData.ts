@@ -134,9 +134,7 @@ export interface UserPostApi extends Api {
 }
 
 export interface MapApi extends Api {
-  data?: {
-    boards: [Board];
-  };
+  data?: [Board];
 }
 
 export interface FollowedByUser {

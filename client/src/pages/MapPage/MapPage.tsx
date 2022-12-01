@@ -11,12 +11,41 @@ import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import NavBar from '../../components/NavBar/NavBar';
 import getMapData from '../../apis/api/mapApi';
 import { Board } from '../../types/responseData';
+import BoardModal from '../../components/BoardModal/BoardModal';
 
 declare global {
   interface Window {
     naver: typeof naver;
   }
 }
+
+const createMap = ({ latitude, longitude }: Coordinate) => {
+  return new naver.maps.Map('map', {
+    center: new naver.maps.LatLng(latitude, longitude),
+    zoomControl: true,
+    zoomControlOptions: {
+      style: naver.maps.ZoomControlStyle.SMALL,
+      position: naver.maps.Position.TOP_RIGHT,
+    },
+  });
+};
+
+const createMarker = (
+  map: naver.maps.Map,
+  { latitude, longitude }: Coordinate,
+) => {
+  return new naver.maps.Marker({
+    position: new naver.maps.LatLng(latitude, longitude),
+    map,
+    // 원하는 이미지로 마커 커스텀
+    // icon: {
+    //     url: pinImage,
+    //     size: new naver.maps.Size(50, 52),
+    //     origin: new naver.maps.Point(0, 0),
+    //     anchor: new naver.maps.Point(25, 26),
+    //   },
+  });
+};
 
 const MapPage = () => {
   const navigation = useNavigate();
@@ -26,6 +55,8 @@ const MapPage = () => {
   >('');
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [boards, setBoards] = useState<Board[]>([]);
+  const [clickedBoard, setClickedBoard] = useState<Board | null>(null);
+  const [markers, setMarkers] = useState<naver.maps.Marker[]>([]);
 
   const addPostButton = {
     buttonImg: addPostButtonImg,
@@ -43,7 +74,7 @@ const MapPage = () => {
     if (statusCode !== 201) throw new Error(message);
     if (data === undefined) return;
 
-    if (data.boards !== undefined) setBoards(data.boards);
+    if (data.length > 0) setBoards(data);
   };
 
   const requestData = () => {
@@ -53,21 +84,6 @@ const MapPage = () => {
       // eslint-disable-next-line no-console
       console.log(error);
     }
-  };
-
-  const currentMarker = ({ latitude, longitude }: Coordinate) => {
-    if (map === null) return null;
-    return new naver.maps.Marker({
-      position: new naver.maps.LatLng(latitude, longitude),
-      map,
-      // 원하는 이미지로 마커 커스텀
-      // icon: {
-      //     url: pinImage,
-      //     size: new naver.maps.Size(50, 52),
-      //     origin: new naver.maps.Point(0, 0),
-      //     anchor: new naver.maps.Point(25, 26),
-      //   },
-    });
   };
 
   /* 사용자 현재 위치 가져오기 */
@@ -88,17 +104,7 @@ const MapPage = () => {
   /* 사용자 위치 기반 지도 만들기 */
   useEffect(() => {
     if (typeof currentLocation !== 'string') {
-      const { latitude: currentLatitude, longitude: currentLongitude } =
-        currentLocation;
-
-      const naverMap = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(currentLatitude, currentLongitude),
-        zoomControl: true,
-        zoomControlOptions: {
-          style: naver.maps.ZoomControlStyle.SMALL,
-          position: naver.maps.Position.TOP_RIGHT,
-        },
-      });
+      const naverMap = createMap(currentLocation);
       setMap(naverMap);
     }
   }, [currentLocation]);
@@ -120,16 +126,32 @@ const MapPage = () => {
 
   /* 서버에서 받아온 게시글 정보를 기반으로 마킹 */
   useEffect(() => {
+    if (map === null) return;
     /* 게시글 데이터에서 index + 위/경도 추출 */
     const coords = extractCoord(boards);
     /* 추출한 위/경도를 지도에 Marker로 추가 */
-    coords.map((coord) => {
-      return currentMarker(coord);
+    const newMarkers = coords.map((coord) => {
+      return createMarker(map, coord);
     });
+    setMarkers(newMarkers);
   }, [boards]);
+
+  useEffect(() => {
+    const clickMarker = (board: Board) => {
+      return () => {
+        setClickedBoard(board);
+      };
+    };
+    for (let i = 0; i < markers.length; i += 1) {
+      naver.maps.Event.addListener(markers[i], 'click', clickMarker(boards[i]));
+    }
+  }, [markers]);
 
   return (
     <>
+      {clickedBoard !== null ? (
+        <BoardModal board={clickedBoard} setClickedBoard={setClickedBoard} />
+      ) : null}
       <NormalTopBar buttonData={addPostButton} />
       <NaverMap>
         <div id="map" style={{ width: '100%', height: '100%' }} />
