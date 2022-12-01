@@ -33,4 +33,12 @@ export class LikeRepository {
 
     return data.length !== 0;
   }
+
+  async findLikeCountByBoardId(boardId: number) {
+    return await this.likeRepository
+      .createQueryBuilder('like')
+      .select('count(*) as likeCount')
+      .where('board_id = :boardId', { boardId: boardId })
+      .execute();
+  }
 }

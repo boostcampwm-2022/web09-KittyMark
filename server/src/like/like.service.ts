@@ -20,26 +20,24 @@ export class LikeService {
       boardId,
       userId,
     );
-
     if (isDistinct) {
       throw new ConflictException('이미 좋아요를 눌렀습니다.');
-      return;
     }
-
     const board = await this.boardRepository.findOneById(boardId);
     const user = await this.userRepository.findById(userId);
     const like = plainToInstance(Like, { board, user });
     await this.likeRepository.save(like);
-    return;
+    return await this.likeRepository.findLikeCountByBoardId(boardId);
   }
 
   async boardUnLike(likeBoardDto: LikeBoardDto) {
     const { userId, boardId } = likeBoardDto;
     await this.likeRepository.deleteByUserBoardId(userId, boardId);
-    return;
+    return await this.likeRepository.findLikeCountByBoardId(boardId);
   }
 
   async getBoardLikeList(boardId: number) {
+    // return await this.likeRepository.findLikeListByBoardId(boardId);
     return await this.boardRepository.findLikeListByBoardId(boardId);
   }
 }
