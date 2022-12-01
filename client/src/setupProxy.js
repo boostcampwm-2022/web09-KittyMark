@@ -17,4 +17,10 @@ module.exports = (app) => {
       },
     }),
   );
+  app.use(
+    createProxyMiddleware('/map-reversegeocode', {
+      target: `https://naveropenapi.apigw.ntruss.com`,
+      changeOrigin: true,
+    }),
+  );
 };

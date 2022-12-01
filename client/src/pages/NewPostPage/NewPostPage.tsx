@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 // component
@@ -9,7 +9,8 @@ import ImageSlot from '../../components/ImageSlot/ImageSlot';
 // recoil
 import user from '../../store/userAtom';
 // api
-import postNewPostInfo from '../../apis/api/newPostApi';
+import { postNewPostInfo, NewPostBody } from '../../apis/api/newPostApi';
+import getlocationData from '../../apis/services/reverseGeocodingService';
 // hook
 import useImages from '../../hooks/useImages';
 import useInputs from '../../hooks/useInputs';
@@ -37,15 +38,47 @@ const NewPostPage = () => {
     content: '',
     category: false,
   });
+  const [location, setLocation] = useState<{
+    isChecked: boolean;
+    latitude?: number;
+    longitude?: number;
+    location?: string;
+  }>({ isChecked: false });
+
+  // TODO 안눌렀을 경우 체크
+  const findLocation = async () => {
+    if (location.isChecked || !navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords;
+      try {
+        const reverseGeo = await getlocationData(latitude, longitude);
+        setLocation({
+          isChecked: true,
+          latitude,
+          longitude,
+          location: reverseGeo,
+        });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
+    });
+  };
 
   const onClickSubmitBtn = async () => {
+    const bodyData: NewPostBody = {
+      userId: userData.userId,
+      images: images.images,
+      content: form.content,
+      isStreet: form.category,
+    };
+    if (form.category && location.isChecked) {
+      bodyData.location = location.location;
+      bodyData.latitude = location.latitude;
+      bodyData.longitude = location.longitude;
+    }
     try {
-      const data = await postNewPostInfo(
-        userData.userId,
-        images.images,
-        form.content,
-        form.category,
-      );
+      const data = await postNewPostInfo(bodyData);
       if (data.statusCode === 201) navigation('/home');
       // eslint-disable-next-line no-alert
       else alert(data.message);
@@ -58,6 +91,7 @@ const NewPostPage = () => {
   const disableBtn = () => {
     if (images.images.length === 0) return true;
     if (form.content.length === 0) return true;
+    if (form.category && !location.isChecked) return true;
     return false;
   };
 
@@ -115,7 +149,10 @@ const NewPostPage = () => {
           <S.CategoryButton
             checked={form.category}
             type="button"
-            onClick={() => setForm((prev) => ({ ...prev, category: true }))}
+            onClick={() => {
+              setForm((prev) => ({ ...prev, category: true }));
+              findLocation();
+            }}
           >
             네, 맞습니다.
           </S.CategoryButton>
@@ -133,7 +170,9 @@ const NewPostPage = () => {
             <label htmlFor="new-post-location">귀여운 친구의 위치다옹</label>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <img alt="location" src={locationIcon} />
-              <p style={{ margin: '0px' }}>서울 용산구 한강대로 70</p>
+              <p style={{ margin: '0px' }}>
+                {location.location || 'Loading...'}
+              </p>
             </div>
           </>
         )}
