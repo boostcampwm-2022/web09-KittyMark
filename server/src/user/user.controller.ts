@@ -9,6 +9,7 @@ import {
   UploadedFile,
   UseInterceptors,
   ValidationPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CheckNameDto } from './dto/check-name.dto';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
@@ -48,5 +49,10 @@ export class UserController {
   @Delete('/follow')
   deleteFolllow(@Body(ValidationPipe) followDto: FollowDto) {
     return this.userService.deleteFollow(followDto);
+  }
+
+  @Get('/follow')
+  getFollowList(@Body('userId', ParseIntPipe) userId: number) {
+    return this.userService.getFollowList(userId);
   }
 }

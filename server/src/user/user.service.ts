@@ -129,4 +129,28 @@ export class UserService {
 
     return { statusCode: 200, message: 'Success' };
   }
+
+  async getFollowList(userId: number) {
+    const users_followed_by_user = await this.followRepository.findFollowing(
+      userId,
+    );
+    const users_follow_user = await this.followRepository.findFollower(userId);
+
+    users_follow_user.map((record) => {
+      record.is_followed_by_user =
+        record.is_followed_by_user == '0' ? false : true;
+      return record;
+    });
+
+    return {
+      statusCode: 200,
+      message: 'Success',
+      data: {
+        userId: userId,
+        users_followed_by_user,
+        users_follow_user,
+      },
+    };
+    // return this.userRepository.findFollowsById(userId);
+  }
 }

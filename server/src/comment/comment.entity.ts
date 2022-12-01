@@ -28,7 +28,6 @@ export class Comment {
   user: User;
 
   @ManyToOne(() => Board, (board) => board.comments, {
-    cascade: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn()
