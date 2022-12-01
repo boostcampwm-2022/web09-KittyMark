@@ -23,7 +23,7 @@ const BoardItem = (props: Board) => {
     isStreet,
     like,
     comment,
-    createAt,
+    createdAt,
     location,
     photos,
     user,
@@ -45,7 +45,7 @@ const BoardItem = (props: Board) => {
         content={content}
         like={like}
         comment={comment}
-        createAt={createAt}
+        createAt={createdAt}
       />
     </BoardBackground>
   );

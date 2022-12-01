@@ -10,6 +10,7 @@ import {
 import likeButton from '../../../static/emptyHeart.svg';
 // import alreadyLikeButton from '../../../static/filledHeart.svg';
 import commentButton from '../../../static/commentBtn.svg';
+import timeCalc from '../../../utils/timeCalc';
 
 interface BoardBodyProps {
   boardId: string;
@@ -53,7 +54,7 @@ const BoardBody = (props: BoardBodyProps) => {
             {like > 0 ? <p>좋아요 {like}개</p> : ''}
             {comment > 0 ? <p>댓글 {comment}개</p> : ''}
           </div>
-          <p>{createAt}</p>
+          <p>{timeCalc(createAt)}</p>
         </BoardBodyInfoContainer>
       </BoardBodyContainer>
     </BoardBodyWrapper>
