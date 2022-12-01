@@ -7,7 +7,6 @@ import {
 import { plainToInstance } from 'class-transformer';
 import { S3Service } from 'src/S3/S3.service';
 import { FollowDto } from './dto/follow.dto';
-import { CheckNameDto } from './dto/check-name.dto';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
 import { Follow } from './follow/follow.entity';
@@ -21,16 +20,6 @@ export class UserService {
     private readonly s3Service: S3Service,
     private readonly followRepository: FollowRepository,
   ) {}
-  async checkName(checkNameDto: CheckNameDto) {
-    const { name } = checkNameDto;
-
-    const user = await this.userRepository.findByName(name);
-    if (user) {
-      return { statusCode: 200, message: 'Success', data: { isExist: true } };
-    } else {
-      return { statusCode: 200, message: 'Success', data: { isExist: false } };
-    }
-  }
 
   async getUserInfo(getProfileInfoDto: GetProfileInfoDto) {
     const { userId } = getProfileInfoDto;

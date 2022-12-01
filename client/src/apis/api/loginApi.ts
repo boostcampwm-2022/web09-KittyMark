@@ -53,7 +53,7 @@ export const postRegisterInfo = async (
 
 export const postNameCheck = async (name: string): Promise<NameCheckApi> => {
   const { data }: AxiosResponse<NameCheckApi> = await defaultInstance.post(
-    `/api/user/namecheck`,
+    `/api/auth/namecheck`,
     { name },
   );
   return data;
