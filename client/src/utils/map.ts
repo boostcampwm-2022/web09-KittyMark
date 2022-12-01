@@ -20,8 +20,8 @@ const getQueryMapRange = (map: naver.maps.Map) => {
 const extractCoord = (boards: Board[]) => {
   const coordList: Coordinate[] = [];
   boards.forEach((board) => {
-    const coord = { latitude: board.latitude, longitude: board.longitude };
-    coordList.push(coord);
+    const [latitude, longitude] = board.coordinate;
+    coordList.push({ latitude, longitude });
   });
   return coordList;
 };

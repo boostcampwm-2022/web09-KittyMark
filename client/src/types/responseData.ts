@@ -57,9 +57,8 @@ export interface Board {
   like: number;
   comment: number;
   createAt: string;
-  location: string | null;
-  latitude: number | -1;
-  longitude: number | -1;
+  location: string | '';
+  coordinate: number[];
   photos: {
     url: string;
   }[];
