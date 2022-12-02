@@ -48,7 +48,6 @@ export class BoardRepository {
     let boards;
     if (maxId !== -1) {
       const lastBoard = await this.boardRepository.findOneBy({ id: maxId });
-      console.log(lastBoard);
       boards = await qb
         .andWhere('board.created_at < :created_at', {
           created_at: lastBoard.createdAt,
@@ -57,7 +56,6 @@ export class BoardRepository {
     } else {
       boards = await qb.getMany();
     }
-    console.log(boards);
     if (boards.length !== 0) {
       boards = boards.slice(0, count);
       const _count = boards.length;
@@ -152,6 +150,7 @@ export class BoardRepository {
       ])
       .where('board_id = :boardId', { boardId: boardId })
       .execute();
+
     return { users: data };
   }
 }
