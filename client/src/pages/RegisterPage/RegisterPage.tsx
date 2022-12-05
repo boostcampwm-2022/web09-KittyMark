@@ -56,6 +56,7 @@ const RegisterPage = () => {
   };
 
   const onClickNameChekcBtn = async () => {
+    if (nameCheck) return;
     try {
       const data = await postNameCheck(nickname);
       if (data.statusCode === 200) {
