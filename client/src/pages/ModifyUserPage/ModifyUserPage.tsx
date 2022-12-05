@@ -77,7 +77,7 @@ const ModifyUserPage = () => {
       if (userName !== nickname)
         data = await patchUserInfo(userId, nickname, image.image);
       else data = await putUserImage(userId, image.image);
-      if (data.statusCode === 200) navigation(`/user/${nickname}`);
+      if (data.statusCode === 200) navigation(`/user/${nickname}/${userId}`);
       // eslint-disable-next-line no-alert
       else alert(data.message);
     } catch (error) {
