@@ -7,13 +7,14 @@ import {
   BoardBodyContentContainer,
   BoardBodyInfoContainer,
 } from './BoardBodyStyles';
-import likeButton from '../../../static/emptyHeart.svg';
-// import alreadyLikeButton from '../../../static/filledHeart.svg';
 import commentButton from '../../../static/commentBtn.svg';
 import timeCalc from '../../../utils/timeCalc';
+import LikeButton from '../../LikeButton/LikeButton';
+import { deleteLikeBoard, postLikeBoard } from '../../../apis/api/boardApi';
 
 interface BoardBodyProps {
-  boardId: string;
+  boardId: number;
+  /* TODO: 좋아요 여부 */
   content: string;
   like: number;
   comment: number;
@@ -28,17 +29,23 @@ const BoardBody = (props: BoardBodyProps) => {
     navigate(`/comment/${boardId}`);
   };
 
-  const onClickHeartIcon = () => {
-    /* TODO: 이 게시글에 대한 좋아요 요청 */
-  };
+  // const onClickHeartIcon = () => {
+  //   /* TODO: 이 게시글에 대한 좋아요 요청 */
+  // };
 
   return (
     <BoardBodyWrapper>
       <BoardBodyContainer>
         <BoardBodyButtonContainer>
-          <button type="button" onClick={onClickHeartIcon}>
-            <img src={likeButton} alt="이 게시글이 마음에 듭니다." />
-          </button>
+          <LikeButton
+            requestId={boardId}
+            isLiked={false}
+            postLikeApi={postLikeBoard}
+            deleteLikeApi={deleteLikeBoard}
+          />
+          {/* <button type="button" onClick={onClickHeartIcon}>
+            <img src={emptyHeartButton} alt="이 게시글이 마음에 듭니다." />
+          </button> */}
           <button type="button" onClick={onClickCommentIcon}>
             <img
               src={commentButton}

@@ -20,7 +20,7 @@ import ProfileIcon from '../../ProfileIcon/ProfileIcon';
 
 interface BoardHeaderProps {
   userId: number;
-  boardId: string;
+  boardId: number;
   userProfile: string;
   userName: string;
   isStreet: boolean;

@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { defaultInstance } from '../utils';
-import { Api, BoardApi, LikeListApi } from '../../types/responseData';
+import { Api, BoardApi, LikeApi, LikeListApi } from '../../types/responseData';
 
 /**
  * @param count 서버에서 받아올 데이터의 수
@@ -23,7 +23,7 @@ const getBoardData = async (
  * @returns 서버와의 통신 이후 결과를 보내준다.
  */
 const deleteBoardData = async (
-  boardId: string,
+  boardId: number,
   userId: number,
 ): Promise<Api> => {
   const { data }: AxiosResponse<Api> = await defaultInstance.delete(
@@ -56,8 +56,11 @@ const updateBoardData = async (
  * @param userId 좋아요를 요청하는 user ID
  * @returns 서버와의 통신 이후 결과를 보내준다.
  */
-const postLikeBoard = async (boardId: string, userId: number): Promise<Api> => {
-  const { data }: AxiosResponse<Api> = await defaultInstance.post(
+const postLikeBoard = async (
+  boardId: number,
+  userId: number,
+): Promise<LikeApi> => {
+  const { data }: AxiosResponse<LikeApi> = await defaultInstance.post(
     '/api/board/like',
     { boardId, userId },
   );
@@ -70,10 +73,10 @@ const postLikeBoard = async (boardId: string, userId: number): Promise<Api> => {
  * @returns 서버와의 통신 이후 결과를 보내준다.
  */
 const deleteLikeBoard = async (
-  boardId: string,
+  boardId: number,
   userId: number,
-): Promise<Api> => {
-  const { data }: AxiosResponse<Api> = await defaultInstance.delete(
+): Promise<LikeApi> => {
+  const { data }: AxiosResponse<LikeApi> = await defaultInstance.delete(
     '/api/board/like',
     { data: { boardId, userId } },
   );
