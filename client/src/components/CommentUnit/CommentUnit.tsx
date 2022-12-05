@@ -94,9 +94,11 @@ const CommentUnit = ({
         <p className="createdAt">{createdAt}</p>
       </CommentInfoContainer>
       <CommentContent>{content}</CommentContent>
-      <CommentMenuBtn type="button" onClick={onClickCommentMenuBtn}>
-        <img src={menuBtn} alt="Menu" />
-      </CommentMenuBtn>
+      {targetId === userId && (
+        <CommentMenuBtn type="button" onClick={onClickCommentMenuBtn}>
+          <img src={menuBtn} alt="Menu" />
+        </CommentMenuBtn>
+      )}
       {isModal && (
         <MenuModal
           top={70}

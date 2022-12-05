@@ -67,7 +67,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
       if (data.statusCode === 200) {
         setMenuHideOption(!menuHideOption);
         /* TODO: 나중에 개인 페이지에서 삭제할 경우 경로 설정 필요 */
-        navigation('/home');
+        window.location.replace('/home');
       }
     } catch (error) {
       // eslint-disable-next-line no-console

@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { MapController } from './map.controller';
 import { MapService } from './map.service';
 import { BoardModule } from 'board/board.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [BoardModule],
+  imports: [BoardModule, HttpModule],
   controllers: [MapController],
   providers: [MapService],
 })

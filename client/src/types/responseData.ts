@@ -134,22 +134,21 @@ export interface UserPostApi extends Api {
 }
 
 export interface MapApi extends Api {
-  data?: {
-    boards: [Board];
-  };
+  data?: [Board];
 }
 
 export interface FollowedByUser {
   id: number;
   name: string;
   profileUrl: string;
+  is_followed_by_viewer: boolean;
 }
 
 export interface FollowUser {
   id: number;
   name: string;
   profileUrl: string;
-  is_followed_by_user: boolean;
+  is_followed_by_viewer: boolean;
 }
 
 export interface FollowListData {

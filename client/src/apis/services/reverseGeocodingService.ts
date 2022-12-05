@@ -1,7 +1,8 @@
 import getReverseGeoData from '../api/reverseGeocoding';
 
 const getlocationData = async (latitude: number, longitude: number) => {
-  const data = await getReverseGeoData(latitude, longitude);
+  const { data } = await getReverseGeoData(latitude, longitude);
+
   if (data.status.name !== 'ok')
     throw Error('지도 경로 처리에 실패하였습니다.');
 
