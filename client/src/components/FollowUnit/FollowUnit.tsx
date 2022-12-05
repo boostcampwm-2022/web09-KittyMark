@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
@@ -13,6 +14,7 @@ interface FollowUnitProps {
   targetId: number;
   userName: string;
   isFollow: boolean;
+  isViewer?: boolean;
 }
 // TODO UserInfoContainer 의 이벤트와 유사해서 같이 써도 괜찮을듯 하다.
 const FollowUnit = ({
@@ -20,6 +22,7 @@ const FollowUnit = ({
   targetId,
   userName,
   isFollow,
+  isViewer,
 }: FollowUnitProps) => {
   const queryClient = useQueryClient();
 
@@ -56,13 +59,15 @@ const FollowUnit = ({
         />
         <p>{userName}</p>
       </S.InnerContainer>
-      <S.FollowButton
-        type="button"
-        isFollow={isFollow}
-        onClick={onClickFollowButton}
-      >
-        팔로잉
-      </S.FollowButton>
+      {!isViewer && (
+        <S.FollowButton
+          type="button"
+          isFollow={isFollow}
+          onClick={onClickFollowButton}
+        >
+          팔로잉
+        </S.FollowButton>
+      )}
     </S.OuterContainer>
   );
 };

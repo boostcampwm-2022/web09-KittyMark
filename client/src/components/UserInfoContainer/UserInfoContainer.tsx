@@ -87,13 +87,13 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
             </S.CountSlot>
             <S.CountSlot>
               <button type="button" onClick={onClickFollowCnt}>
-                {userInfo.data.follow.count}
+                {userInfo.data.followed_by.count}
               </button>
               <p>팔로워</p>
             </S.CountSlot>
             <S.CountSlot>
               <button type="button" onClick={onClickFollowCnt}>
-                {userInfo.data.followed_by.count}
+                {userInfo.data.follow.count}
               </button>
               <p>팔로잉</p>
             </S.CountSlot>

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import axios, { AxiosError } from 'axios';
+import { useRecoilValue } from 'recoil';
+// recoil
+import user from '../../store/userAtom';
 // style
 import S from './FollowContainerStyles';
 // api
@@ -16,6 +19,7 @@ interface FollowerContainerProps {
 
 // TODO 리엑트 쿼리 관련 코드를 분할하는 것이 좋을 수 있다.
 const FollowContainer = ({ userId }: FollowerContainerProps) => {
+  const { userId: viewerId } = useRecoilValue(user);
   const [status, setStatus] = useState<boolean>(true);
 
   const followList = useQuery<FollowListData, AxiosError>('followList', () =>
@@ -73,22 +77,24 @@ const FollowContainer = ({ userId }: FollowerContainerProps) => {
       </S.ButtonContainer>
       <S.UnitContainer>
         {status
-          ? followList.data.users_follow_user.map((user) => (
+          ? followList.data.users_follow_user.map((followUser) => (
               <FollowUnit
-                key={user.id}
+                key={followUser.id}
                 userId={userId}
-                targetId={user.id}
-                userName={user.name}
-                isFollow={user.is_followed_by_user}
+                targetId={followUser.id}
+                userName={followUser.name}
+                isFollow={followUser.is_followed_by_viewer}
+                isViewer={followUser.id === viewerId}
               />
             ))
-          : followList.data.users_followed_by_user.map((user) => (
+          : followList.data.users_followed_by_user.map((followedUser) => (
               <FollowUnit
-                key={user.id}
+                key={followedUser.id}
                 userId={userId}
-                targetId={user.id}
-                userName={user.name}
-                isFollow
+                targetId={followedUser.id}
+                userName={followedUser.name}
+                isFollow={followedUser.is_followed_by_viewer}
+                isViewer={followedUser.id === viewerId}
               />
             ))}
       </S.UnitContainer>

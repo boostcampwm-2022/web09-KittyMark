@@ -34,6 +34,7 @@ const Container = styled.div`
     flex-direction: column;
     gap: 1rem;
     justify-content: flex-start;
+    overflow-y: scroll;
   }
 `;
 
