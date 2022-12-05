@@ -12,6 +12,9 @@ const BoardBackground = styled.div`
   flex-direction: column;
   align-items: center;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+  font-family: 'Jua';
+  font-style: normal;
 `;
 
 export default BoardBackground;

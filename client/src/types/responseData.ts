@@ -114,28 +114,9 @@ export interface UserInfoApi extends Api {
   data: UserInfo;
 }
 
-// TODO 보드 관련 인터페이스가 두개인게 이거 일을 반복하는 일 같음
-
-export interface UserPost {
-  id: string;
-  content: string;
-  isStreet: boolean;
-  location: string | null;
-  latitude: number;
-  longitude: number;
-  like: number;
-  created_at: string;
-  photos: [{ url: string }];
-  user: {
-    id: number;
-    name: string;
-    profileUrl: string;
-  };
-}
-
 export interface UserPostApi extends Api {
   data: {
-    boards: [UserPost];
+    boards: [Board];
     count: number;
     next_max_id: number;
   };

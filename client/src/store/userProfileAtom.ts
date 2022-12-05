@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-const userProfile = atom({
+const userProfile = atom<string>({
   key: 'userProfile',
   default: '',
 });
