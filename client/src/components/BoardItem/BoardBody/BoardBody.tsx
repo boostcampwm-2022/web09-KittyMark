@@ -10,17 +10,18 @@ import {
 import likeButton from '../../../static/emptyHeart.svg';
 // import alreadyLikeButton from '../../../static/filledHeart.svg';
 import commentButton from '../../../static/commentBtn.svg';
+import timeCalc from '../../../utils/timeCalc';
 
 interface BoardBodyProps {
   boardId: string;
   content: string;
   like: number;
   comment: number;
-  createAt: string;
+  createdAt: string;
 }
 
 const BoardBody = (props: BoardBodyProps) => {
-  const { boardId, content, like, comment, createAt } = props;
+  const { boardId, content, like, comment, createdAt } = props;
   const navigate = useNavigate();
 
   const onClickCommentIcon = () => {
@@ -53,7 +54,7 @@ const BoardBody = (props: BoardBodyProps) => {
             {like > 0 ? <p>좋아요 {like}개</p> : ''}
             {comment > 0 ? <p>댓글 {comment}개</p> : ''}
           </div>
-          <p>{createAt}</p>
+          <p>{timeCalc(createdAt)}</p>
         </BoardBodyInfoContainer>
       </BoardBodyContainer>
     </BoardBodyWrapper>

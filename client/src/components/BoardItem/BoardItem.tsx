@@ -15,7 +15,7 @@ const convertPhotosToUrls = (photos: { url: string }[]) => {
 };
 
 const BoardItem = (props: Board) => {
-  if (props === undefined) return null;
+  if (props === undefined || props === null) return null;
 
   const {
     id,
@@ -23,7 +23,7 @@ const BoardItem = (props: Board) => {
     isStreet,
     like,
     comment,
-    createAt,
+    createdAt,
     location,
     photos,
     user,
@@ -45,7 +45,7 @@ const BoardItem = (props: Board) => {
         content={content}
         like={like}
         comment={comment}
-        createAt={createAt}
+        createdAt={createdAt}
       />
     </BoardBackground>
   );

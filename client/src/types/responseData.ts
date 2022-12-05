@@ -56,7 +56,7 @@ export interface Board {
   isStreet: boolean;
   like: number;
   comment: number;
-  createAt: string;
+  createdAt: string;
   location: string | '';
   coordinate: number[];
   photos: {
