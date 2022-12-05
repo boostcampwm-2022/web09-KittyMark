@@ -15,7 +15,7 @@ const convertPhotosToUrls = (photos: { url: string }[]) => {
 };
 
 const BoardItem = (props: Board) => {
-  if (props === undefined) return null;
+  if (props === undefined || props === null) return null;
 
   const {
     id,
