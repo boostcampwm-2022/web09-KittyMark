@@ -40,7 +40,7 @@ const App = () => {
             <Route path="/comment/:boardId" element={<CommentPage />} />
             <Route path="/new-post" element={<NewPostPage />} />
             <Route path="/modify" element={<ModifyPage />} />
-            <Route path="/user/:userName" element={<UserPage />} />
+            <Route path="/user/:userName/:targetId" element={<UserPage />} />
             <Route path="/modify-user" element={<ModifyUserPage />} />
             <Route path="/follow/:userName/:userId" element={<FollowPage />} />
             <Route path="/map" element={<MapPage />} />
