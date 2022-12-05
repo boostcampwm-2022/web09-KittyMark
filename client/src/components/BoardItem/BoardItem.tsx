@@ -45,7 +45,7 @@ const BoardItem = (props: Board) => {
         content={content}
         like={like}
         comment={comment}
-        createAt={createdAt}
+        createdAt={createdAt}
       />
     </BoardBackground>
   );
