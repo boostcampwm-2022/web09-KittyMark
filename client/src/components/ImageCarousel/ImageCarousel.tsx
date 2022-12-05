@@ -8,7 +8,7 @@ import CarouselItem from './CarouselItem/CarouselItem';
 
 const CarouselWrapper = styled.div`
   width: 85vw;
-  height: 85vw;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
