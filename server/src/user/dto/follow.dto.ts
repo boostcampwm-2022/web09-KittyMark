@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsInt, IsNotEmpty } from 'class-validator';
 
-export class GetProfileInfoDto {
+export class FollowDto {
   @IsNotEmpty()
   @IsInt()
   @Transform(({ value }) => parseInt(value, 10))
@@ -10,5 +10,5 @@ export class GetProfileInfoDto {
   @IsNotEmpty()
   @IsInt()
   @Transform(({ value }) => parseInt(value, 10))
-  viewerId: number;
+  followedUserId: number;
 }

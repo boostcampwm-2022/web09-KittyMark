@@ -66,6 +66,8 @@ const BoardHeader = (props: BoardHeaderProps) => {
       const data = await deleteBoardData(boardId, userId);
       if (data.statusCode === 200) {
         setMenuHideOption(!menuHideOption);
+        /* TODO: 나중에 개인 페이지에서 삭제할 경우 경로 설정 필요 */
+        window.location.replace('/home');
       }
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -75,7 +77,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
 
   const onClickUserInfo = () => {
     /* TODO: 해당 유저 페이지로 이동 */
-    navigation('/home');
+    navigation(`/user/${userName}`, { state: { targetId: userId } });
   };
   return (
     <>
