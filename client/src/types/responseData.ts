@@ -51,9 +51,10 @@ export interface NewPostApi extends Api {
 }
 
 export interface Board {
-  id: string;
+  id: number;
   content: string;
   isStreet: boolean;
+  /* TODO: 좋아요 여부 */
   like: number;
   comment: number;
   createdAt: string;
@@ -74,6 +75,12 @@ export interface BoardApi extends Api {
     boards: [Board];
     nextMaxId: number;
     count: number;
+  };
+}
+
+export interface LikeApi extends Api {
+  data?: {
+    likeCount: number;
   };
 }
 
