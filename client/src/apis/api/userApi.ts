@@ -5,7 +5,7 @@ import {
   UserInfoApi,
   UserPostApi,
 } from '../../types/responseData';
-import { defaultInstance } from '../utils';
+import { defaultInstance, defaultFormInstance } from '../utils';
 // type
 
 const getUserInfo = async (
@@ -57,4 +57,44 @@ const getFollow = async (userId: number): Promise<FollowListApi> => {
   return data;
 };
 
-export { getUserInfo, getUserPost, postFollow, deleteFollow, getFollow };
+const patchUserInfo = async (
+  userId: number,
+  userName: string,
+  image: File | null,
+): Promise<Api> => {
+  const formData = new FormData();
+  formData.append('userId', String(userId));
+  formData.append('userName', userName);
+  formData.append('image', image || '');
+
+  const { data }: AxiosResponse<Api> = await defaultFormInstance.patch(
+    `/api/user/info`,
+    formData,
+  );
+  return data;
+};
+
+const putUserImage = async (
+  userId: number,
+  image: File | null,
+): Promise<Api> => {
+  const formData = new FormData();
+  formData.append('userId', String(userId));
+  formData.append('image', image || '');
+
+  const { data }: AxiosResponse<Api> = await defaultFormInstance.patch(
+    `/api/user/image`,
+    formData,
+  );
+  return data;
+};
+
+export {
+  getUserInfo,
+  getUserPost,
+  postFollow,
+  deleteFollow,
+  getFollow,
+  patchUserInfo,
+  putUserImage,
+};
