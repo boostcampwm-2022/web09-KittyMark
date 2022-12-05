@@ -31,6 +31,7 @@ const OuterContainer = styled.div`
 `;
 
 const InnerContainerWrap = styled.div`
+  position: relative;
   width: 70%;
   height: 100%;
 `;
@@ -112,6 +113,21 @@ const DMButton = styled.button`
   padding: 0px;
 `;
 
+const MenuBtn = styled.button`
+  position: absolute;
+  right: 0.4rem;
+  top: 0.4rem;
+  padding: 0px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
 export default {
   StatusWrap,
   OuterContainer,
@@ -122,4 +138,5 @@ export default {
   ButtonContainer,
   FollowButton,
   DMButton,
+  MenuBtn,
 };
