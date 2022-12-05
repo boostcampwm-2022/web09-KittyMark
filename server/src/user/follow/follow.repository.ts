@@ -31,19 +31,21 @@ export class FollowRepository {
     await this.followRepository.delete(idInfo);
   }
 
-  async findFollowing(userId: number) {
+  async findFollowing(userId: number, viewerId: number) {
     return await this.followRepository.query(
-      `SELECT user.id, user.name, user.profile_url FROM follow LEFT JOIN user ON user.id = follow.followed_user_id WHERE follow.user_id = ${userId};`,
+      `SELECT FOLLOWS.*, ISNULL(followed_user_Id) AS is_followed_by_viewer FROM\
+      (SELECT user.id, user.name, user.profile_url FROM follow LEFT JOIN user ON user.id = follow.followed_user_id WHERE follow.user_id=${userId}) AS FOLLOWS\
+      LEFT JOIN (SELECT followed_user_Id FROM follow WHERE follow.user_id=${viewerId}) AS sub ON sub.followed_user_id = follows.id;`,
     );
   }
 
   isExistQuery = (query: string) => `SELECT EXISTS(${query})`;
 
-  async findFollower(userId: number) {
+  async findFollower(userId: number, viewerId: number) {
     return await this.followRepository
-      .query(`SELECT FOLLOWS.*, ISNULL(followed_user_Id) AS is_followed_by_user\
+      .query(`SELECT FOLLOWS.*, ISNULL(followed_user_Id) AS is_followed_by_viewer\
        FROM (SELECT user.id, user.name, user.profile_url FROM follow LEFT JOIN user ON user.id=follow.user_id WHERE followed_user_id=${userId}) AS FOLLOWS\
-       LEFT JOIN (SELECT followed_user_Id FROM follow WHERE follow.user_id=1) AS sub ON sub.followed_user_id = FOLLOWS.id;`);
+       LEFT JOIN (SELECT followed_user_Id FROM follow WHERE follow.user_id=${viewerId}) AS sub ON sub.followed_user_id = FOLLOWS.id;`);
   }
 
   async findFollowingCnt(userId: number) {

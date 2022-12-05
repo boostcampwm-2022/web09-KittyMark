@@ -47,7 +47,10 @@ export class UserController {
   }
 
   @Get('/follow/:userId')
-  getFollowList(@Param('userId', ParseIntPipe) userId: number) {
-    return this.userService.getFollowList(userId);
+  getFollowList(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Query('viewer', ParseIntPipe) viewerId: number,
+  ) {
+    return this.userService.getFollowList(userId, viewerId);
   }
 }
