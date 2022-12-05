@@ -14,6 +14,7 @@ import ModifyPage from './pages/ModifyPage/ModifyPage';
 import UserPage from './pages/UserPage/UserPage';
 import FollowPage from './pages/FollowPage/FollowPage';
 import MapPage from './pages/MapPage/MapPage';
+import ModifyUserPage from './pages/ModifyUserPage/ModifyUserPage';
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => {
             <Route path="/new-post" element={<NewPostPage />} />
             <Route path="/modify" element={<ModifyPage />} />
             <Route path="/user/:userName" element={<UserPage />} />
+            <Route path="/modify-user" element={<ModifyUserPage />} />
             <Route path="/follow/:userName/:userId" element={<FollowPage />} />
             <Route path="/map" element={<MapPage />} />
           </Routes>
