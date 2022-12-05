@@ -1,24 +1,31 @@
 /* eslint-disable no-console */
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 // recoil
 import user from '../../store/userAtom';
+import userProfile from '../../store/userProfileAtom';
 // api
 import { getUserInfo, postFollow, deleteFollow } from '../../apis/api/userApi';
 // style
 import S from './UserInfoContainerStyles';
 // component
 import ProfileIcon from '../ProfileIcon/ProfileIcon';
+import MenuModal from '../MenuModal/MenuModal';
+// type
 import { Api, UserInfo } from '../../types/responseData';
+// img
+import menuBtn from '../../static/menuBtn.svg';
 
 const UserInfoContainer = ({ targetId }: { targetId: number }) => {
   const navigation = useNavigate();
   const queryClient = useQueryClient();
 
   const { userId } = useRecoilValue(user);
+  const setProfile = useSetRecoilState(userProfile);
+  const [modalOn, setModalOn] = useState<boolean>(false);
 
   const userInfo = useQuery<UserInfo, AxiosError>('userInfo', () =>
     getUserInfo(targetId, userId).then((res) => res.data),
@@ -67,6 +74,11 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
     else postFol();
   };
 
+  const onClickModifyBtn = () => {
+    setProfile(userInfo.data.userProfileUrl || '../../defaultProfile.svg');
+    navigation('/modify-user');
+  };
+
   return (
     <>
       <S.OuterContainer>
@@ -98,6 +110,20 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
               <p>팔로잉</p>
             </S.CountSlot>
           </S.InnerContainer>
+          {userId === targetId && (
+            <S.MenuBtn type="button" onClick={() => setModalOn(true)}>
+              <img src={menuBtn} alt="Menu" />
+            </S.MenuBtn>
+          )}
+          {modalOn && (
+            <MenuModal
+              top={20}
+              left={60}
+              onClickCancel={() => setModalOn(false)}
+              onClickModify={onClickModifyBtn}
+              isCantDelete
+            />
+          )}
         </S.InnerContainerWrap>
       </S.OuterContainer>
       {targetId !== userId && (

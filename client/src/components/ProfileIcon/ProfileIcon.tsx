@@ -37,7 +37,7 @@ const ProfileIcon = ({
   return (
     <ProfileIconContainer
       type="button"
-      onClick={() => navigation(`/user/${userName}`, { state: { targetId } })}
+      onClick={() => navigation(`/user/${userName}/${targetId}`)}
       customLength={customLength || 2.5}
     >
       <img src={userProfile} alt="Profile" />

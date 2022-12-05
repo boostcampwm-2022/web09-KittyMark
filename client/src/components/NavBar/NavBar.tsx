@@ -29,9 +29,7 @@ const NavBar = () => {
       <S.Icon
         type="button"
         onClick={() =>
-          navigation(`/user/${userData.userName}`, {
-            state: { targetId: userData.userId },
-          })
+          navigation(`/user/${userData.userName}/${userData.userId}`)
         }
       >
         <img src={userIcon} alt="User" />

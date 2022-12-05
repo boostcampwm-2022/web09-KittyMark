@@ -1,45 +1,38 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-// api
-import { postRegisterInfo, postNameCheck } from '../../apis/api/loginApi';
+import React, { useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+// recoil
+import user from '../../store/userAtom';
+import userProfile from '../../store/userProfileAtom';
 // style
-import S from './RegisterPageStyles';
+import S from './ModifyUserPageStyles';
+// hook
+import useImage from '../../hooks/useImage';
+// api
+import { postNameCheck } from '../../apis/api/loginApi';
+import { putUserImage, patchUserInfo } from '../../apis/api/userApi';
 // img
 import defaultProfile from '../../static/defaultProfile.svg';
 import plusBtn from '../../static/plusBtn.svg';
 // component
-import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
-// hook
-import useImage from '../../hooks/useImage';
+import TopBar from '../../components/TopBar/TopBar';
+import { Api } from '../../types/responseData';
 
-interface LocationStateType {
-  email: string;
-  oauthInfo: 'NAVER' | 'KAKAO';
-}
+const ModifyUserPage = () => {
+  const navigation = useNavigate();
 
-// TODO 내부에 이름 체크 로직이 아직 완벽하지 않고, 해당 로직을 custom hook 으로 빼자
-const RegisterPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { email, oauthInfo }: LocationStateType = location.state
-    ? (location.state as LocationStateType)
-    : { email: '', oauthInfo: 'NAVER' };
-
+  const { userId, userName } = useRecoilValue(user);
+  const profile = useRecoilValue(userProfile);
   const profileImageBtn = useRef<HTMLInputElement>(null);
-
   const { image, onChangeImage } = useImage({
     image: null,
-    image64: defaultProfile,
+    image64: profile || defaultProfile,
   });
-
-  const [nickname, setNickname] = useState<string>('');
-  const [nameCheck, setNameCheck] = useState<boolean>(false);
-  const [nameCheckP, setNameCheckP] =
-    useState<string>('별명 중복 체크를 해주세요.');
-
-  useEffect(() => {
-    if (email === '') navigate('/');
-  }, []);
+  const [nickname, setNickname] = useState<string>(userName);
+  const [nameCheck, setNameCheck] = useState<boolean>(true);
+  const [nameCheckP, setNameCheckP] = useState<string>(
+    '기존 별명은 그대로 사용 가능합니다.',
+  );
 
   const onClickProfileImageBtn = () => {
     if (profileImageBtn.current) {
@@ -57,6 +50,11 @@ const RegisterPage = () => {
 
   const onClickNameChekcBtn = async () => {
     if (nameCheck) return;
+    if (userName === nickname) {
+      setNameCheck(true);
+      setNameCheckP('기존 별명은 그대로 사용 가능합니다.');
+      return;
+    }
     try {
       const data = await postNameCheck(nickname);
       if (data.statusCode === 200) {
@@ -73,16 +71,13 @@ const RegisterPage = () => {
     }
   };
 
-  const onClickRegisterBtn = async () => {
+  const onClickModifyBtn = async () => {
     try {
-      const data = await postRegisterInfo(
-        email,
-        nickname,
-        oauthInfo,
-        image.image,
-      );
-      if (data.statusCode === 201) navigate('/');
-      // TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
+      let data: Api;
+      if (userName !== nickname)
+        data = await patchUserInfo(userId, nickname, image.image);
+      else data = await putUserImage(userId, image.image);
+      if (data.statusCode === 200) navigation(`/user/${nickname}/${userId}`);
       // eslint-disable-next-line no-alert
       else alert(data.message);
     } catch (error) {
@@ -93,11 +88,16 @@ const RegisterPage = () => {
 
   return (
     <>
-      <NormalTopBar buttonData={null} />
+      <TopBar
+        isBack
+        title={userName}
+        isCheck={false}
+        backFunc={() => navigation(-1)}
+      />
       <S.Body>
         <S.Form>
-          <S.Title>신규 유저님 환영합니다!</S.Title>
-          <S.Info>유저님의 추가 정보를 작성해주세요!</S.Info>
+          <S.Title>유저 수정 페이지다냥!</S.Title>
+          <S.Info>사진과 닉네임 변경이 가능하다냥!</S.Info>
           <S.ProfileContainer>
             <img src={image.image64 as string} alt="Slot" />
             <input
@@ -114,7 +114,8 @@ const RegisterPage = () => {
           <S.InputContainer>
             <S.Input
               type="text"
-              placeholder="당신의 별명은 무엇인가냥?"
+              value={nickname}
+              placeholder="바꿀 별명은 무엇인가냥?"
               onChange={onChangeNickname}
             />
             <S.NameCheckButton
@@ -128,10 +129,10 @@ const RegisterPage = () => {
           <p>{nameCheckP}</p>
           <S.SubmitButton
             type="button"
-            onClick={onClickRegisterBtn}
+            onClick={onClickModifyBtn}
             disabled={!nickname || !nameCheck}
           >
-            회원가입
+            정보수정
           </S.SubmitButton>
         </S.Form>
       </S.Body>
@@ -139,4 +140,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default ModifyUserPage;
