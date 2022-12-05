@@ -133,15 +133,23 @@ export class UserService {
     return { statusCode: 200, message: 'Success' };
   }
 
-  async getFollowList(userId: number) {
+  async getFollowList(userId: number, viewerId: number) {
     const users_followed_by_user = await this.followRepository.findFollowing(
       userId,
+      viewerId,
     );
-    const users_follow_user = await this.followRepository.findFollower(userId);
+    const users_follow_user = await this.followRepository.findFollower(
+      userId,
+      viewerId,
+    );
+
+    users_followed_by_user.map((record) => {
+      record.is_followed_by_viewer = record.is_followed_by_viewer === '0';
+      return record;
+    });
 
     users_follow_user.map((record) => {
-      record.is_followed_by_user =
-        record.is_followed_by_user == '0' ? false : true;
+      record.is_followed_by_viewer = record.is_followed_by_viewer === '0';
       return record;
     });
 

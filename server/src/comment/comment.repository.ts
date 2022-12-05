@@ -19,7 +19,6 @@ export class CommentRepository {
     const queryBuilder = this.commentRepository
       .createQueryBuilder('c')
       .select(['c', 'u.id', 'u.name', 'u.profileUrl'])
-      .innerJoin('c.board', 'b')
       .innerJoin('c.user', 'u')
       .where('c.board_id = :id', { id: boardId })
       .orderBy('c.created_at', 'DESC');
@@ -36,6 +35,10 @@ export class CommentRepository {
         .getMany();
     }
 
+    const boardUser = await this.commentRepository.query(
+      `SELECT user_id FROM board WHERE id=${boardId};`,
+    );
+
     if (results.length !== 0) {
       const _count = results.length;
       const nextMaxId = results[_count - 1].id;
@@ -46,6 +49,7 @@ export class CommentRepository {
           message: 'Success',
           comments: results,
           board_id: boardId,
+          board_user_id: boardUser[0].user_id,
           count: _count,
           next_max_id: nextMaxId,
         },
