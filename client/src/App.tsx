@@ -5,17 +5,19 @@ import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 // page
 import LoginPage from './pages/LoginPage/LoginPage';
-import HomePage from './pages/HomePage/HomePage';
-import RegisterPage from './pages/RegisterPage/RegisterPage';
-import LoadingPage from './pages/LoadingPage/LoadingPage';
-import CommentPage from './pages/CommentPage/CommentPage';
-import NewPostPage from './pages/NewPostPage/NewPostPage';
-import ModifyPage from './pages/ModifyPage/ModifyPage';
-import UserPage from './pages/UserPage/UserPage';
-import FollowPage from './pages/FollowPage/FollowPage';
-import MapPage from './pages/MapPage/MapPage';
-import ModifyUserPage from './pages/ModifyUserPage/ModifyUserPage';
-import BoardDetailPage from './pages/BoardDetailPage/BoardDetailPage';
+import {
+  BoardDetailPage,
+  CommentPage,
+  FollowPage,
+  HomePage,
+  LoadingPage,
+  MapPage,
+  ModifyPage,
+  ModifyUserPage,
+  NewPostPage,
+  RegisterPage,
+  UserPage,
+} from './pages/index';
 
 const queryClient = new QueryClient();
 

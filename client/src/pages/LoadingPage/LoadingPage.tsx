@@ -5,11 +5,10 @@ import { useSetRecoilState } from 'recoil';
 import user from '../../store/userAtom';
 // api
 import { postAuthInfo } from '../../apis/api/loginApi';
-// style
-import S from './LoadingPageStyles';
 // img
-import loadingCat from '../../static/loadingCat.gif';
 import { LoginApi } from '../../types/responseData';
+// component
+import LoadingContainer from '../../components/LoadingContainer/LoadingContainer';
 
 const getSocialName = (url: URL): 'naver' | 'kakao' | undefined => {
   const callback = url.pathname.split('/')[2];
@@ -68,12 +67,7 @@ const LoadingPage = () => {
     }
   }, []);
 
-  return (
-    <S.Body>
-      <img src={loadingCat} alt="로딩중" width="30%" />
-      <S.Text>Loading...</S.Text>
-    </S.Body>
-  );
+  return <LoadingContainer />;
 };
 
 export default LoadingPage;
