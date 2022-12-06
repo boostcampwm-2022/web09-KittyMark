@@ -4,12 +4,13 @@ import { Board } from '../types/responseData';
 const boardDetail = atom<Board>({
   key: 'boardDetail',
   default: {
-    id: '-1',
+    id: -1,
     content: '',
     isStreet: false,
     like: 0,
     comment: 0,
     createdAt: '',
+    isLiked: false,
     location: '',
     coordinate: [0, 0],
     photos: [{ url: '' }],

@@ -21,6 +21,7 @@ const BoardItem = (props: Board) => {
     id,
     content,
     isStreet,
+    isLiked,
     like,
     comment,
     createdAt,
@@ -43,6 +44,7 @@ const BoardItem = (props: Board) => {
       <BoardBody
         boardId={id}
         content={content}
+        isLiked={isLiked}
         like={like}
         comment={comment}
         createdAt={createdAt}
