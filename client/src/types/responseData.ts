@@ -54,7 +54,6 @@ export interface Board {
   id: number;
   content: string;
   isStreet: boolean;
-  /* TODO: 좋아요 여부 */
   like: number;
   comment: number;
   createdAt: string;
@@ -70,9 +69,8 @@ export interface Board {
     profileUrl: string;
   };
 }
-
 export interface BoardApi extends Api {
-  data?: {
+  data: {
     boards: [Board];
     nextMaxId: number;
     count: number;
@@ -80,7 +78,7 @@ export interface BoardApi extends Api {
 }
 
 export interface LikeApi extends Api {
-  data?: {
+  data: {
     likeCount: number;
   };
 }
