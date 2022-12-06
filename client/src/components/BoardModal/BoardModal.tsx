@@ -2,7 +2,7 @@ import React from 'react';
 import { Board } from '../../types/responseData';
 import BoardItem from '../BoardItem/BoardItem';
 import closeButton from '../../static/closeButton.svg';
-import { Container, Background, InnerContainer } from './BoardModalStyles';
+import S from './BoardModalStyles';
 
 interface BoardModalProps {
   board: Board;
@@ -15,16 +15,16 @@ const BoardModal = (props: BoardModalProps) => {
     setClickedBoard(null);
   };
   return (
-    <Container>
-      <Background>
+    <S.Container>
+      <S.Background>
         <div className="button-wrapper">
           <button type="button" onClick={closeModal}>
             <img src={closeButton} alt="close board modal" />
           </button>
         </div>
-        <InnerContainer>{BoardItem(board)}</InnerContainer>
-      </Background>
-    </Container>
+        <S.InnerContainer>{BoardItem(board)}</S.InnerContainer>
+      </S.Background>
+    </S.Container>
   );
 };
 

@@ -51,4 +51,4 @@ const InnerContainer = styled.div`
   justify-content: center;
 `;
 
-export { Container, Background, InnerContainer };
+export default { Container, Background, InnerContainer };

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const BoardHeaderWrapper = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -11,7 +11,7 @@ const BoardHeaderWrapper = styled.div`
     border: 0px;
   }
 `;
-const BoardHeaderContainer = styled.div`
+const Container = styled.div`
   margin: 3%;
   width: auto;
   display: flex;
@@ -30,7 +30,7 @@ const UserProfileImageContainer = styled.div`
     border-radius: 20px;
   }
 `;
-const BoardHeaderInfoContainer = styled.div`
+const InfoContainer = styled.div`
   height: 2.5rem;
   display: flex;
   flex-direction: column;
@@ -53,9 +53,9 @@ const BoardHeaderInfoContainer = styled.div`
   }
 `;
 
-export {
-  BoardHeaderWrapper,
-  BoardHeaderContainer,
+export default {
+  Wrapper,
+  Container,
   UserProfileImageContainer,
-  BoardHeaderInfoContainer,
+  InfoContainer,
 };

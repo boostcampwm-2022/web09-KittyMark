@@ -4,11 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import user from '../../../store/userAtom';
 // style
-import {
-  BoardHeaderWrapper,
-  BoardHeaderContainer,
-  BoardHeaderInfoContainer,
-} from './BoardHeaderStyles';
+import S from './BoardHeaderStyles';
 // img
 import pinIcon from '../../../static/pinIcon.svg';
 import menuButton from '../../../static/menuBtn.svg';
@@ -79,14 +75,14 @@ const BoardHeader = (props: BoardHeaderProps) => {
   };
   return (
     <>
-      <BoardHeaderWrapper>
-        <BoardHeaderContainer onClick={onClickUserInfo}>
+      <S.Wrapper>
+        <S.Container onClick={onClickUserInfo}>
           <ProfileIcon
             targetId={userId}
             userName={userName}
             userProfile={userProfile}
           />
-          <BoardHeaderInfoContainer>
+          <S.InfoContainer>
             <div className="user-name">{userName}</div>
             {isStreet === true ? (
               <div>
@@ -98,14 +94,14 @@ const BoardHeader = (props: BoardHeaderProps) => {
             ) : (
               ''
             )}
-          </BoardHeaderInfoContainer>
-        </BoardHeaderContainer>
+          </S.InfoContainer>
+        </S.Container>
         {loginedUserId === userId ? (
           <button type="button" onClick={onClickMenu}>
             <img src={menuButton} alt="Create/Delete DropDown" />
           </button>
         ) : null}
-      </BoardHeaderWrapper>
+      </S.Wrapper>
       {menuHideOption ? null : (
         <MenuModal
           top={15}

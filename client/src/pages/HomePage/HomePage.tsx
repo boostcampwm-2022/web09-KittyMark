@@ -8,7 +8,7 @@ import NavBar from '../../components/NavBar/NavBar';
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import BoardItem from '../../components/BoardItem/BoardItem';
 // style
-import { BoardContainer, BoardEnd } from './HomePageStyles';
+import S from './HomePageStyles';
 // type
 import { Board } from '../../types/responseData';
 // api
@@ -56,9 +56,9 @@ const HomePage = () => {
   return (
     <>
       <NormalTopBar buttonData={addPostButton} />
-      <BoardContainer>
+      <S.BoardContainer>
         {boards.length !== 0 ? makeBoarList(boards) : null}
-        <BoardEnd>
+        <S.BoardEnd>
           <img
             src={catFootprint}
             alt="Board End Mark"
@@ -66,8 +66,8 @@ const HomePage = () => {
             height="40rem"
           />
           <p>모든 게시물을 확인했습니다</p>
-        </BoardEnd>
-      </BoardContainer>
+        </S.BoardEnd>
+      </S.BoardContainer>
       <NavBar />
     </>
   );
