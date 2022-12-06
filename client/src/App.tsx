@@ -15,6 +15,7 @@ import UserPage from './pages/UserPage/UserPage';
 import FollowPage from './pages/FollowPage/FollowPage';
 import MapPage from './pages/MapPage/MapPage';
 import ModifyUserPage from './pages/ModifyUserPage/ModifyUserPage';
+import BoardDetailPage from './pages/BoardDetailPage/BoardDetailPage';
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="/modify-user" element={<ModifyUserPage />} />
             <Route path="/follow/:userName/:userId" element={<FollowPage />} />
             <Route path="/map" element={<MapPage />} />
+            <Route path="/detail" element={<BoardDetailPage />} />
           </Routes>
         </QueryClientProvider>
       </RecoilRoot>

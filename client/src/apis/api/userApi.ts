@@ -50,9 +50,12 @@ const deleteFollow = async (
   return data;
 };
 
-const getFollow = async (userId: number): Promise<FollowListApi> => {
+const getFollow = async (
+  userId: number,
+  viewerId: number,
+): Promise<FollowListApi> => {
   const { data }: AxiosResponse<FollowListApi> = await defaultInstance.get(
-    `/api/user/follow/${userId}`,
+    `/api/user/follow/${userId}?viewer=${viewerId}`,
   );
   return data;
 };

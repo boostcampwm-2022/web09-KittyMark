@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 // recoil
 import user from '../../store/userAtom';
@@ -21,7 +21,7 @@ import { Api } from '../../types/responseData';
 const ModifyUserPage = () => {
   const navigation = useNavigate();
 
-  const { userId, userName } = useRecoilValue(user);
+  const [{ userId, userName }, setUserInfo] = useRecoilState(user);
   const profile = useRecoilValue(userProfile);
   const profileImageBtn = useRef<HTMLInputElement>(null);
   const { image, onChangeImage } = useImage({
@@ -77,7 +77,10 @@ const ModifyUserPage = () => {
       if (userName !== nickname)
         data = await patchUserInfo(userId, nickname, image.image);
       else data = await putUserImage(userId, image.image);
-      if (data.statusCode === 200) navigation(`/user/${nickname}/${userId}`);
+      if (data.statusCode === 200) {
+        setUserInfo((prev) => ({ userId: prev.userId, userName: nickname }));
+        navigation(`/user/${nickname}/${userId}`);
+      }
       // eslint-disable-next-line no-alert
       else alert(data.message);
     } catch (error) {
