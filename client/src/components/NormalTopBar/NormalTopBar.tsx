@@ -3,6 +3,8 @@ import styled from 'styled-components';
 // img
 import logo from '../../static/whiteLogo.png';
 import appName from '../../static/logoName.png';
+// preload
+import { NewPostPage } from '../../pages';
 
 const Container = styled.div`
   width: calc(100% - 24px);
@@ -48,7 +50,12 @@ const NormalTopBar = (props: NormalTopBarProps) => {
         />
       </LogoContainer>
       {buttonData !== null ? (
-        <button type="button" onClick={buttonData.eventHandler}>
+        // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
+        <button
+          type="button"
+          onClick={buttonData.eventHandler}
+          onMouseOver={() => NewPostPage.preload()}
+        >
           <img src={buttonData.buttonImg} alt={buttonData.description} />
         </button>
       ) : null}
