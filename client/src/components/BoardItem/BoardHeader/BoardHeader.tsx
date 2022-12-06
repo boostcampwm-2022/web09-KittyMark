@@ -77,6 +77,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
   const onClickUserInfo = () => {
     navigation(`/user/${userName}`, { state: { targetId: userId } });
   };
+
   return (
     <>
       <BoardHeaderWrapper>
