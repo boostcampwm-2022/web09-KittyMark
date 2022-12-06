@@ -26,4 +26,4 @@ const BoardEnd = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-export { TempBody, BoardContainer, BoardEnd };
+export default { TempBody, BoardContainer, BoardEnd };

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const BoardBodyWrapper = styled.div`
+const Wrapper = styled.div`
   margin-top: 3%;
   width: 95%;
   border-radius: 15px;
@@ -9,13 +9,13 @@ const BoardBodyWrapper = styled.div`
   align-items: center;
 `;
 
-const BoardBodyContainer = styled.div`
+const Container = styled.div`
   width: 95%;
   height: 95%;
   display: flex;
   flex-direction: column;
 `;
-const BoardBodyButtonContainer = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 2%;
@@ -27,7 +27,7 @@ const BoardBodyButtonContainer = styled.div`
     border: 0px;
   }
 `;
-const BoardBodyContentContainer = styled.div`
+const ContentContainer = styled.div`
   padding-left: 5%;
   font-size: 0.9rem;
   font-weight: 400;
@@ -38,7 +38,7 @@ const BoardBodyContentContainer = styled.div`
     word-wrap: break-word;
   }
 `;
-const BoardBodyInfoContainer = styled.div`
+const InfoContainer = styled.div`
   padding-left: 3%;
   font-size: 0.7rem;
   font-weight: 600;
@@ -54,10 +54,10 @@ const BoardBodyInfoContainer = styled.div`
   }
 `;
 
-export {
-  BoardBodyWrapper,
-  BoardBodyContainer,
-  BoardBodyButtonContainer,
-  BoardBodyContentContainer,
-  BoardBodyInfoContainer,
+export default {
+  Wrapper,
+  Container,
+  ButtonContainer,
+  ContentContainer,
+  InfoContainer,
 };
