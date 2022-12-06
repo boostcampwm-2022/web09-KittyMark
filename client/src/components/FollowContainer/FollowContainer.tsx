@@ -23,7 +23,7 @@ const FollowContainer = ({ userId }: FollowerContainerProps) => {
   const [status, setStatus] = useState<boolean>(true);
 
   const followList = useQuery<FollowListData, AxiosError>('followList', () =>
-    getFollow(Number(userId)).then((res) => res.data),
+    getFollow(Number(userId), viewerId).then((res) => res.data),
   );
 
   const onClickFollowerBtn = () => setStatus(true);
@@ -80,7 +80,7 @@ const FollowContainer = ({ userId }: FollowerContainerProps) => {
           ? followList.data.users_follow_user.map((followUser) => (
               <FollowUnit
                 key={followUser.id}
-                userId={userId}
+                userId={viewerId}
                 targetId={followUser.id}
                 userName={followUser.name}
                 isFollow={followUser.is_followed_by_viewer}
@@ -90,7 +90,7 @@ const FollowContainer = ({ userId }: FollowerContainerProps) => {
           : followList.data.users_followed_by_user.map((followedUser) => (
               <FollowUnit
                 key={followedUser.id}
-                userId={userId}
+                userId={viewerId}
                 targetId={followedUser.id}
                 userName={followedUser.name}
                 isFollow={followedUser.is_followed_by_viewer}

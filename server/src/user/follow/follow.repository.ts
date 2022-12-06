@@ -33,8 +33,8 @@ export class FollowRepository {
 
   async findFollowing(userId: number, viewerId: number) {
     return await this.followRepository.query(
-      `SELECT FOLLOWS.*, ISNULL(followed_user_Id) AS is_followed_by_viewer FROM\
-      (SELECT user.id, user.name, user.profile_url FROM follow LEFT JOIN user ON user.id = follow.followed_user_id WHERE follow.user_id=${userId}) AS FOLLOWS\
+      `SELECT follows.*, ISNULL(followed_user_Id) AS is_followed_by_viewer FROM\
+      (SELECT user.id, user.name, user.profile_url FROM follow LEFT JOIN user ON user.id = follow.followed_user_id WHERE follow.user_id=${userId}) AS follows\
       LEFT JOIN (SELECT followed_user_Id FROM follow WHERE follow.user_id=${viewerId}) AS sub ON sub.followed_user_id = follows.id;`,
     );
   }
@@ -43,9 +43,9 @@ export class FollowRepository {
 
   async findFollower(userId: number, viewerId: number) {
     return await this.followRepository
-      .query(`SELECT FOLLOWS.*, ISNULL(followed_user_Id) AS is_followed_by_viewer\
-       FROM (SELECT user.id, user.name, user.profile_url FROM follow LEFT JOIN user ON user.id=follow.user_id WHERE followed_user_id=${userId}) AS FOLLOWS\
-       LEFT JOIN (SELECT followed_user_Id FROM follow WHERE follow.user_id=${viewerId}) AS sub ON sub.followed_user_id = FOLLOWS.id;`);
+      .query(`SELECT followers.*, ISNULL(followed_user_Id) AS is_followed_by_viewer\
+      FROM (SELECT user.id, user.name, user.profile_url FROM follow LEFT JOIN user ON user.id=follow.user_id WHERE followed_user_id=${userId}) AS followers\
+      LEFT JOIN (SELECT followed_user_Id FROM follow WHERE follow.user_id=${viewerId}) AS sub ON sub.followed_user_id = followers.id;`);
   }
 
   async findFollowingCnt(userId: number) {
