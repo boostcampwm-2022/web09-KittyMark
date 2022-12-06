@@ -44,15 +44,16 @@ const UserPostContainer = ({ targetId }: { targetId: number }) => {
 
   return (
     <S.Grid>
-      {boards.map((board) => (
-        <S.GridSlot
-          key={board.id}
-          type="button"
-          onClick={() => onClickThumbnail(board)}
-        >
-          <img alt="Thumbnail" src={board.photos[0].url} />
-        </S.GridSlot>
-      ))}
+      {boards &&
+        boards.map((board) => (
+          <S.GridSlot
+            key={board.id}
+            type="button"
+            onClick={() => onClickThumbnail(board)}
+          >
+            <img alt="Thumbnail" src={board.photos[0].url} />
+          </S.GridSlot>
+        ))}
     </S.Grid>
   );
 };
