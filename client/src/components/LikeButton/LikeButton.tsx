@@ -14,14 +14,16 @@ interface LikeButtonProps {
   isLiked: boolean;
   postLikeApi: (id: number, userId: number) => Promise<LikeApi>;
   deleteLikeApi: (id: number, userId: number) => Promise<LikeApi>;
+  setLikeCount: (likeCount: number) => void;
 }
 
 const LikeButton = (props: LikeButtonProps) => {
-  const { requestId, isLiked, postLikeApi, deleteLikeApi } = props;
-  const [liked, setLiked] = useState(isLiked);
+  const { requestId, isLiked, postLikeApi, deleteLikeApi, setLikeCount } =
+    props;
+  const [liked, setLiked] = useState(isLiked !== undefined ? isLiked : false);
   const { userId } = useRecoilValue(user);
 
-  const { mutate } = useMutation(
+  const { mutateAsync } = useMutation(
     liked
       ? () => deleteLikeApi(requestId, userId)
       : () => postLikeApi(requestId, userId),
@@ -32,12 +34,12 @@ const LikeButton = (props: LikeButtonProps) => {
     },
   );
 
-  // const { data, mutate } = liked
-  //   ? useMutation(() => deleteLikeApi(requestId, userId), {})
-  //   : useMutation(() => postLikeApi(requestId, userId));
-
-  const onClickLikeButton = () => {
-    mutate();
+  const onClickLikeButton = async () => {
+    const response = await mutateAsync();
+    if (response.data) {
+      const { likeCount } = response.data;
+      setLikeCount(likeCount);
+    }
   };
 
   return (

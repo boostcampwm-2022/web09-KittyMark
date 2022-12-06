@@ -10,6 +10,7 @@ const boardDetail = atom<Board>({
     like: 0,
     comment: 0,
     createdAt: '',
+    isLiked: false,
     location: '',
     coordinate: [0, 0],
     photos: [{ url: '' }],

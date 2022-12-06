@@ -73,6 +73,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
   const onClickUserInfo = () => {
     navigation(`/user/${userName}/${userId}`);
   };
+
   return (
     <>
       <S.Wrapper>

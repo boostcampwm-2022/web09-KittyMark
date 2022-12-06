@@ -58,6 +58,7 @@ export interface Board {
   like: number;
   comment: number;
   createdAt: string;
+  isLiked: boolean;
   location: string | '';
   coordinate: number[];
   photos: {
