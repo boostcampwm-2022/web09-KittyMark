@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { AxiosError } from 'axios';
 // img
 import catFootprint from '../../static/catFootprint.svg';
 import addPostButtonImg from '../../static/addPost.svg';
@@ -23,7 +25,6 @@ const makeBoarList = (boards: Board[]) => {
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [boards, setBoards] = useState<Board[]>([]);
   const requestCount = 10000;
   const addPostButton = {
     buttonImg: addPostButtonImg,
@@ -33,31 +34,15 @@ const HomePage = () => {
     description: '게시물을 추가할래요.',
   };
 
-  const getData = async () => {
-    const { statusCode, message, data } = await getBoardData(
-      requestCount,
-      '-1',
-    );
-    if (statusCode !== 200) throw new Error(message);
-    if (data === undefined) return;
-
-    setBoards(boards.concat(data.boards));
-  };
-
-  useEffect(() => {
-    try {
-      getData();
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  }, []);
+  const { data: boards } = useQuery<Board[], AxiosError>('boards', () =>
+    getBoardData(requestCount, '-1').then((response) => response.data.boards),
+  );
 
   return (
     <>
       <NormalTopBar buttonData={addPostButton} />
       <S.BoardContainer>
-        {boards.length !== 0 ? makeBoarList(boards) : null}
+        {boards ? makeBoarList(boards) : null}
         <S.BoardEnd>
           <img
             src={catFootprint}

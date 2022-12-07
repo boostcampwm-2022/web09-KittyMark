@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from 'react-query';
 // recoil
 import { useRecoilValue } from 'recoil';
 import user from '../../../store/userAtom';
@@ -38,6 +39,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
   const [menuHideOption, setMenuHideOption] = useState(true);
   const userData = useRecoilValue(user);
   const loginedUserId = userData.userId;
+  const queryClient = useQueryClient();
 
   const onClickMenu = () => {
     setMenuHideOption(!menuHideOption);
@@ -57,17 +59,20 @@ const BoardHeader = (props: BoardHeaderProps) => {
     });
   };
 
-  const onClickDelete = async () => {
-    try {
-      const data = await deleteBoardData(boardId, userId);
-      if (data.statusCode === 200) {
+  const deleteBoardMutation = useMutation(
+    () => deleteBoardData(boardId, userId),
+    {
+      onMutate: () => {
         setMenuHideOption(!menuHideOption);
-        window.location.replace('/home');
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries('boards');
+      },
+    },
+  );
+
+  const onClickDelete = async () => {
+    deleteBoardMutation.mutate();
   };
 
   const onClickUserInfo = () => {

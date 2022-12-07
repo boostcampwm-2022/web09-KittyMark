@@ -1,4 +1,4 @@
-import { Board } from '../types/responseData';
+import { Board } from '../../types/responseData';
 
 export interface Coordinate {
   latitude: number;
