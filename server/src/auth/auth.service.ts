@@ -14,7 +14,7 @@ import { CheckNameDto } from '../auth/dto/check-name.dto';
 
 declare module 'express-session' {
   export interface SessionData {
-    userEmail: string;
+    userId: number;
   }
 }
 
@@ -38,7 +38,6 @@ export class AuthService {
   async register(image: Express.Multer.File, registerUserDto: RegisterUserDto) {
     // TODO: OauthInfo 추가
     const { email, userName, oauthInfo } = registerUserDto;
-
     const find = await this.userRepository.findByOauthInfo(email, oauthInfo);
 
     if (find) {
@@ -72,9 +71,10 @@ export class AuthService {
     );
 
     if (user) {
-      await redisClient.set(request.sessionID, email);
+      await redisClient.set(request.sessionID, user.id);
       await redisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
-      request.session.userEmail = email;
+      console.log(request.sessionID);
+      request.session.userId = user.id;
       return {
         statusCode: 200,
         data: { userId: user.id, userName: user.name },
