@@ -6,7 +6,8 @@ import getBoardDataInRange from '../../apis/api/mapApi';
 // type
 import { Board } from '../../types/responseData';
 // util
-import { Coordinate, extractCoord, getQueryMapRange } from '../../utils/map';
+import { extractCoord, getQueryMapRange } from '../../utils/map/map';
+import NaverMapModule from '../../utils/map/naverMap';
 // img
 import addPostButtonImg from '../../static/addPost.svg';
 // import loadingCat from '../../static/loadingCat.gif';
@@ -33,34 +34,6 @@ interface QueryRange {
     longitude: number;
   };
 }
-
-const createMap = ({ latitude, longitude }: Coordinate) => {
-  return new naver.maps.Map('map', {
-    center: new naver.maps.LatLng(latitude, longitude),
-    zoomControl: true,
-    zoomControlOptions: {
-      style: naver.maps.ZoomControlStyle.SMALL,
-      position: naver.maps.Position.TOP_RIGHT,
-    },
-  });
-};
-
-const createMarker = (
-  map: naver.maps.Map,
-  { latitude, longitude }: Coordinate,
-) => {
-  return new naver.maps.Marker({
-    position: new naver.maps.LatLng(latitude, longitude),
-    map,
-    // 원하는 이미지로 마커 커스텀
-    // icon: {
-    //     url: pinImage,
-    //     size: new naver.maps.Size(50, 52),
-    //     origin: new naver.maps.Point(0, 0),
-    //     anchor: new naver.maps.Point(25, 26),
-    //   },
-  });
-};
 
 const MapPage = () => {
   const navigation = useNavigate();
@@ -113,7 +86,7 @@ const MapPage = () => {
   /* 사용자 위치 기반 지도 만들기 */
   useEffect(() => {
     if (typeof currentLocation !== 'string') {
-      const naverMap = createMap(currentLocation);
+      const naverMap = NaverMapModule.createMap(currentLocation);
       setMap(naverMap);
     }
   }, [currentLocation]);
@@ -140,7 +113,7 @@ const MapPage = () => {
     const coords = extractCoord(boards);
     /* 추출한 위/경도를 지도에 Marker로 추가 */
     const newMarkers = coords.map((coord) => {
-      return createMarker(map, coord);
+      return NaverMapModule.createMarker(map, coord);
     });
     setMarkers(newMarkers);
   }, [boards]);
