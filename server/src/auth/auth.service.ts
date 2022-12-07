@@ -1,4 +1,8 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { HttpService } from '@nestjs/axios';
 import { redisClient } from 'src/utils/redis';
@@ -28,10 +32,11 @@ export class AuthService {
 
   // 홈페이지에서 로그인 확인 요청시 redis에서 세션 id 확인
   async validateLogin(request: Request) {
-    const user = redisClient.get(request.sessionID);
-    if (!user) return { statusCode: 500, message: 'Unauthorized User' };
-    else {
-      return { statusCode: 200, message: 'SUCCESS' };
+    const result = await redisClient.get(request.sessionID);
+    if (result && parseInt(result) === request.session.userId) {
+      return;
+    } else {
+      throw new UnauthorizedException('This user is an unauthorized user');
     }
   }
 
