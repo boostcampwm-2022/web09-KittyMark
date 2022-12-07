@@ -10,9 +10,9 @@ import { extractCoord, getQueryMapRange } from '../../utils/map/map';
 import NaverMapModule from '../../utils/map/naverMap';
 // img
 import addPostButtonImg from '../../static/addPost.svg';
-// import loadingCat from '../../static/loadingCat.gif';
+import blueCatSpinner from '../../static/BlueCatSpinner.gif';
 // style
-import NaverMap from './MapPageStyles';
+import { NaverMap, SpinnerWrapper, Spinner } from './MapPageStyles';
 // component
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import NavBar from '../../components/NavBar/NavBar';
@@ -50,6 +50,7 @@ const MapPage = () => {
   const [boards, setBoards] = useState<Board[]>([]);
   const [clickedBoard, setClickedBoard] = useState<Board | null>(null);
   const [markers, setMarkers] = useState<naver.maps.Marker[]>([]);
+  const [loadingMap, setLoadingMap] = useState(true);
 
   const getBoardsMutation = useMutation((range: QueryRange) =>
     getBoardDataInRange(range).then((response) => response.data),
@@ -105,6 +106,7 @@ const MapPage = () => {
   useEffect(() => {
     if (typeof currentLocation === 'string' || !map) return;
 
+    setLoadingMap(false);
     const { latitude, longitude } = currentLocation;
     const newCenter = new naver.maps.LatLng(latitude, longitude);
     map.panTo(newCenter);
@@ -141,6 +143,11 @@ const MapPage = () => {
         <BoardModal board={clickedBoard} setClickedBoard={setClickedBoard} />
       ) : null}
       <NormalTopBar buttonData={addPostButton} />
+      {loadingMap ? (
+        <SpinnerWrapper>
+          <Spinner src={blueCatSpinner} alt="wait for map to load" />
+        </SpinnerWrapper>
+      ) : null}
       <NaverMap>
         <div id="map" style={{ width: '100%', height: '100%' }} />
       </NaverMap>
