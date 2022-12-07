@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { AxiosError } from 'axios';
+import { useSetRecoilState } from 'recoil';
+import user from '../../store/userAtom';
 // img
 import catFootprint from '../../static/catFootprint.svg';
 import addPostButtonImg from '../../static/addPost.svg';
@@ -12,7 +14,7 @@ import BoardItem from '../../components/BoardItem/BoardItem';
 // style
 import S from './HomePageStyles';
 // type
-import { Board } from '../../types/responseData';
+import { Api, Board } from '../../types/responseData';
 // api
 import { getBoardData } from '../../apis/api/boardApi';
 
@@ -24,6 +26,7 @@ const makeBoarList = (boards: Board[]) => {
 };
 
 const HomePage = () => {
+  const setUserData = useSetRecoilState(user);
   const navigate = useNavigate();
   const requestCount = 10000;
   const addPostButton = {
@@ -34,8 +37,22 @@ const HomePage = () => {
     description: '게시물을 추가할래요.',
   };
 
-  const { data: boards } = useQuery<Board[], AxiosError>('boards', () =>
-    getBoardData(requestCount, '-1').then((response) => response.data.boards),
+  const { data: boards } = useQuery<Board[], AxiosError<Api>>(
+    'boards',
+    () =>
+      getBoardData(requestCount, '-1').then((response) => response.data.boards),
+    {
+      onError: (error) => {
+        if (
+          error.response &&
+          error.response.data.statusCode === 401 &&
+          error.response.data.error === 'Unauthorized'
+        ) {
+          setUserData({ userId: -1, userName: '' });
+          navigate('/');
+        }
+      },
+    },
   );
 
   return (
