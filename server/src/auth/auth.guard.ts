@@ -22,16 +22,11 @@ export class AuthGuard implements CanActivate {
     if (/\/auth+/g.test(request.path)) {
       return true;
     }
-
-    if (!request.sessionID) {
-      throw new UnauthorizedException('This user is an unauthorized user');
+    const result = await redisClient.get(request.sessionID);
+    if (result && parseInt(result) === request.session.userId) {
+      return true;
     } else {
-      const result = await redisClient.get(request.sessionID);
-      if (result && result === request.session.userEmail) {
-        return true;
-      } else {
-        throw new UnauthorizedException('This user is an unauthorized user');
-      }
+      throw new UnauthorizedException('This user is an unauthorized user');
     }
   }
 }

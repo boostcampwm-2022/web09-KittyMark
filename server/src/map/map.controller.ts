@@ -17,9 +17,12 @@ import { Request } from 'express';
 export class MapController {
   constructor(private readonly mapService: MapService) {}
   @Post('/')
-  getBoardList(@Body(ValidationPipe) getMapDto: GetMapDto) {
+  getBoardList(
+    @Body(ValidationPipe) getMapDto: GetMapDto,
+    @Req() req: Request,
+  ) {
     console.log(getMapDto);
-    return this.mapService.findWithInRange(getMapDto);
+    return this.mapService.findWithInRange(getMapDto, req.session.userId);
   }
 
   @Get('/map-reversegeocode/*')

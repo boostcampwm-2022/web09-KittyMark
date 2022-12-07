@@ -1,4 +1,8 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { HttpService } from '@nestjs/axios';
 import { redisClient } from 'src/utils/redis';
@@ -14,7 +18,7 @@ import { CheckNameDto } from '../auth/dto/check-name.dto';
 
 declare module 'express-session' {
   export interface SessionData {
-    userEmail: string;
+    userId: number;
   }
 }
 
@@ -28,17 +32,17 @@ export class AuthService {
 
   // 홈페이지에서 로그인 확인 요청시 redis에서 세션 id 확인
   async validateLogin(request: Request) {
-    const user = redisClient.get(request.sessionID);
-    if (!user) return { statusCode: 500, message: 'Unauthorized User' };
-    else {
-      return { statusCode: 200, message: 'SUCCESS' };
+    const result = await redisClient.get(request.sessionID);
+    if (result && parseInt(result) === request.session.userId) {
+      return;
+    } else {
+      throw new UnauthorizedException('This user is an unauthorized user');
     }
   }
 
   async register(image: Express.Multer.File, registerUserDto: RegisterUserDto) {
     // TODO: OauthInfo 추가
     const { email, userName, oauthInfo } = registerUserDto;
-
     const find = await this.userRepository.findByOauthInfo(email, oauthInfo);
 
     if (find) {
@@ -72,9 +76,10 @@ export class AuthService {
     );
 
     if (user) {
-      await redisClient.set(request.sessionID, email);
+      await redisClient.set(request.sessionID, user.id);
       await redisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
-      request.session.userEmail = email;
+      console.log(request.sessionID);
+      request.session.userId = user.id;
       return {
         statusCode: 200,
         data: { userId: user.id, userName: user.name },
