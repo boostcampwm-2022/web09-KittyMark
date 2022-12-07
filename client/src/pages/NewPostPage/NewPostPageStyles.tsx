@@ -61,6 +61,7 @@ const CategoryButton = styled.button<{ checked: boolean }>`
 `;
 
 const Textarea = styled.textarea`
+  /* position: relative; */
   width: calc(100% - 3rem);
   height: 10rem;
   background-color: ${(props) => props.theme.palette.back};
@@ -74,7 +75,7 @@ const Textarea = styled.textarea`
   font-style: normal;
   font-weight: 400;
 
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  /* filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); */
 `;
 
 export default { Form, ImageContainer, CategoryButton, Textarea };
