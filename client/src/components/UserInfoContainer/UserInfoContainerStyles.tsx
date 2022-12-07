@@ -37,11 +37,12 @@ const InnerContainerWrap = styled.div`
 `;
 
 const Name = styled.p`
-  font-size: 20px;
+  font-weight: 590;
+  font-size: 25px;
   line-height: 30px;
 
   margin-top: 0px;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0rem;
 `;
 
 const InnerContainer = styled.div`
@@ -55,7 +56,7 @@ const CountSlot = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.25rem;
   button {
     font-size: 16px;
     padding: 0px;
@@ -63,9 +64,19 @@ const CountSlot = styled.div`
     border: none;
     cursor: pointer;
   }
-  p {
+  p:first-child {
     text-align: center;
     margin: 0px;
+    font-weight: 590;
+    font-size: 14px;
+    line-height: 17px;
+  }
+  p:last-child {
+    text-align: center;
+    margin: 0px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
   }
 `;
 
@@ -82,7 +93,7 @@ const ButtonContainer = styled.div`
   padding: 1rem;
 
   button {
-    font-family: 'Jua';
+    font-family: 'SF-Pro';
     font-style: normal;
     font-weight: 400;
     font-size: 15px;
@@ -100,6 +111,10 @@ const FollowButton = styled.button<{ isFollow: boolean }>`
     ${(props) => (props.isFollow ? '#ff4646' : props.theme.palette.inner)};
   border-radius: 1rem;
   padding: 0px;
+
+  font-weight: 510;
+  font-size: 14px;
+  line-height: 17px;
 `;
 
 const DMButton = styled.button`
@@ -116,7 +131,7 @@ const DMButton = styled.button`
 const MenuBtn = styled.button`
   position: absolute;
   right: 0.4rem;
-  top: 0.4rem;
+  top: 0.8rem;
   padding: 0px;
   background-color: transparent;
   border: none;

@@ -1,12 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 // img
-import logo from '../../static/whiteLogo.png';
-import appName from '../../static/logoName.png';
+import logo from '../../static/newLogoName.png';
 // preload
 import { NewPostPage } from '../../pages';
 
 const Container = styled.div`
+  position: sticky;
+  top: 0px;
+  left: 0px;
+  z-index: 5;
   width: calc(100% - 24px);
   height: calc(4rem - 18px);
   background-color: ${(props) => props.theme.palette.main};
@@ -17,16 +20,13 @@ const Container = styled.div`
   justify-content: space-between;
 
   button {
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    margin-right: 0.4rem;
     background-color: transparent;
     border: 0px;
   }
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  justify-items: start;
-  align-items: center;
-  gap: 1rem;
 `;
 
 interface NormalTopBarProps {
@@ -41,14 +41,7 @@ const NormalTopBar = (props: NormalTopBarProps) => {
   const { buttonData } = props;
   return (
     <Container>
-      <LogoContainer>
-        <img src={logo} alt="Logo" style={{ width: '3rem', height: '3rem' }} />
-        <img
-          src={appName}
-          alt="App Name"
-          style={{ width: '10rem', height: '2rem' }}
-        />
-      </LogoContainer>
+      <img src={logo} alt="App Name" style={{ width: '13rem' }} />
       {buttonData !== null ? (
         // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
         <button

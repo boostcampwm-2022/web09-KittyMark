@@ -7,12 +7,7 @@ import user from '../../store/userAtom';
 // api
 import { deleteCommentInfo } from '../../apis/api/commentApi';
 // style
-import {
-  CommentUnitWrap,
-  CommentInfoContainer,
-  CommentContent,
-  CommentMenuBtn,
-} from './CommentUnitStyles';
+import S from './CommentUnitStyles';
 // img
 import menuBtn from '../../static/menuBtn.svg';
 // component
@@ -83,21 +78,22 @@ const CommentUnit = ({
   };
 
   return (
-    <CommentUnitWrap>
-      <CommentInfoContainer>
+    <S.UnitWrap>
+      <S.InfoContainer>
         <ProfileIcon
           targetId={targetId}
           userName={userName}
           userProfile={userProfile}
+          customLength={2}
         />
         <p className="user-name">{userName}</p>
-        <p className="createdAt">{createdAt}</p>
-      </CommentInfoContainer>
-      <CommentContent>{content}</CommentContent>
+        <p className="time">{createdAt}</p>
+      </S.InfoContainer>
+      <S.Content>{content}</S.Content>
       {targetId === userId && (
-        <CommentMenuBtn type="button" onClick={onClickCommentMenuBtn}>
+        <S.MenuBtn type="button" onClick={onClickCommentMenuBtn}>
           <img src={menuBtn} alt="Menu" />
-        </CommentMenuBtn>
+        </S.MenuBtn>
       )}
       {isModal && (
         <MenuModal
@@ -108,7 +104,7 @@ const CommentUnit = ({
           onClickDelete={onClickDelete}
         />
       )}
-    </CommentUnitWrap>
+    </S.UnitWrap>
   );
 };
 

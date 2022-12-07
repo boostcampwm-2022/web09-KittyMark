@@ -8,7 +8,7 @@ const TempBody = styled.img`
 `;
 
 const BoardContainer = styled.div`
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   min-height: 100vh;
   overflow: hidden;
@@ -17,10 +17,12 @@ const BoardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1.25rem;
+  padding-top: 1.25rem;
 `;
 
 const BoardEnd = styled.div`
-  padding-top: 10%;
+  padding-top: 1rem;
   height: 10rem;
   display: flex;
   flex-direction: column;

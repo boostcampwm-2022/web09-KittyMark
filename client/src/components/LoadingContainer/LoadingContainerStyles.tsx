@@ -17,10 +17,10 @@ const Body = styled.div`
 const Text = styled.p`
   margin: 0px;
   padding-top: 5%;
-  font-family: 'Jua';
-  font-style: normal;
-  font-weight: 700;
+  font-family: 'SF-Pro';
+  font-weight: 500;
   font-size: 18px;
+  line-height: 21px;
 `;
 
 export default { Body, Text };

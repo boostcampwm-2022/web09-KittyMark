@@ -117,8 +117,8 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
           )}
           {modalOn && (
             <MenuModal
-              top={20}
-              left={60}
+              top={50}
+              left={57}
               onClickCancel={() => setModalOn(false)}
               onClickModify={onClickModifyBtn}
               isCantDelete

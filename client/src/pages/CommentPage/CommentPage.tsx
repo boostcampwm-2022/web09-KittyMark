@@ -58,12 +58,6 @@ const CommentPage = () => {
         backFunc={() => navigation(-1)}
       />
       <S.Body>
-        <MessageForm
-          targetId={userData.userId}
-          data={comment}
-          onClickSendBtn={onClickSendBtn}
-          setFunc={setComment}
-        />
         <S.Container>
           <div className="inner-container">
             {isLoading && <S.Status>Loading...</S.Status>}
@@ -90,6 +84,12 @@ const CommentPage = () => {
               ))}
           </div>
         </S.Container>
+        <MessageForm
+          targetId={userData.userId}
+          data={comment}
+          onClickSendBtn={onClickSendBtn}
+          setFunc={setComment}
+        />
       </S.Body>
       <NavBar />
     </>

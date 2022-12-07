@@ -7,7 +7,6 @@ import user from '../../../store/userAtom';
 // style
 import S from './BoardHeaderStyles';
 // img
-import pinIcon from '../../../static/pinIcon.svg';
 import menuButton from '../../../static/menuBtn.svg';
 // component
 import MenuModal from '../../MenuModal/MenuModal';
@@ -92,7 +91,6 @@ const BoardHeader = (props: BoardHeaderProps) => {
             <div className="user-name">{userName}</div>
             {isStreet === true ? (
               <div>
-                <img src={pinIcon} alt="pin icon" />
                 {location !== null && location.length > 0 ? (
                   <div className="location">{location}</div>
                 ) : null}

@@ -85,6 +85,7 @@ const FollowContainer = ({ userId }: FollowerContainerProps) => {
                 userName={followUser.name}
                 isFollow={followUser.is_followed_by_viewer}
                 isViewer={followUser.id === viewerId}
+                profile={followUser.profile_url}
               />
             ))
           : followList.data.users_followed_by_user.map((followedUser) => (
@@ -95,6 +96,7 @@ const FollowContainer = ({ userId }: FollowerContainerProps) => {
                 userName={followedUser.name}
                 isFollow={followedUser.is_followed_by_viewer}
                 isViewer={followedUser.id === viewerId}
+                profile={followedUser.profile_url}
               />
             ))}
       </S.UnitContainer>

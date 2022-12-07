@@ -14,15 +14,16 @@ interface ProfileIconProps {
 const ProfileIconContainer = styled.button<{ customLength: number }>`
   width: ${(props) => `${props.customLength}rem`};
   height: ${(props) => `${props.customLength}rem`};
-  border: 1px solid ${(props) => props.theme.palette.border};
   background-color: #ffffff;
-  border-radius: ${(props) => `${props.customLength / 2}rem`};
+  border: 0px;
   padding: 0px;
   cursor: pointer;
 
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    border: 1px solid ${(props) => props.theme.palette.border};
     border-radius: ${(props) => `${props.customLength / 2}rem`};
   }
 `;

@@ -124,24 +124,17 @@ export interface MapApi extends Api {
   data?: [Board];
 }
 
-export interface FollowedByUser {
+export interface FollowUserData {
   id: number;
   name: string;
-  profileUrl: string;
-  is_followed_by_viewer: boolean;
-}
-
-export interface FollowUser {
-  id: number;
-  name: string;
-  profileUrl: string;
+  profile_url: string;
   is_followed_by_viewer: boolean;
 }
 
 export interface FollowListData {
   userId: number;
-  users_followed_by_user: FollowedByUser[];
-  users_follow_user: FollowUser[];
+  users_followed_by_user: FollowUserData[];
+  users_follow_user: FollowUserData[];
 }
 
 export interface FollowListApi extends Api {

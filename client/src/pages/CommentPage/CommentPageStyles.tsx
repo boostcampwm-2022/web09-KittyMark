@@ -32,14 +32,19 @@ const Container = styled.div`
 
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.8rem;
     justify-content: flex-start;
     overflow-y: scroll;
+
+    div:not(:last-of-type) {
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid ${(props) => props.theme.palette.border};
+    }
   }
 `;
 
 const Status = styled.p`
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   font-weight: 400;
   font-size: 20px;

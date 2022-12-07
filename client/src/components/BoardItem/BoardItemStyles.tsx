@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 const BoardBackground = styled.div`
-  margin-top: 5%;
-  padding-bottom: 3%;
+  padding-bottom: 1.25rem;
   /* max-width: 800px; */
   width: 93%;
   border-radius: 15px;
@@ -13,7 +12,7 @@ const BoardBackground = styled.div`
   align-items: center;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
 `;
 

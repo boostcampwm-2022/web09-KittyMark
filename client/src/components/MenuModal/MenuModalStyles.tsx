@@ -20,7 +20,7 @@ const MenuModalContainer = styled.div<{ top: number; left: number }>`
 
   button {
     cursor: pointer;
-    font-family: 'Jua';
+    font-family: 'SF-Pro';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;

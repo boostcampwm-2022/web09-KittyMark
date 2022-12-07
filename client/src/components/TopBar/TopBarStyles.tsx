@@ -10,15 +10,16 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
 
   p {
     margin: 0px;
-    font-size: 18px;
-    line-height: 22px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
     color: #ffffff;
   }
 `;
