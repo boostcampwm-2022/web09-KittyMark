@@ -121,7 +121,9 @@ export interface UserPostApi extends Api {
 }
 
 export interface MapApi extends Api {
-  data?: [Board];
+  data?: {
+    boards: [Board];
+  };
 }
 
 export interface FollowUserData {
