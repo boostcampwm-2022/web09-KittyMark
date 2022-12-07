@@ -5,11 +5,12 @@ import { useSetRecoilState } from 'recoil';
 import user from '../../store/userAtom';
 // api
 import { postAuthInfo } from '../../apis/api/loginApi';
+// type
+import { LoginApi } from '../../types/responseData';
 // style
 import S from './LoadingPageStyles';
 // img
 import loadingCat from '../../static/loadingCat.gif';
-import { LoginApi } from '../../types/responseData';
 
 const getSocialName = (url: URL): 'naver' | 'kakao' | undefined => {
   const callback = url.pathname.split('/')[2];

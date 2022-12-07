@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-// utill
+// api
+import getBoardDataInRange from '../../apis/api/mapApi';
+// type
+import { Board } from '../../types/responseData';
+// util
 import { Coordinate, extractCoord, getQueryMapRange } from '../../utils/map';
 // img
 import addPostButtonImg from '../../static/addPost.svg';
+// import loadingCat from '../../static/loadingCat.gif';
 // style
 import NaverMap from './MapPageStyles';
 // component
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import NavBar from '../../components/NavBar/NavBar';
-import getBoardDataInRange from '../../apis/api/mapApi';
-import { Board } from '../../types/responseData';
 import BoardModal from '../../components/BoardModal/BoardModal';
 
 declare global {
@@ -94,8 +97,8 @@ const MapPage = () => {
 
   /* 사용자 현재 위치 가져오기 */
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
+    if (window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition((position) => {
         setCurrentLocation({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
