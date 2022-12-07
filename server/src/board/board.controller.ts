@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UploadedFiles,
   UseInterceptors,
   UsePipes,
@@ -21,6 +22,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { GetUserBoardsDto } from './dto/get-user-boards.dto';
 import { LikeBoardDto } from 'board/dto/like-board.dto';
 import { LikeService } from '../like/like.service';
+import { Request } from 'express';
 
 @Controller('board')
 @UseInterceptors(ResponseInterceptor)
@@ -56,8 +58,9 @@ export class BoardController {
   getBoardList(
     @Query('count', ParseIntPipe) count: number,
     @Query('max_id', ParseIntPipe) maxId: number,
+    @Req() req: Request,
   ) {
-    return this.boardService.getLastBoardList(count, maxId);
+    return this.boardService.getLastBoardList(count, maxId, req.session.userId);
   }
 
   @Get('/user')

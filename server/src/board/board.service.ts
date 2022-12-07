@@ -89,8 +89,12 @@ export class BoardService {
     return this.boardRepository.delete({ id: boardId });
   }
 
-  async getLastBoardList(count: number, max_id: number) {
-    return await this.boardRepository.findLastBoardList(count, max_id);
+  async getLastBoardList(count: number, max_id: number, viewerId: number) {
+    return await this.boardRepository.findLastBoardList(
+      count,
+      max_id,
+      viewerId,
+    );
   }
 
   async getUserBoards(getUserBoardsDto: GetUserBoardsDto) {
