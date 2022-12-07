@@ -183,11 +183,11 @@ export class BoardRepository {
       .where(
         () => `ST_Within(board.coordinate,ST_GeomFromText('${polygon}'))=1`,
       );
-
-    let boards = await qb.getMany();
+    let boards;
+    if (true) boards = await qb.getMany();
 
     if (boards.length !== 0) {
-      boards.forEach((board: any) => {
+      boards.forEach((board) => {
         board.isLiked = false;
         board.likes.forEach((like) => {
           if (like.user.id === viewerId) board.isLiked = true;
