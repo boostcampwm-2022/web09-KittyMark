@@ -100,10 +100,20 @@ export class BoardRepository {
     // limit 혹은 take 적용 필요할 듯..
     const qb = this.boardRepository
       .createQueryBuilder('board')
-      .select(['board', 'user.id', 'user.name', 'user.profileUrl', 'photo.url'])
       .leftJoin('board.photos', 'photo')
       .leftJoin('board.user', 'user')
       .where('user.id = :id', { id: userId })
+      .leftJoin('board.likes', 'like')
+      .leftJoin('like.user', 'likeUser', 'likeUser.id')
+      .select([
+        'board',
+        'user.id',
+        'user.name',
+        'user.profileUrl',
+        'photo.url',
+        'like',
+        'likeUser.id',
+      ])
       .loadRelationCountAndMap(
         'board.comment',
         'board.comments',
@@ -129,6 +139,14 @@ export class BoardRepository {
 
     if (boards.length !== 0) {
       boards = boards.slice(0, count);
+      boards.forEach((board) => {
+        board.isLiked = false;
+        board.likes.forEach((like) => {
+          if (like.user.id === userId) board.isLiked = true;
+        });
+        delete board.likes;
+      });
+      console.log(boards);
       const _count = boards.length;
       const nextMaxId = boards[0].id;
       return { boards, count: _count, next_max_id: nextMaxId };
@@ -136,13 +154,26 @@ export class BoardRepository {
     return { boards: null, count: 0, next_max_id: -1 };
   }
 
-  async findWithInRange({ leftDown: l, rightTop: r }: GetMapDto) {
+  async findWithInRange(
+    { leftDown: l, rightTop: r }: GetMapDto,
+    viewerId: number,
+  ) {
     const polygon = `POLYGON((${l.latitude} ${l.longitude},${l.latitude} ${r.longitude},${r.latitude} ${r.longitude},${r.latitude} ${l.longitude},${l.latitude} ${l.longitude}))`;
     const qb = this.boardRepository
       .createQueryBuilder('board')
-      .select(['board', 'user.id', 'user.name', 'user.profileUrl', 'photo.url'])
+      .select([
+        'board',
+        'user.id',
+        'user.name',
+        'user.profileUrl',
+        'photo.url',
+        'like',
+        'likeUser.id',
+      ])
       .leftJoin('board.photos', 'photo')
       .leftJoin('board.user', 'user')
+      .leftJoin('board.likes', 'like')
+      .leftJoin('like.user', 'likeUser', 'likeUser.id')
       .loadRelationCountAndMap(
         'board.comment',
         'board.comments',
@@ -153,7 +184,19 @@ export class BoardRepository {
         () => `ST_Within(board.coordinate,ST_GeomFromText('${polygon}'))=1`,
       );
 
-    return await qb.getMany();
+    let boards = await qb.getMany();
+
+    if (boards.length !== 0) {
+      boards.forEach((board: any) => {
+        board.isLiked = false;
+        board.likes.forEach((like) => {
+          if (like.user.id === viewerId) board.isLiked = true;
+        });
+        delete board.likes;
+      });
+      console.log(boards);
+      return { boards };
+    }
   }
 
   async findLikeListByBoardId(boardId: number) {

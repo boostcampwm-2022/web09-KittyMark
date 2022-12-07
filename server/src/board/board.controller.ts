@@ -64,7 +64,10 @@ export class BoardController {
   }
 
   @Get('/user')
-  getUserBoardList(@Query(ValidationPipe) getUserBoardsDto: GetUserBoardsDto) {
+  getUserBoardList(
+    @Query(ValidationPipe) getUserBoardsDto: GetUserBoardsDto,
+    @Req() req: Request,
+  ) {
     return this.boardService.getUserBoards(getUserBoardsDto);
   }
 

@@ -11,8 +11,8 @@ export class MapService {
     private readonly boardRepository: BoardRepository,
     private readonly httpService: HttpService,
   ) {}
-  async findWithInRange(getMapDto: GetMapDto) {
-    return await this.boardRepository.findWithInRange(getMapDto);
+  async findWithInRange(getMapDto: GetMapDto, viewerId: number) {
+    return await this.boardRepository.findWithInRange(getMapDto, viewerId);
   }
 
   async getGeoLocation(req: Request) {
