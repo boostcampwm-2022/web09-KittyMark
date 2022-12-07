@@ -35,6 +35,11 @@ interface QueryRange {
   };
 }
 
+const LOCATION1784 = {
+  latitude: 37.3595953,
+  longitude: 127.1053971,
+};
+
 const MapPage = () => {
   const navigation = useNavigate();
   const { naver } = window;
@@ -71,6 +76,9 @@ const MapPage = () => {
 
   /* 사용자 현재 위치 가져오기 */
   useEffect(() => {
+    const naverMap = NaverMapModule.createMap(LOCATION1784);
+    setMap(naverMap);
+
     if (window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition((position) => {
         setCurrentLocation({
@@ -84,14 +92,6 @@ const MapPage = () => {
     }
   }, []);
 
-  /* 사용자 위치 기반 지도 만들기 */
-  useEffect(() => {
-    if (typeof currentLocation !== 'string') {
-      const naverMap = NaverMapModule.createMap(currentLocation);
-      setMap(naverMap);
-    }
-  }, [currentLocation]);
-
   /* 지도에 이벤트 추가 */
   useEffect(() => {
     if (map === null) return;
@@ -101,11 +101,15 @@ const MapPage = () => {
     });
   }, [map]);
 
-  /* 서버로부터 게시글 정보를 받아옴 */
+  /* 사용자 위치 기반 지도 만들기 */
   useEffect(() => {
-    if (map === null) return;
+    if (typeof currentLocation === 'string' || !map) return;
+
+    const { latitude, longitude } = currentLocation;
+    const newCenter = new naver.maps.LatLng(latitude, longitude);
+    map.panTo(newCenter);
     requestData();
-  }, [map]);
+  }, [currentLocation]);
 
   /* 서버에서 받아온 게시글 정보를 기반으로 마킹 */
   useEffect(() => {
