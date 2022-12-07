@@ -61,9 +61,10 @@ const MapPage = () => {
   const requestData = async () => {
     if (!map) return;
     const range = getQueryMapRange(map);
-    const boardsInRange = await getBoardsMutation.mutateAsync(range);
+    const data = await getBoardsMutation.mutateAsync(range);
 
-    if (!boardsInRange) return;
+    if (!data || !data.boards) return;
+    const { boards: boardsInRange } = data;
     if (boardsInRange.length <= 0) return;
     setBoards(boardsInRange);
   };
