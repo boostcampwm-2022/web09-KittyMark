@@ -51,6 +51,6 @@ export class Board {
   @OneToMany(() => Comment, (comment) => comment.board)
   comments: Comment[];
 
-  @OneToMany(() => Like, (like) => like.user)
+  @OneToMany(() => Like, (like) => like.board)
   likes: Like[];
 }

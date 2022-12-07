@@ -17,19 +17,20 @@ export class LikeRepository {
     await this.likeRepository
       .createQueryBuilder('like')
       .delete()
-      .from(Like)
-      .where('user_id = :userId', { userId: userId })
-      .andWhere('board_id = :boardId', { boardId: boardId })
+      .where(`board_id = ${boardId}`)
+      .andWhere(`user_id = ${userId}`)
       .execute();
   }
 
   async findDistinctLike(boardId: number, userId: number) {
+    console.log(boardId);
     const data = await this.likeRepository
       .createQueryBuilder('like')
-      .select()
-      .where('user_id = :userId', { userId: userId })
-      .andWhere('board_id = :boardId', { boardId: boardId })
+      .select('*')
+      .where(`board_id = ${boardId}`)
+      .andWhere(`user_id = ${userId}`)
       .execute();
+    console.log(data);
 
     return data.length !== 0;
   }
@@ -38,7 +39,7 @@ export class LikeRepository {
     return {
       likeCount: await this.likeRepository
         .createQueryBuilder('like')
-        .where('board_id = :boardId', { boardId: boardId })
+        .where(`board_id = ${boardId}`)
         .getCount(),
     };
   }

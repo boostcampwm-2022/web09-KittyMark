@@ -22,6 +22,7 @@ export class LikeService {
     );
     if (isDistinct) {
       throw new ConflictException('이미 좋아요를 눌렀습니다.');
+      return;
     }
     const board = await this.boardRepository.findOneById(boardId);
     const user = await this.userRepository.findById(userId);

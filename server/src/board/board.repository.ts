@@ -37,7 +37,7 @@ export class BoardRepository {
       .leftJoin('board.photos', 'photo')
       .leftJoin('board.user', 'user')
       .leftJoin('board.likes', 'like')
-      .leftJoin('like.user', 'likeUser', 'likeUser.id')
+      .leftJoin('like.user', 'likeUser')
       .select([
         'board',
         'user.id',
@@ -75,8 +75,8 @@ export class BoardRepository {
         });
         delete board.likes;
       });
-      console.log(boards);
       const _count = boards.length;
+      console.log(boards);
       const nextMaxId = boards[0].id;
       return { boards, count: _count, next_max_id: nextMaxId };
     }
