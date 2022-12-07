@@ -61,11 +61,11 @@ const MapPage = () => {
   const requestData = async () => {
     if (!map) return;
     const range = getQueryMapRange(map);
-    const testBoards = await getBoardsMutation.mutateAsync(range);
+    const boardsInRange = await getBoardsMutation.mutateAsync(range);
 
-    if (!testBoards) return;
-    if (testBoards.length <= 0) return;
-    setBoards(testBoards);
+    if (!boardsInRange) return;
+    if (boardsInRange.length <= 0) return;
+    setBoards(boardsInRange);
   };
 
   /* 사용자 현재 위치 가져오기 */
