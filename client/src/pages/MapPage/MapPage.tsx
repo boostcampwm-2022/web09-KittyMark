@@ -120,6 +120,7 @@ const MapPage = () => {
     const newMarkers = coords.map((coord) => {
       return NaverMapModule.createMarker(map, coord);
     });
+    NaverMapModule.hideAllMarker(map, markers);
     setMarkers(newMarkers);
   }, [boards]);
 
