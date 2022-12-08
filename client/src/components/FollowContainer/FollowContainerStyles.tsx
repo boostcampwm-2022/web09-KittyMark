@@ -11,7 +11,7 @@ const Body = styled.div`
   padding: 2rem 0rem;
 
   * {
-    font-family: 'Jua';
+    font-family: 'SF-Pro';
     font-style: normal;
     font-weight: 400;
   }
@@ -46,6 +46,11 @@ const UnitContainer = styled.div`
   gap: 0.5rem;
 
   width: 90%;
+
+  div:not(:last-of-type) {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid ${(props) => props.theme.palette.border};
+  }
 `;
 
 export default { Body, ButtonContainer, Button, UnitContainer };

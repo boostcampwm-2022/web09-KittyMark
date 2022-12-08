@@ -96,10 +96,14 @@ const RegisterPage = () => {
       <NormalTopBar buttonData={null} />
       <S.Body>
         <S.Form>
-          <S.Title>신규 유저님 환영합니다!</S.Title>
-          <S.Info>유저님의 추가 정보를 작성해주세요!</S.Info>
+          <S.Title>
+            Kitty Mark에 오신 것을
+            <br />
+            환영합니다!
+          </S.Title>
+          <S.Info>회원가입을 위해 추가 정보를 입력해주세요.</S.Info>
           <S.ProfileContainer>
-            <img src={image.image64 as string} alt="Slot" />
+            <S.Thumbnail src={image.image64 as string} alt="Slot" />
             <input
               type="file"
               accept="image/*"
@@ -108,13 +112,13 @@ const RegisterPage = () => {
               onChange={onChangeImage}
             />
             <button type="button" onClick={onClickProfileImageBtn}>
-              <img src={plusBtn} alt="Add" />
+              <S.ButtonImg src={plusBtn} alt="Add" />
             </button>
           </S.ProfileContainer>
           <S.InputContainer>
             <S.Input
               type="text"
-              placeholder="당신의 별명은 무엇인가냥?"
+              placeholder="별명을 입력해주세요."
               onChange={onChangeNickname}
             />
             <S.NameCheckButton
@@ -122,10 +126,10 @@ const RegisterPage = () => {
               onClick={onClickNameChekcBtn}
               checked={nameCheck}
             >
-              중복 체크
+              중복 검사
             </S.NameCheckButton>
           </S.InputContainer>
-          <p>{nameCheckP}</p>
+          <S.NameCheckResult>{nameCheckP}</S.NameCheckResult>
           <S.SubmitButton
             type="button"
             onClick={onClickRegisterBtn}

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  margin-top: 3%;
   width: 95%;
   border-radius: 15px;
   background-color: ${(props) => props.theme.palette.inner};
@@ -18,13 +17,17 @@ const Container = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   margin-top: 2%;
   padding-left: 3%;
 
   button {
     margin: 0;
     background-color: transparent;
+    display: flex;
+    align-items: center;
     border: 0px;
+    padding: 0px;
   }
 `;
 const ContentContainer = styled.div`

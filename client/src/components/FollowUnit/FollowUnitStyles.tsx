@@ -8,11 +8,20 @@ const OuterContainer = styled.div`
 
   height: 3rem;
   width: 80%;
+
   * {
-    font-family: 'Jua';
+    font-family: 'SF-Pro';
     font-style: normal;
-    font-weight: 400;
+    font-weight: 590;
+    font-size: 15px;
+    line-height: 18px;
   }
+`;
+
+const Name = styled.p`
+  font-weight: 590;
+  font-size: 15px;
+  line-height: 18px;
 `;
 
 const InnerContainer = styled.div`
@@ -39,4 +48,4 @@ const FollowButton = styled.button<{ isFollow: boolean }>`
   line-height: 15px;
 `;
 
-export default { OuterContainer, InnerContainer, FollowButton };
+export default { OuterContainer, Name, InnerContainer, FollowButton };

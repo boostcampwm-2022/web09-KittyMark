@@ -106,7 +106,7 @@ const NewPostPage = () => {
         checkDisableFunc={disableBtn}
       />
       <S.Form action="" method="POST">
-        <label htmlFor="new-post-image">사진을 등록해주라냥</label>
+        <label htmlFor="new-post-image">사진을 등록해주세요.</label>
         <input
           id="new-post-image"
           ref={imgInput}
@@ -136,7 +136,9 @@ const NewPostPage = () => {
               />
             ))}
         </S.ImageContainer>
-        <label htmlFor="new-post-category">이 귀여운 친구는 길고양이냥?</label>
+        <label htmlFor="new-post-category">
+          이 포스트는 길고양이에 관련된 것입니까?
+        </label>
         <input
           id="new-post-category"
           type="checkbox"
@@ -167,8 +169,10 @@ const NewPostPage = () => {
 
         {form.category && (
           <>
-            <label htmlFor="new-post-location">귀여운 친구의 위치다옹</label>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <label htmlFor="new-post-location">현재 당신의 위치입니다.</label>
+            <div
+              style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}
+            >
               <img alt="location" src={locationIcon} />
               <p style={{ margin: '0px' }}>
                 {location.location || 'Loading...'}
@@ -176,7 +180,7 @@ const NewPostPage = () => {
             </div>
           </>
         )}
-        <label htmlFor="new-post-location">글을 적어달라냥</label>
+        <label htmlFor="new-post-location">내용을 입력해주세요.</label>
         <S.Textarea
           id="new-post-content"
           name="content"

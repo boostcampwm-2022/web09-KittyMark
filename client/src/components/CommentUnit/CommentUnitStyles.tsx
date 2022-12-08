@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
-const CommentUnitWrap = styled.div`
+const UnitWrap = styled.div`
   position: relative;
   width: 100%;
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   font-weight: 400;
 `;
 
-const CommentInfoContainer = styled.div`
+const InfoContainer = styled.div`
   width: 100%;
   max-height: 2.5rem;
   display: flex;
@@ -19,31 +19,32 @@ const CommentInfoContainer = styled.div`
 
   .user-name {
     margin: 0px;
-    font-size: 18px;
-    line-height: 22px;
+    font-weight: 590;
+    font-size: 16px;
+    line-height: 20px;
   }
 
   .time {
     margin: 0px;
-    padding-top: 0.25rem;
+    font-weight: 400;
     font-size: 12px;
-    line-height: 15px;
+    line-height: 14px;
     color: #9b9b9b;
   }
 `;
 
-const CommentContent = styled.p`
+const Content = styled.p`
   margin: 0px;
   padding-left: 1rem;
   padding-top: 0.5rem;
-  font-size: 18px;
-  line-height: 22px;
+  font-size: 16px;
+  line-height: 20px;
 `;
 
-const CommentMenuBtn = styled.button`
+const MenuBtn = styled.button`
   position: absolute;
-  right: 0px;
-  top: 0.65rem;
+  right: 0.52rem;
+  top: 0.4rem;
   padding: 0px;
   background-color: transparent;
   border: none;
@@ -55,9 +56,9 @@ const CommentMenuBtn = styled.button`
   }
 `;
 
-export {
-  CommentUnitWrap,
-  CommentInfoContainer,
-  CommentContent,
-  CommentMenuBtn,
+export default {
+  UnitWrap,
+  InfoContainer,
+  Content,
+  MenuBtn,
 };

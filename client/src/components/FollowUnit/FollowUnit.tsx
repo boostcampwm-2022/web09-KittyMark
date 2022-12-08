@@ -14,6 +14,7 @@ interface FollowUnitProps {
   targetId: number;
   userName: string;
   isFollow: boolean;
+  profile: string;
   isViewer?: boolean;
 }
 // TODO UserInfoContainer 의 이벤트와 유사해서 같이 써도 괜찮을듯 하다.
@@ -22,6 +23,7 @@ const FollowUnit = ({
   targetId,
   userName,
   isFollow,
+  profile,
   isViewer,
 }: FollowUnitProps) => {
   const queryClient = useQueryClient();
@@ -55,9 +57,9 @@ const FollowUnit = ({
         <ProfileIcon
           targetId={targetId}
           userName="test"
-          userProfile="../../defaultProfile.svg"
+          userProfile={profile || '../../defaultProfile.svg'}
         />
-        <p>{userName}</p>
+        <S.Name>{userName}</S.Name>
       </S.InnerContainer>
       {!isViewer && (
         <S.FollowButton

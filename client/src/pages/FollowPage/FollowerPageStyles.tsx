@@ -11,7 +11,7 @@ const Body = styled.div`
   padding: 2rem 0rem;
 
   * {
-    font-family: 'Jua';
+    font-family: 'SF-Pro';
     font-style: normal;
     font-weight: 400;
   }

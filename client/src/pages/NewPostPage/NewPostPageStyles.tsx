@@ -10,9 +10,15 @@ const Form = styled.form`
   justify-content: flex-start;
   align-items: flex-start;
 
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   font-weight: 400;
+
+  label {
+    font-weight: 590;
+    font-size: 16px;
+    line-height: 19px;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -51,9 +57,11 @@ const CategoryButton = styled.button<{ checked: boolean }>`
   border: 1px solid ${(props) => props.theme.palette.border};
   margin-right: 1rem;
 
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
 
   color: ${(props) => (props.checked ? '#ffffff' : '#000000')};
   background-color: ${(props) =>
@@ -70,7 +78,7 @@ const Textarea = styled.textarea`
 
   resize: none;
 
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   font-weight: 400;
 

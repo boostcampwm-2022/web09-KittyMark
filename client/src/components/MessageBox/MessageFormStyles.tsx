@@ -34,11 +34,11 @@ const MessageFormWrap = styled.div`
     background-color: transparent;
     border: none;
 
-    font-family: 'Jua';
+    font-family: 'SF-Pro';
     font-style: normal;
     font-weight: 400;
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 16px;
+    line-height: 20px;
 
     &::placeholder {
       color: #9b9b9b;

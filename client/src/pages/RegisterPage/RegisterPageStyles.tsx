@@ -8,7 +8,7 @@ const Body = styled.div`
   justify-content: center;
   background: ${(props) => props.theme.palette.back};
 
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   font-weight: 400;
 `;
@@ -26,10 +26,10 @@ const Form = styled.form`
 
   gap: 20px;
 
-  padding: 52px 49px 32px 49px;
+  padding: 3rem 3rem 2rem 3rem;
 
   * {
-    font-family: 'Jua';
+    font-family: 'SF-Pro';
     font-style: normal;
     font-weight: 400;
   }
@@ -37,14 +37,18 @@ const Form = styled.form`
 
 const Title = styled.p`
   margin: 0px;
-  font-size: 30px;
-  line-height: 38px;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33px;
+  text-align: center;
+  color: ${(props) => props.theme.palette.main};
 `;
 
 const Info = styled.p`
   margin: 0px;
-  font-size: 20px;
-  line-height: 25px;
+  font-weight: 590;
+  font-size: 16px;
+  line-height: 19px;
 `;
 
 const InputContainer = styled.div`
@@ -70,8 +74,8 @@ const NameCheckButton = styled.button<{ checked: boolean }>`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 0.625rem;
 
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 14px;
+  line-height: 17px;
 `;
 
 const Input = styled.input`
@@ -81,12 +85,11 @@ const Input = styled.input`
   background-color: ${(props) => props.theme.palette.back};
   border: 1px solid ${(props) => props.theme.palette.border};
   padding: 0px 10px;
-
+  font-size: 14px;
+  line-height: 17px;
   cursor: pointer;
 
   &::placeholder {
-    font-size: 15px;
-    line-height: 19px;
     color: #9b9b9b;
   }
 `;
@@ -97,8 +100,9 @@ const SubmitButton = styled.button`
   color: #ffffff;
   border: 1px solid ${(props) => props.theme.palette.border};
   border-radius: 1rem;
-  font-size: 20px;
-  line-height: 25px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
   cursor: pointer;
@@ -120,12 +124,6 @@ const ProfileContainer = styled.div`
   border: 1px solid ${(props) => props.theme.palette.border};
   border-radius: 3rem;
 
-  img {
-    width: 100%;
-    height: 100%;
-    border-radius: 3rem;
-  }
-
   Button {
     position: absolute;
     top: 4rem;
@@ -142,6 +140,24 @@ const ProfileContainer = styled.div`
   }
 `;
 
+const Thumbnail = styled.img`
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+  border-radius: 3rem;
+`;
+
+const ButtonImg = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+
+const NameCheckResult = styled.p`
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+`;
+
 export default {
   Body,
   Form,
@@ -152,4 +168,7 @@ export default {
   InputContainer,
   Input,
   SubmitButton,
+  Thumbnail,
+  ButtonImg,
+  NameCheckResult,
 };

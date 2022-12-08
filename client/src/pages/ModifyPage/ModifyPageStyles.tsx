@@ -10,7 +10,7 @@ const Form = styled.form`
   justify-content: flex-start;
   align-items: flex-start;
 
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   font-weight: 400;
 `;
@@ -25,7 +25,7 @@ const Textarea = styled.textarea`
 
   resize: none;
 
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   font-weight: 400;
 

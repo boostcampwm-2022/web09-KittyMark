@@ -99,10 +99,10 @@ const ModifyUserPage = () => {
       />
       <S.Body>
         <S.Form>
-          <S.Title>유저 수정 페이지다냥!</S.Title>
-          <S.Info>사진과 닉네임 변경이 가능하다냥!</S.Info>
+          <S.Title>유저 정보 수정 페이지</S.Title>
+          <S.Info>사진과 닉네임 변경이 가능합니다.</S.Info>
           <S.ProfileContainer>
-            <img src={image.image64 as string} alt="Slot" />
+            <S.Thumbnail src={image.image64 as string} alt="Slot" />
             <input
               type="file"
               accept="image/*"
@@ -111,7 +111,7 @@ const ModifyUserPage = () => {
               onChange={onChangeImage}
             />
             <button type="button" onClick={onClickProfileImageBtn}>
-              <img src={plusBtn} alt="Add" />
+              <S.ButtonImg src={plusBtn} alt="Add" />
             </button>
           </S.ProfileContainer>
           <S.InputContainer>
@@ -126,10 +126,10 @@ const ModifyUserPage = () => {
               onClick={onClickNameChekcBtn}
               checked={nameCheck}
             >
-              중복 체크
+              중복 검사
             </S.NameCheckButton>
           </S.InputContainer>
-          <p>{nameCheckP}</p>
+          <S.NameCheckResult>{nameCheckP}</S.NameCheckResult>
           <S.SubmitButton
             type="button"
             onClick={onClickModifyBtn}

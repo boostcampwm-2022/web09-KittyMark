@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Wrap = styled.div`
-  font-family: 'Jua';
+  font-family: 'SF-Pro';
   font-style: normal;
   overflow: hidden;
   width: 100vw;
@@ -10,6 +10,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 1rem;
 `;
 
 export default { Wrap };

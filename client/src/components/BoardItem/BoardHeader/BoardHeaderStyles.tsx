@@ -1,35 +1,24 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 2rem);
+  height: calc(100% - 2.6rem);
+  margin: 1.3rem 1rem;
   display: flex;
   justify-content: space-between;
 
   button {
     background-color: transparent;
     border: 0px;
+    padding: 0px;
   }
 `;
 const Container = styled.div`
-  margin: 3%;
   width: auto;
   display: flex;
   align-content: left;
 `;
-const UserProfileImageContainer = styled.div`
-  width: 2.25rem;
-  height: 2.25rem;
-  border: 2px #ffc700 solid;
-  border-radius: 20px;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 20px;
-  }
-`;
 const InfoContainer = styled.div`
   height: 2.5rem;
   display: flex;
@@ -56,6 +45,5 @@ const InfoContainer = styled.div`
 export default {
   Wrapper,
   Container,
-  UserProfileImageContainer,
   InfoContainer,
 };

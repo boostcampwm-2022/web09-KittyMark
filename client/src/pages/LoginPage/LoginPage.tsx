@@ -6,8 +6,7 @@ import user from '../../store/userAtom';
 // style
 import S from './LoginPageStyles';
 // img
-import logo from '../../static/whiteLogo.png';
-import appName from '../../static/logoName.png';
+import logo from '../../static/newLogoName.png';
 import kakaoOauth from '../../static/kakao_oauth.png';
 import naverOauth from '../../static/naver_oauth.png';
 // preloading
@@ -29,16 +28,17 @@ const onMouseOver = () => {
 const LoginPage = () => {
   const userData = useRecoilValue(user);
   const navigation = useNavigate();
+
   useEffect(() => {
     if (userData.userId !== -1 && userData.userName !== '') navigation('/home');
   }, []);
+
   return (
     <S.Container>
-      <img alt="Logo" src={logo} style={{ width: '5rem', height: '5rem' }} />
       <img
-        alt="App Name"
-        src={appName}
-        style={{ width: '16rem', height: '3.5rem', marginBottom: '20px' }}
+        alt="Logo"
+        src={logo}
+        style={{ width: '22rem', marginBottom: '2rem' }}
       />
       <S.OauthButton
         type="button"

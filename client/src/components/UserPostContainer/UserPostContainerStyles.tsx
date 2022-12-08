@@ -25,7 +25,7 @@ const GridSlot = styled.button`
   width: 6.25rem;
   height: 6.25rem;
   padding: 0px;
-  border: 1px solid ${(props) => props.theme.palette.border};
+  border: none;
   border-radius: 1.25rem;
   background-color: #ffffff;
 

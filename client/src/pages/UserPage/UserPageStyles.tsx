@@ -12,7 +12,7 @@ const Body = styled.div`
 
   overflow-y: auto;
   * {
-    font-family: 'Jua';
+    font-family: 'SF-Pro';
     font-style: normal;
     font-weight: 400;
   }
@@ -101,7 +101,7 @@ const ButtonContainer = styled.div`
   padding: 1rem;
 
   button {
-    font-family: 'Jua';
+    font-family: 'SF-Pro';
     font-style: normal;
     font-weight: 400;
     font-size: 15px;
