@@ -10,9 +10,9 @@ import { extractCoord, getQueryMapRange } from '../../utils/map/map';
 import NaverMapModule from '../../utils/map/naverMap';
 // img
 import addPostButtonImg from '../../static/addPost.svg';
-// import loadingCat from '../../static/loadingCat.gif';
+import blueCatSpinner from '../../static/BlueCatSpinner.gif';
 // style
-import NaverMap from './MapPageStyles';
+import { NaverMap, SpinnerWrapper, Spinner } from './MapPageStyles';
 // component
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import NavBar from '../../components/NavBar/NavBar';
@@ -35,6 +35,11 @@ interface QueryRange {
   };
 }
 
+const LOCATION1784 = {
+  latitude: 37.3595953,
+  longitude: 127.1053971,
+};
+
 const MapPage = () => {
   const navigation = useNavigate();
   const { naver } = window;
@@ -45,6 +50,7 @@ const MapPage = () => {
   const [boards, setBoards] = useState<Board[]>([]);
   const [clickedBoard, setClickedBoard] = useState<Board | null>(null);
   const [markers, setMarkers] = useState<naver.maps.Marker[]>([]);
+  const [loadingMap, setLoadingMap] = useState(true);
 
   const getBoardsMutation = useMutation((range: QueryRange) =>
     getBoardDataInRange(range).then((response) => response.data),
@@ -61,15 +67,19 @@ const MapPage = () => {
   const requestData = async () => {
     if (!map) return;
     const range = getQueryMapRange(map);
-    const testBoards = await getBoardsMutation.mutateAsync(range);
+    const data = await getBoardsMutation.mutateAsync(range);
 
-    if (!testBoards) return;
-    if (testBoards.length <= 0) return;
-    setBoards(testBoards);
+    if (!data || !data.boards) return;
+    const { boards: boardsInRange } = data;
+    if (boardsInRange.length <= 0) return;
+    setBoards(boardsInRange);
   };
 
   /* 사용자 현재 위치 가져오기 */
   useEffect(() => {
+    const naverMap = NaverMapModule.createMap(LOCATION1784);
+    setMap(naverMap);
+
     if (window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition((position) => {
         setCurrentLocation({
@@ -83,14 +93,6 @@ const MapPage = () => {
     }
   }, []);
 
-  /* 사용자 위치 기반 지도 만들기 */
-  useEffect(() => {
-    if (typeof currentLocation !== 'string') {
-      const naverMap = NaverMapModule.createMap(currentLocation);
-      setMap(naverMap);
-    }
-  }, [currentLocation]);
-
   /* 지도에 이벤트 추가 */
   useEffect(() => {
     if (map === null) return;
@@ -100,11 +102,16 @@ const MapPage = () => {
     });
   }, [map]);
 
-  /* 서버로부터 게시글 정보를 받아옴 */
+  /* 사용자 위치 기반 지도 만들기 */
   useEffect(() => {
-    if (map === null) return;
+    if (typeof currentLocation === 'string' || !map) return;
+
+    setLoadingMap(false);
+    const { latitude, longitude } = currentLocation;
+    const newCenter = new naver.maps.LatLng(latitude, longitude);
+    map.panTo(newCenter);
     requestData();
-  }, [map]);
+  }, [currentLocation]);
 
   /* 서버에서 받아온 게시글 정보를 기반으로 마킹 */
   useEffect(() => {
@@ -115,6 +122,7 @@ const MapPage = () => {
     const newMarkers = coords.map((coord) => {
       return NaverMapModule.createMarker(map, coord);
     });
+    NaverMapModule.hideAllMarker(map, markers);
     setMarkers(newMarkers);
   }, [boards]);
 
@@ -135,6 +143,11 @@ const MapPage = () => {
         <BoardModal board={clickedBoard} setClickedBoard={setClickedBoard} />
       ) : null}
       <NormalTopBar buttonData={addPostButton} />
+      {loadingMap ? (
+        <SpinnerWrapper>
+          <Spinner src={blueCatSpinner} alt="wait for map to load" />
+        </SpinnerWrapper>
+      ) : null}
       <NaverMap>
         <div id="map" style={{ width: '100%', height: '100%' }} />
       </NaverMap>

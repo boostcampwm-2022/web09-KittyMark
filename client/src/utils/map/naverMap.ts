@@ -1,4 +1,4 @@
-import { Coordinate } from './map';
+import { Coordinate, getQueryMapRange } from './map';
 
 export const createMap = ({ latitude, longitude }: Coordinate) => {
   return new naver.maps.Map('map', {
@@ -28,4 +28,55 @@ export const createMarker = (
   });
 };
 
-export default { createMap, createMarker };
+const showMarker = (map: naver.maps.Map, marker: naver.maps.Marker) => {
+  if (marker.getMap()) return;
+  marker.setMap(map);
+};
+
+const hideMarker = (map: naver.maps.Map, marker: naver.maps.Marker) => {
+  if (!marker.getMap()) return;
+  marker.setMap(null);
+};
+
+const hideAllMarker = (map: naver.maps.Map, markers: naver.maps.Marker[]) => {
+  let marker;
+  for (let i = 0; i < markers.length; i += 1) {
+    marker = markers[i];
+    hideMarker(map, marker);
+  }
+};
+
+const updateMarkers = (map: naver.maps.Map, markers: naver.maps.Marker[]) => {
+  const bounds = getQueryMapRange(map);
+  const sw = new naver.maps.LatLng(
+    bounds.leftDown.latitude,
+    bounds.leftDown.longitude,
+  );
+  const ne = new naver.maps.LatLng(
+    bounds.rightTop.latitude,
+    bounds.rightTop.longitude,
+  );
+  const mapBounds = new naver.maps.LatLngBounds(sw, ne);
+  let marker;
+  let position;
+
+  for (let i = 0; i < markers.length; i += 1) {
+    marker = markers[i];
+    position = marker.getPosition();
+
+    if (mapBounds.hasLatLng(position)) {
+      showMarker(map, marker);
+    } else {
+      hideMarker(map, marker);
+    }
+  }
+};
+
+export default {
+  createMap,
+  createMarker,
+  updateMarkers,
+  hideMarker,
+  hideAllMarker,
+  showMarker,
+};

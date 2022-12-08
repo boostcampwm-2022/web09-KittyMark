@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import TopBar from '../../components/TopBar/TopBar';
 import NavBar from '../../components/NavBar/NavBar';
 import ImageSlot from '../../components/ImageSlot/ImageSlot';
+import SetLocationModal from '../../components/SetLocationModal/SetLocationModal';
 // recoil
 import user from '../../store/userAtom';
 // api
@@ -19,6 +20,7 @@ import S from './NewPostPageStyles';
 // img
 import addImgIcon from '../../static/addImgIcon.svg';
 import locationIcon from '../../static/locationIcon.svg';
+import mapIcon from '../../static/mapButton.png';
 
 interface PostData {
   content: string;
@@ -44,6 +46,7 @@ const NewPostPage = () => {
     longitude?: number;
     location?: string;
   }>({ isChecked: false });
+  const [modal, setModal] = useState(false);
 
   // TODO 안눌렀을 경우 체크
   const findLocation = async () => {
@@ -95,8 +98,19 @@ const NewPostPage = () => {
     return false;
   };
 
+  const viewSetLocationModal = () => {
+    setModal(true);
+  };
+
   return (
     <>
+      {modal ? (
+        <SetLocationModal
+          setModal={setModal}
+          location={location}
+          setLocation={setLocation}
+        />
+      ) : null}
       <TopBar
         isBack
         isCheck
@@ -171,12 +185,47 @@ const NewPostPage = () => {
           <>
             <label htmlFor="new-post-location">현재 당신의 위치입니다.</label>
             <div
-              style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}
+              style={{
+                width: '90%',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
             >
-              <img alt="location" src={locationIcon} />
-              <p style={{ margin: '0px' }}>
-                {location.location || 'Loading...'}
-              </p>
+              <div
+                style={{
+                  width: '70%',
+                  display: 'flex',
+                  gap: '0.5rem',
+                  alignItems: 'center',
+                }}
+              >
+                <img alt="location" src={locationIcon} />
+                <p style={{ margin: '0px' }}>
+                  {location.location || 'Loading...'}
+                </p>
+              </div>
+              {location.location ? (
+                <button
+                  type="button"
+                  onClick={viewSetLocationModal}
+                  style={{
+                    padding: '0',
+                    width: '2rem',
+                    height: '2rem',
+                    border: '0',
+                    backgroundColor: 'transparent',
+                  }}
+                >
+                  <img
+                    src={mapIcon}
+                    alt="set location"
+                    style={{
+                      width: '1.5rem',
+                      height: '1.5rem',
+                    }}
+                  />
+                </button>
+              ) : null}
             </div>
           </>
         )}
