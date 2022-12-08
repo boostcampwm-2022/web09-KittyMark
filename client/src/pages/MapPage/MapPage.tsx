@@ -17,7 +17,10 @@ import { NaverMap, SpinnerWrapper, Spinner } from './MapPageStyles';
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import NavBar from '../../components/NavBar/NavBar';
 import BoardModal from '../../components/BoardModal/BoardModal';
+// constant
 import { LOCATION_1784, WAIT_TIME_BEFORE_REQUEST } from '../../constants/map';
+// hook
+import useCurrentLocation from '../../hooks/useCurrentLocation';
 
 declare global {
   interface Window {
@@ -39,9 +42,7 @@ interface QueryRange {
 const MapPage = () => {
   const navigation = useNavigate();
   const { naver } = window;
-  const [currentLocation, setCurrentLocation] = useState<
-    { latitude: number; longitude: number } | string
-  >('');
+  const currentLocation = useCurrentLocation();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [boards, setBoards] = useState<Board[]>([]);
   const [clickedBoard, setClickedBoard] = useState<Board | null>(null);
@@ -79,22 +80,9 @@ const MapPage = () => {
     }, timeout);
   };
 
-  /* 사용자 현재 위치 가져오기 */
   useEffect(() => {
     const naverMap = NaverMapModule.createMap(LOCATION_1784);
     setMap(naverMap);
-
-    if (window.navigator.geolocation) {
-      window.navigator.geolocation.getCurrentPosition((position) => {
-        setCurrentLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      });
-    } else {
-      // eslint-disable-next-line
-      window.alert('현재 위치를 알 수 없습니다.');
-    }
   }, []);
 
   useEffect(() => {
