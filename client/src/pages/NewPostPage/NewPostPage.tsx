@@ -15,7 +15,6 @@ import getlocationData from '../../apis/services/reverseGeocodingService';
 // hook
 import useImages from '../../hooks/useImages';
 import useInputs from '../../hooks/useInputs';
-import useCurrentLocation from '../../hooks/useCurrentLocation';
 // style
 import S from './NewPostPageStyles';
 // img
@@ -31,7 +30,6 @@ interface PostData {
 const NewPostPage = () => {
   const imgInput = useRef<HTMLInputElement>(null);
   const navigation = useNavigate();
-  const currentLocation = useCurrentLocation();
 
   const userData = useRecoilValue(user);
   const { images, onChangeImage, onDeleteImage } = useImages({
@@ -52,21 +50,22 @@ const NewPostPage = () => {
 
   // TODO 안눌렀을 경우 체크
   const findLocation = async () => {
-    if (location.isChecked) return;
-
-    const { latitude, longitude } = currentLocation;
-    try {
-      const reverseGeo = await getlocationData(latitude, longitude);
-      setLocation({
-        isChecked: true,
-        latitude,
-        longitude,
-        location: reverseGeo,
-      });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
+    if (location.isChecked || !navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords;
+      try {
+        const reverseGeo = await getlocationData(latitude, longitude);
+        setLocation({
+          isChecked: true,
+          latitude,
+          longitude,
+          location: reverseGeo,
+        });
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
+    });
   };
 
   const onClickSubmitBtn = async () => {
