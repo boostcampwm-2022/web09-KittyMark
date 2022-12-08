@@ -20,7 +20,6 @@ import NavBar from '../../components/NavBar/NavBar';
 import CommentUnit from '../../components/CommentUnit/CommentUnit';
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
 
-// TODO custom hook 으로 빼낸다.
 const CommentPage = () => {
   const { boardId } = useParams();
   const navigation = useNavigate();

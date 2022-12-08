@@ -22,14 +22,13 @@ const useNickName = (
   });
 
   // 사용자 입력에 따라서 값을 바꿔준다.
-  const setNickname = useCallback((newName: string) => {
-    if (nameObj.checkResult)
-      setNameObj({
-        nickname: newName,
-        checkResult: false,
-        resultMessage: '별명 중복 체크를 해주세요.',
-      });
-  }, []);
+  const setNickname = (newName: string) => {
+    setNameObj({
+      nickname: newName,
+      checkResult: false,
+      resultMessage: '별명 중복 체크를 해주세요.',
+    });
+  };
 
   // 사용자가 중복 검사를 눌렀을 경우
   const checkNickname = useCallback(async () => {
@@ -48,7 +47,7 @@ const useNickName = (
       // eslint-disable-next-line no-console
       if (error instanceof AxiosError) console.log(error);
     }
-  }, []);
+  }, [nameObj]);
 
   return [nameObj, setNickname, checkNickname];
 };
