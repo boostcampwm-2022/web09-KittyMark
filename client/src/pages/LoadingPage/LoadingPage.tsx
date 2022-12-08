@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 // recoil
 import user from '../../store/userAtom';
@@ -18,7 +18,6 @@ const getSocialName = (url: URL): 'naver' | 'kakao' | undefined => {
 };
 
 const LoadingPage = () => {
-  const location = useLocation();
   const navigation = useNavigate();
   const setUserData = useSetRecoilState(user);
 
@@ -58,8 +57,6 @@ const LoadingPage = () => {
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    console.log(location.pathname);
-    console.log(new URLSearchParams(location.search).get('code'));
     const authorizationCode = url.searchParams.get('code');
     const state = url.searchParams.get('state');
     if (authorizationCode && state) {
