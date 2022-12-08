@@ -40,6 +40,8 @@ const LOCATION1784 = {
   longitude: 127.1053971,
 };
 
+const waitTimeBeforeRequest = 600;
+
 const MapPage = () => {
   const navigation = useNavigate();
   const { naver } = window;
@@ -98,7 +100,11 @@ const MapPage = () => {
     if (map === null) return;
 
     naver.maps.Event.addListener(map, 'dragend', () => {
-      requestData();
+      const { x: currentX, y: currentY } = map.getCenter();
+      setTimeout(() => {
+        const { x: newX, y: newY } = map.getCenter();
+        if (currentX === newX && currentY === newY) requestData();
+      }, waitTimeBeforeRequest);
     });
   }, [map]);
 
