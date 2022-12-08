@@ -32,7 +32,7 @@ const LoginPage = () => {
     if (userData.userId === -1 || userData.userName === '') return;
     try {
       const data = await validate();
-      if (data.statusCode === 200) navigate('/home');
+      if (data.statusCode === 200) navigate('/home', { replace: true });
       if (data.statusCode === 401) setUserData({ userId: -1, userName: '' });
     } catch (error) {
       // eslint-disable-next-line no-console

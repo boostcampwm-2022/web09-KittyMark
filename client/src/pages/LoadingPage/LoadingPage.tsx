@@ -15,7 +15,7 @@ import LoadingContainer from '../../components/LoadingContainer/LoadingContainer
 import { LoginApi } from '../../types/responseData';
 
 const LoadingPage = () => {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const setUserData = useSetRecoilState(user);
 
   const postAuthrizationInfo = useCallback(
@@ -29,13 +29,14 @@ const LoadingPage = () => {
         data = await postAuthInfo(socialName, authorizationCode, state);
         // 서버 에러인 경우를 먼저 처리한다.
         if (data.statusCode !== 200) {
-          navigation('/');
+          navigate('/', { replace: true });
           return;
         }
         // 회원 가입인 경우를 처리한다.
         if (data.redirect) {
-          navigation('/register', {
+          navigate('/register', {
             state: { email: data.email, oauthInfo: 'NAVER' },
+            replace: true,
           });
           return;
         }
@@ -45,11 +46,11 @@ const LoadingPage = () => {
             userId: data.data.userId,
             userName: data.data.userName,
           });
-          navigation('/home');
+          navigate('/home', { replace: true });
           return;
         }
         // 그 외의 경우를 처리한다.
-        navigation('/');
+        navigate('/', { replace: true });
       } catch (error) {
         // eslint-disable-next-line no-console
         if (error instanceof AxiosError) console.log(error.message);
@@ -65,7 +66,7 @@ const LoadingPage = () => {
       const socialName = getSocialName(url);
       if (socialName)
         postAuthrizationInfo(socialName, authorizationCode, state);
-      else navigation('/');
+      else navigate('/', { replace: true });
     }
   }, []);
 

@@ -1,23 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+// type
+import { AxiosError } from 'axios';
 // api
-import { postRegisterInfo, postNameCheck } from '../../apis/api/loginApi';
+import { postRegisterInfo } from '../../apis/api/loginApi';
+// hook
+import useImage from '../../hooks/useImage';
+import useNickName from '../../hooks/useNickname';
 // style
 import S from './RegisterPageStyles';
+// component
+import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 // img
 import defaultProfile from '../../static/defaultProfile.svg';
 import plusBtn from '../../static/plusBtn.svg';
-// component
-import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
-// hook
-import useImage from '../../hooks/useImage';
 
 interface LocationStateType {
   email: string;
   oauthInfo: 'NAVER' | 'KAKAO';
 }
 
-// TODO 내부에 이름 체크 로직이 아직 완벽하지 않고, 해당 로직을 custom hook 으로 빼자
+// TODO 만일 사용자가 이상한 주소로 register page 에 접근한다면 어떻게 해야 할까?
 const RegisterPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,11 +34,8 @@ const RegisterPage = () => {
     image: null,
     image64: defaultProfile,
   });
-
-  const [nickname, setNickname] = useState<string>('');
-  const [nameCheck, setNameCheck] = useState<boolean>(false);
-  const [nameCheckP, setNameCheckP] =
-    useState<string>('별명 중복 체크를 해주세요.');
+  const [{ nickname, checkResult, resultMessage }, setNickname, checkNickname] =
+    useNickName('');
 
   useEffect(() => {
     if (email === '') navigate('/');
@@ -49,28 +49,10 @@ const RegisterPage = () => {
 
   const onChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value);
-    if (nameCheck) {
-      setNameCheck(false);
-      setNameCheckP('별명 중복 체크를 해주세요.');
-    }
   };
 
-  const onClickNameChekcBtn = async () => {
-    if (nameCheck) return;
-    try {
-      const data = await postNameCheck(nickname);
-      if (data.statusCode === 200) {
-        setNameCheck(!data.data.isExist);
-        setNameCheckP(
-          data.data.isExist
-            ? '이미 존재하는 별명입니다.'
-            : '사용 가능한 별명입니다.',
-        );
-      } else setNameCheckP(data.message);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
+  const onClickNameChekcBtn = () => {
+    checkNickname();
   };
 
   const onClickRegisterBtn = async () => {
@@ -81,13 +63,12 @@ const RegisterPage = () => {
         oauthInfo,
         image.image,
       );
-      if (data.statusCode === 201) navigate('/');
-      // TODO 아닌 경우 처리 (닉네임이 중복인 경우, 일반적인 실패)
+      if (data.statusCode === 201) navigate('/', { replace: true });
       // eslint-disable-next-line no-alert
       else alert(data.message);
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      if (error instanceof AxiosError) console.log(error);
     }
   };
 
@@ -124,16 +105,16 @@ const RegisterPage = () => {
             <S.NameCheckButton
               type="button"
               onClick={onClickNameChekcBtn}
-              checked={nameCheck}
+              checked={checkResult}
             >
               중복 검사
             </S.NameCheckButton>
           </S.InputContainer>
-          <S.NameCheckResult>{nameCheckP}</S.NameCheckResult>
+          <S.NameCheckResult>{resultMessage}</S.NameCheckResult>
           <S.SubmitButton
             type="button"
             onClick={onClickRegisterBtn}
-            disabled={!nickname || !nameCheck}
+            disabled={!nickname || !checkResult}
           >
             회원가입
           </S.SubmitButton>
