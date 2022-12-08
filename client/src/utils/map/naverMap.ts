@@ -39,11 +39,9 @@ const hideMarker = (map: naver.maps.Map, marker: naver.maps.Marker) => {
 };
 
 const hideAllMarker = (map: naver.maps.Map, markers: naver.maps.Marker[]) => {
-  let marker;
-  for (let i = 0; i < markers.length; i += 1) {
-    marker = markers[i];
+  markers.forEach((marker) => {
     hideMarker(map, marker);
-  }
+  });
 };
 
 const updateMarkers = (map: naver.maps.Map, markers: naver.maps.Marker[]) => {
