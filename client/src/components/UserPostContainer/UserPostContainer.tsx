@@ -15,8 +15,9 @@ import { Board, UserPostApi } from '../../types/responseData';
 const UserPostContainer = ({ targetId }: { targetId: number }) => {
   const navigation = useNavigate();
   const setBoardDetail = useSetRecoilState(boardDetail);
-  const userPost = useQuery<UserPostApi, AxiosError>('userPost', () =>
-    getUserPost(targetId),
+  const userPost = useQuery<UserPostApi, AxiosError>(
+    ['userPost', targetId],
+    () => getUserPost(targetId),
   );
 
   if (userPost.isLoading || userPost.isIdle) {

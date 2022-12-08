@@ -11,7 +11,7 @@ interface ProfileIconProps {
   customLength?: number;
 }
 
-const Container = styled.button<{ customLength: number }>`
+const Button = styled.button<{ customLength: number }>`
   width: ${(props) => `${props.customLength}rem`};
   height: ${(props) => `${props.customLength}rem`};
   background-color: transparent;
@@ -36,13 +36,13 @@ const ProfileIcon = ({
 }: ProfileIconProps) => {
   const navigate = useNavigate();
   return (
-    <Container
+    <Button
       type="button"
       onClick={() => navigate(`/user/${userName}/${targetId}`)}
       customLength={customLength || 2.5}
     >
       <img src={userProfile} alt="Profile" />
-    </Container>
+    </Button>
   );
 };
 

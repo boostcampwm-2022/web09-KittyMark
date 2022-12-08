@@ -11,7 +11,6 @@ import NavBar from '../../components/NavBar/NavBar';
 import UserInfoContainer from '../../components/UserInfoContainer/UserInfoContainer';
 import UserPostContainer from '../../components/UserPostContainer/UserPostContainer';
 
-// TODO 리엑트 쿼리로 받아온 것에 대해서 계속 undefind 를 고려해야 한다.
 const UserPage = () => {
   const navigation = useNavigate();
   const { userName, targetId } = useParams<{
