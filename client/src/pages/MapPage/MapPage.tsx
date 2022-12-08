@@ -17,6 +17,7 @@ import { NaverMap, SpinnerWrapper, Spinner } from './MapPageStyles';
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import NavBar from '../../components/NavBar/NavBar';
 import BoardModal from '../../components/BoardModal/BoardModal';
+import { LOCATION_1784, WAIT_TIME_BEFORE_REQUEST } from '../../constants/map';
 
 declare global {
   interface Window {
@@ -34,13 +35,6 @@ interface QueryRange {
     longitude: number;
   };
 }
-
-const LOCATION1784 = {
-  latitude: 37.3595953,
-  longitude: 127.1053971,
-};
-
-const waitTimeBeforeRequest = 600;
 
 const MapPage = () => {
   const navigation = useNavigate();
@@ -87,7 +81,7 @@ const MapPage = () => {
 
   /* 사용자 현재 위치 가져오기 */
   useEffect(() => {
-    const naverMap = NaverMapModule.createMap(LOCATION1784);
+    const naverMap = NaverMapModule.createMap(LOCATION_1784);
     setMap(naverMap);
 
     if (window.navigator.geolocation) {
@@ -107,11 +101,11 @@ const MapPage = () => {
     if (map === null) return;
 
     naver.maps.Event.addListener(map, 'dragend', () => {
-      requestAfterTimeout(map, waitTimeBeforeRequest);
+      requestAfterTimeout(map, WAIT_TIME_BEFORE_REQUEST);
     });
 
     naver.maps.Event.addListener(map, 'zoom_changed', () => {
-      requestAfterTimeout(map, waitTimeBeforeRequest);
+      requestAfterTimeout(map, WAIT_TIME_BEFORE_REQUEST);
     });
   }, [map]);
 
