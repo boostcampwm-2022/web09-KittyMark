@@ -5,6 +5,8 @@ import { useRecoilState } from 'recoil';
 import { AxiosError } from 'axios';
 // recoil
 import user from '../../store/userAtom';
+// util
+import { onClickNaverLogin } from '../../utils/loginUtils';
 // style
 import S from './LoginPageStyles';
 // img
@@ -14,14 +16,6 @@ import naverOauth from '../../static/naver_oauth.png';
 // preloading
 import { RegisterPage, HomePage } from '..';
 import { validate } from '../../apis/api/loginApi';
-
-const onClickNaverLogin = () => {
-  const clientId = process.env.REACT_APP_NAVER_LOGIN_CLIENT_ID;
-  const stateString = process.env.REACT_APP_NAVER_LOGIN_STATE;
-  const callbackUrl = process.env.REACT_APP_NAVER_LOGIN_CALLBACK_URL;
-  const naverLoginUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&state=${stateString}&redirect_uri=${callbackUrl}`;
-  window.location.assign(naverLoginUrl);
-};
 
 const onMouseOver = () => {
   RegisterPage.preload();
