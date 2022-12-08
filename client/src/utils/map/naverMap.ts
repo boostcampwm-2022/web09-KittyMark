@@ -4,6 +4,8 @@ import footprint from '../../static/footprint.svg';
 export const createMap = ({ latitude, longitude }: Coordinate) => {
   return new naver.maps.Map('map', {
     center: new naver.maps.LatLng(latitude, longitude),
+    scaleControl: false,
+    mapDataControl: false,
     zoomControl: true,
     zoomControlOptions: {
       style: naver.maps.ZoomControlStyle.SMALL,
