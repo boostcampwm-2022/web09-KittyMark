@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
 import { useRecoilValue } from 'recoil';
+// type
+import { Comments, NewCommentApi } from '../../types/responseData';
 // recoil
 import user from '../../store/userAtom';
+// util
+import timeCalc from '../../utils/timeCalc';
 // api
 import { getCommentInfo, postCommentInfo } from '../../apis/api/commentApi';
 // style
@@ -14,10 +18,7 @@ import TopBar from '../../components/TopBar/TopBar';
 import MessageForm from '../../components/MessageBox/MessageForm';
 import NavBar from '../../components/NavBar/NavBar';
 import CommentUnit from '../../components/CommentUnit/CommentUnit';
-// type
-import { Comments, NewCommentApi } from '../../types/responseData';
-// util
-import timeCalc from '../../utils/timeCalc';
+import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
 
 // TODO custom hook 으로 빼낸다.
 const CommentPage = () => {
@@ -25,14 +26,14 @@ const CommentPage = () => {
   const navigation = useNavigate();
 
   const userData = useRecoilValue(user);
-  const [comment, setComment] = useState<string>(''); // 사용자 입력 정보 받아오기
+  const [comment, setComment] = useState<string>('');
   const [modal, setModal] = useState<number>(-1);
 
-  // TODO react-query 에러 처리 방식에 대해서 고민해볼 필요가 있다.
   const queryClient = useQueryClient();
-  const { isLoading, isError, data, error } = useQuery<Comments[], AxiosError>(
+  const { data, error } = useQuery<Comments[], AxiosError>(
     'comments',
     () => getCommentInfo(Number(boardId)).then((res) => res.data.comments),
+    { suspense: true },
   );
 
   const { mutate } = useMutation<NewCommentApi, AxiosError>(
@@ -60,28 +61,31 @@ const CommentPage = () => {
       <S.Body>
         <S.Container>
           <div className="inner-container">
-            {isLoading && <S.Status>Loading...</S.Status>}
-            {isError && <S.Status>{error.message}</S.Status>}
-            {!(isError || isLoading) &&
-              data &&
-              data.map((commentData) => (
-                <CommentUnit
-                  key={commentData.id}
-                  boardId={Number(boardId)}
-                  commentId={commentData.id}
-                  targetId={commentData.user.id}
-                  userName={commentData.user.name}
-                  createdAt={timeCalc(commentData.createdAt)}
-                  content={commentData.content}
-                  userProfile={
-                    commentData.user.profileUrl === ''
-                      ? '../../defaultProfile.svg'
-                      : commentData.user.profileUrl
-                  }
-                  isModal={modal === commentData.id}
-                  setModal={setModal}
-                />
-              ))}
+            <Suspense fallback={<S.Status>Loading...</S.Status>}>
+              <ErrorBoundary
+                fallback={<S.Status>{error ? error.message : ''}</S.Status>}
+              >
+                {data &&
+                  data.map((commentData) => (
+                    <CommentUnit
+                      key={commentData.id}
+                      boardId={Number(boardId)}
+                      commentId={commentData.id}
+                      targetId={commentData.user.id}
+                      userName={commentData.user.name}
+                      createdAt={timeCalc(commentData.createdAt)}
+                      content={commentData.content}
+                      userProfile={
+                        commentData.user.profileUrl === ''
+                          ? '../../defaultProfile.svg'
+                          : commentData.user.profileUrl
+                      }
+                      isModal={modal === commentData.id}
+                      setModal={setModal}
+                    />
+                  ))}
+              </ErrorBoundary>
+            </Suspense>
           </div>
         </S.Container>
         <MessageForm

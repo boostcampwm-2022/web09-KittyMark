@@ -1,12 +1,12 @@
 import React, { MouseEventHandler } from 'react';
-// component
-import ProfileIcon from '../ProfileIcon/ProfileIcon';
 // style
 import {
   SendMessageContainer,
   MessageFormWrap,
   SendBtn,
 } from './MessageFormStyles';
+// component
+import ProfileIcon from '../ProfileIcon/ProfileIcon';
 // img
 import sendBtn from '../../static/sendBtn.svg';
 
