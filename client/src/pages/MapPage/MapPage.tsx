@@ -63,10 +63,10 @@ const MapPage = () => {
     eventHandler: () => {
       navigation('/new-post');
     },
-    description: '게시물을 추가할래요.',
+    description: 'create new post',
   };
 
-  const requestData = async () => {
+  const requestBoardsData = async () => {
     if (!map) return;
     const range = getQueryMapRange(map);
     const data = await getBoardsMutation.mutateAsync(range);
@@ -75,6 +75,14 @@ const MapPage = () => {
     const { boards: boardsInRange } = data;
     if (boardsInRange.length <= 0) return;
     setBoards(boardsInRange);
+  };
+
+  const requestAfterTimeout = (currentMap: naver.maps.Map, timeout: number) => {
+    const { x: prevX, y: prevY } = currentMap.getCenter();
+    setTimeout(() => {
+      const { x: currentX, y: currentY } = currentMap.getCenter();
+      if (currentX === prevX && currentY === prevY) requestBoardsData();
+    }, timeout);
   };
 
   /* 사용자 현재 위치 가져오기 */
@@ -95,20 +103,18 @@ const MapPage = () => {
     }
   }, []);
 
-  /* 지도에 이벤트 추가 */
   useEffect(() => {
     if (map === null) return;
 
     naver.maps.Event.addListener(map, 'dragend', () => {
-      const { x: currentX, y: currentY } = map.getCenter();
-      setTimeout(() => {
-        const { x: newX, y: newY } = map.getCenter();
-        if (currentX === newX && currentY === newY) requestData();
-      }, waitTimeBeforeRequest);
+      requestAfterTimeout(map, waitTimeBeforeRequest);
+    });
+
+    naver.maps.Event.addListener(map, 'zoom_changed', () => {
+      requestAfterTimeout(map, waitTimeBeforeRequest);
     });
   }, [map]);
 
-  /* 사용자 위치 기반 지도 만들기 */
   useEffect(() => {
     if (typeof currentLocation === 'string' || !map) return;
 
@@ -116,7 +122,7 @@ const MapPage = () => {
     const { latitude, longitude } = currentLocation;
     const newCenter = new naver.maps.LatLng(latitude, longitude);
     map.panTo(newCenter);
-    requestData();
+    requestBoardsData();
   }, [currentLocation]);
 
   /* 서버에서 받아온 게시글 정보를 기반으로 마킹 */
