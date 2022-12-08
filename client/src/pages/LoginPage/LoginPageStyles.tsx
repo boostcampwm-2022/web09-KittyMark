@@ -11,15 +11,21 @@ const Container = styled.div`
   background-color: ${(props) => props.theme.palette.main};
 `;
 
+const LogoImg = styled.img`
+  width: 22rem;
+  margin-bottom: 2rem;
+`;
+
 const OauthButton = styled.button`
   background-color: transparent;
   border: none;
   width: 12.5rem;
   height: 3.5rem;
+
   img {
     width: 100%;
     height: 100%;
   }
 `;
 
-export default { Container, OauthButton };
+export default { Container, LogoImg, OauthButton };
