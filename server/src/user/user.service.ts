@@ -74,15 +74,19 @@ export class UserService {
       if (name) throw new ConflictException('이미 존재하는 이름입니다.');
     }
 
+    let data: null | { profileUrl: string };
+
     if (profileUrl && userName) {
       this.userRepository.update(userId, { profileUrl, name: userName });
+      data = { profileUrl };
     } else if (profileUrl) {
       this.userRepository.update(userId, { profileUrl });
+      data = { profileUrl };
     } else if (userName) {
       this.userRepository.update(userId, { name: userName });
     }
 
-    return { statusCode: 200, message: 'Success' };
+    return { statusCode: 200, message: 'Success', data };
   }
 
   async addFollow(followDto: FollowDto) {
