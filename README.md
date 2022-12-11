@@ -1,44 +1,148 @@
-# Web09 - 냥자취 Kitty Mark
+# 프로젝트 소개
 
-<div align="center">
-   <img src="https://user-images.githubusercontent.com/43336212/200518174-f7fcae2d-af12-4a5f-a4a1-a6c5a6d117e2.png" alt="Kitty_Mark_CatSNS_logo">
-</div>
+![image](https://user-images.githubusercontent.com/73357200/206893002-d234f56b-19bb-434d-aa68-82fa1ac1e782.png)
 
-<div align="center">
+**Kitty Mark에** **좋아하는 길고양이 사진을 공유해주세요 🐱**
 
-<strong>🐱 평소 챙겨주던 길고양이들을 냥자취 SNS 스타로 만들어주세요! 당신 집 주변의 고양이와 더 따뜻한 유대감을 나눌 수 있습니다. 🐱</strong>
-<br/><br/>
-<strong>🐱 기술 스택 🐱</strong>
-<br/><br/>
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/>
-  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Recoil-764ABC?style=flat-square"/>
-  <img src="https://img.shields.io/badge/styled--components-DB7093?style=flat-square&logo=styled-components&logoColor=white"/><br>
-  <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/>
-  <img src="https://img.shields.io/badge/NestJS-E0234E?style=flat-square&logo=NestJS&logoColor=white"/>
-  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=PostgreSQL&logoColor=white"/>
-  <img src="https://img.shields.io/badge/NGINX-009639?style=flat-square&logo=NGINX&logoColor=white"/>
-  <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Jest-C21325?style=flat-square&logo=Jest&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Naver_Cloud_Platform-ffffff?style=flat-square&logo=Naver&logoColor=green">
-</div>
-<div align="center">
-<br/>
-<strong>🐱 팀의 이야기가 궁금하시다면 아래 링크를 참조해주세요. 🐱</strong>
-<br/><br/>
-<a href="https://substantial-flannel-f97.notion.site/A1O3-4c407ab1b1324d67bd43932c7e22c1bd">
-<img src="https://img.shields.io/badge/Notion-ffffff?style=flat-square&logo=Notion&logoColor=black">
-</a>  <a href="https://github.com/boostcampwm-2022/web09-KittyMark/wiki"> 
-<img src="https://img.shields.io/badge/Wiki-000000?style=flat-square&logo=Wikipedia&logoColor=white">
-</a>  <a href="https://docs.google.com/spreadsheets/d/18T5d3AXnZZ9pLfLomCuswxMANmP2dX0Ufoje-Nk6ERM/edit#gid=0"> 
-<img src="https://img.shields.io/badge/Back--Log-34A853?style=flat-square&logo=Google-Sheets&logoColor=white">
-</a>
-</div>
+**주변의 고양이와 더 따뜻한 유대감을 나눌 수 있어요!**
 
-## 소개
+한 번쯤은 길고양이 사진을 찍기 위해 사람들이 모여있는 것을 볼 수 있습니다. 사람들이 무심코 찍은 귀여운 친구들의 사진을 공유하고 본인의 고양이처럼 친근해질 수 있는 방법을 고민했습니다.
 
-> 주변 사람들이 길고양이를 보면 귀여워서 사진을 찍는 모습을 볼 수 있다. 또한 사람들은 본인의 애완동물을 자랑하는 일이 많다. 길고양이가 주변에 있으면 애착감도 느끼고 가끔 챙겨주는 모습을 보면서 주변에 있는 길고양이들도 본인의 애완동물처럼 자랑을 할 수 있으면 어떨까? 라는 생각을 하게 되었다. 주변의 길고양이의 사진을 찍고 공유하면서 서로의 애착감이 강해질 수 있는 계기가 되었으면 좋겠어서 기획을 하게 되었다. 또한 본인이 기르고 있는 고양이들의 사진을 공유하면서 서로에게 힐링이 되는 시간을 주고 싶었다.
+🚀 **프로젝트 개요**
+
+- **Kitty Mark**는 길고양이들의 사진을 올려 지도에 마크를 남길 수 있는 고양이를 위한 SNS에요.
+- **Kitty Mark**는 길고양이뿐만 아니라 자신의 고양이 사진을 누구든 올려 공유할 수 있어요.
+- **Kitty Mark**에서 길고양이들의 발자취를 기록해보세요. 지도가 점점 고양이 발자국으로 가득 차는 걸 볼 수 있을 거에요!
+
+📌 **프로젝트 목표**
+
+- 기간 내에 완성할 수 있도록 현실적인 목표를 충분히 상의하여 설정한다.
+- 일관성 있고 직관적인 UI를 통해 처음 보는 사용자도 이용하기 쉽게 한다.
+- 사용자 테스트 및 피드백을 통해 문제점을 찾아 해결하고 점진적으로 성능을 개선한다.
+
+# 주요 기능 소개
+
+<img align="left" src="https://user-images.githubusercontent.com/73357200/206893510-3a65e482-8722-4ef7-8e40-11dd507378e4.gif" width="300" height="600"/>
+
+<img src="https://user-images.githubusercontent.com/73357200/206895033-ab74eaf4-4a94-4465-8c89-8846f35015ae.png" width="20" height="20"/>**내 사진 자랑하기**
+
+좋아하는 고양이의 사진을 올리고 글을 작성할 수 있어요.
+
+길고양이라면 발견한 위치도 태그해주세요.
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+
+<img align="left" src="https://user-images.githubusercontent.com/73357200/206893424-a4d43124-d69a-4cdd-bc5f-a4259877ff49.gif" width="300" height="600" />
+
+<img src="https://user-images.githubusercontent.com/73357200/206895033-ab74eaf4-4a94-4465-8c89-8846f35015ae.png" width="20" height="20"/>**내 주변 고양이 확인하기**
+
+냥지도를 열어 내 주변의 고양이들을 확인해보세요.
+
+고양이 발자국 모양 마커를 클릭하면 사진과 글을 볼 수 있어요.
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<img align="left" src="https://user-images.githubusercontent.com/73357200/206893530-d57e4fe9-59e5-4b7e-bcbd-79e18c298444.GIF" width="300" height="600" />
+
+<img src="https://user-images.githubusercontent.com/73357200/206895033-ab74eaf4-4a94-4465-8c89-8846f35015ae.png" width="20" height="20"/>**취향이 같은 사용자라면**
+
+다른 사용자의 프로필을 방문해보는 건 어떨까요?
+
+피드 게시글이 너무 마음에 든다면 사용자를 팔로우해보세요.
+
+추가적으로 올라오는 게시글을 확인할 수 있어요.
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+<img align="left" src="https://user-images.githubusercontent.com/73357200/206893537-54c93b10-590f-497a-9e93-e68da4a5ee9f.GIF" width="300" height="600" />
+
+<img src="https://user-images.githubusercontent.com/73357200/206895033-ab74eaf4-4a94-4465-8c89-8846f35015ae.png" width="20" height="20"/>**마음에 드는 고양이를 찾았다면**
+
+사진이 마음에 들었다면 게시글에 좋아요를 눌러주세요.
+
+또는 댓글을 작성하여 관심을 표현할 수 있어요.
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+
+
+### **전체 기능 List**
+
+**공통**
+
+- 회원가입/로그인
+
+**홈**
+
+- 전체 게시글 확인
+- 게시글 등록
+    - 게시글 위치 설정
+- 게시글 좋아요/댓글
+
+**개인페이지**
+
+- 닉네임과 프로필 사진 확인
+- 업로드한 게시글 확인
+- 팔로우/팔로워 리스트 확인
+- 본인인 경우
+    - 개인 정보 수정
+- 타 유저인 경우
+    - 팔로우/팔로우 취소
+    - DM (추가 개발 예정)
+
+**냥지도**
+
+- 지도 줌 인/아웃, 이동
+- 위치 기반 게시글 확인
+
+**DM** (추가 개발 예정)
+
+- 기존 채팅방 및 메세지 확인
+- 메세지 보내기
+
+# 기술 스택 및 아키텍처
+![image](https://user-images.githubusercontent.com/73357200/206893080-f196ed7a-4617-4efd-b8bd-6edb65354663.png)
+![image](https://user-images.githubusercontent.com/73357200/206893082-81afe63c-7f31-48dd-b366-ec432db3ed05.png)
+
+# 팀원
 
 
 |                         J106\_신우성                         |                       J125\_유지훈                        |                      J169\_임채윤                       |                      J217\_허준영                       |
