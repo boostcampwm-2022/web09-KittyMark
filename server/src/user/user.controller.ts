@@ -11,12 +11,14 @@ import {
   UseInterceptors,
   ValidationPipe,
   ParseIntPipe,
+  Req,
 } from '@nestjs/common';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FollowDto } from './dto/follow.dto';
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -32,8 +34,13 @@ export class UserController {
   updateUserInfo(
     @UploadedFile() image: Express.Multer.File,
     @Body(ValidationPipe) updateUserInfoDto: UpdateUserInfoDto,
+    @Req() req: Request,
   ) {
-    return this.userService.updateUserInfo(updateUserInfoDto, image);
+    return this.userService.updateUserInfo(
+      updateUserInfoDto,
+      image,
+      req.session.userId,
+    );
   }
 
   @Post('/follow')

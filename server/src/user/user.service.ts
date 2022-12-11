@@ -3,6 +3,7 @@ import {
   NotFoundException,
   ConflictException,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { UtilsService } from 'src/utils/utils.service';
@@ -60,8 +61,12 @@ export class UserService {
   async updateUserInfo(
     updateUserInfoDto: UpdateUserInfoDto,
     image: Express.Multer.File,
+    session_userId: number,
   ) {
     const { userId, userName } = updateUserInfoDto;
+
+    if (session_userId !== userId)
+      throw new ForbiddenException('본인 정보만 수정할 수 있습니다.');
 
     let profileUrl = null;
     if (image) {
