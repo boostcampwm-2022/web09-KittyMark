@@ -1,7 +1,5 @@
 # 프로젝트 소개
 
----
-
 ![image](https://user-images.githubusercontent.com/73357200/206893002-d234f56b-19bb-434d-aa68-82fa1ac1e782.png)
 
 **Kitty Mark에** **좋아하는 길고양이 사진을 공유해주세요 🐱**
@@ -24,34 +22,87 @@
 
 # 주요 기능 소개
 
----
+<img align="left" src="https://user-images.githubusercontent.com/73357200/206893510-3a65e482-8722-4ef7-8e40-11dd507378e4.gif" width="300" height="600"/>
 
-![Dec-11-2022_15-32-50](https://user-images.githubusercontent.com/73357200/206893510-3a65e482-8722-4ef7-8e40-11dd507378e4.gif)
+<img src="https://user-images.githubusercontent.com/73357200/206895033-ab74eaf4-4a94-4465-8c89-8846f35015ae.png" width="20" height="20"/>**내 사진 자랑하기**
 
-**내 사진 자랑하기**
-- 좋아하는 고양이의 사진을 올리고 글을 작성할 수 있어요.
-- 길고양이라면 발견한 위치도 태그해주세요.
+좋아하는 고양이의 사진을 올리고 글을 작성할 수 있어요.
 
-![%E1%84%8C%E1%85%B5%E1%84%83%E1%85%A9_%E1%84%80%E1%85%B5%E1%84%82%E1%85%B3%E1%86%BC](https://user-images.githubusercontent.com/73357200/206893424-a4d43124-d69a-4cdd-bc5f-a4259877ff49.gif)
+길고양이라면 발견한 위치도 태그해주세요.
 
-**내 주변 고양이 확인하기**
-- 냥지도를 열어 내 주변의 고양이들을 확인해보세요.
-- 고양이 발자국 모양 마커를 클릭하면 사진과 글을 볼 수 있어요.
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
 
-![%E1%84~2](https://user-images.githubusercontent.com/73357200/206893530-d57e4fe9-59e5-4b7e-bcbd-79e18c298444.GIF)
 
-**취향이 같은 사용자라면**
+<img align="left" src="https://user-images.githubusercontent.com/73357200/206893424-a4d43124-d69a-4cdd-bc5f-a4259877ff49.gif" width="300" height="600" />
 
-- 다른 사용자의 프로필을 방문해보는 건 어떨까요?
-- 피드 게시글이 너무 마음에 든다면 사용자를 팔로우해보세요.
-- 추가적으로 올라오는 게시글을 확인할 수 있어요.
+<img src="https://user-images.githubusercontent.com/73357200/206895033-ab74eaf4-4a94-4465-8c89-8846f35015ae.png" width="20" height="20"/>**내 주변 고양이 확인하기**
 
-![%E1%84~3](https://user-images.githubusercontent.com/73357200/206893537-54c93b10-590f-497a-9e93-e68da4a5ee9f.GIF)
+냥지도를 열어 내 주변의 고양이들을 확인해보세요.
 
-**마음에 드는 고양이를 찾았다면**
+고양이 발자국 모양 마커를 클릭하면 사진과 글을 볼 수 있어요.
 
-- 사진이 마음에 들었다면 게시글에 좋아요를 눌러주세요.
-- 또는 댓글을 작성하여 관심을 표현할 수 있어요.
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<img align="left" src="https://user-images.githubusercontent.com/73357200/206893530-d57e4fe9-59e5-4b7e-bcbd-79e18c298444.GIF" width="300" height="600" />
+
+<img src="https://user-images.githubusercontent.com/73357200/206895033-ab74eaf4-4a94-4465-8c89-8846f35015ae.png" width="20" height="20"/>**취향이 같은 사용자라면**
+
+다른 사용자의 프로필을 방문해보는 건 어떨까요?
+
+피드 게시글이 너무 마음에 든다면 사용자를 팔로우해보세요.
+
+추가적으로 올라오는 게시글을 확인할 수 있어요.
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+<img align="left" src="https://user-images.githubusercontent.com/73357200/206893537-54c93b10-590f-497a-9e93-e68da4a5ee9f.GIF" width="300" height="600" />
+
+<img src="https://user-images.githubusercontent.com/73357200/206895033-ab74eaf4-4a94-4465-8c89-8846f35015ae.png" width="20" height="20"/>**마음에 드는 고양이를 찾았다면**
+
+사진이 마음에 들었다면 게시글에 좋아요를 눌러주세요.
+
+또는 댓글을 작성하여 관심을 표현할 수 있어요.
+
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+
 
 ### **전체 기능 List**
 
