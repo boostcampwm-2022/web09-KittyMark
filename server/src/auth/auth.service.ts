@@ -15,6 +15,7 @@ import { plainToInstance } from 'class-transformer';
 import { User } from 'src/user/user.entity';
 import { S3Service } from 'src/S3/S3.service';
 import { CheckNameDto } from '../auth/dto/check-name.dto';
+import { UtilsService } from 'src/utils/utils.service';
 
 declare module 'express-session' {
   export interface SessionData {
@@ -26,6 +27,7 @@ declare module 'express-session' {
 export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly utilsService: UtilsService,
     private readonly httpService: HttpService,
     private readonly s3Service: S3Service,
   ) {}
@@ -43,6 +45,12 @@ export class AuthService {
   async register(image: Express.Multer.File, registerUserDto: RegisterUserDto) {
     // TODO: OauthInfo 추가
     const { email, userName, oauthInfo } = registerUserDto;
+
+    this.utilsService.validateName(userName);
+
+    const name = await this.userRepository.findByName(userName);
+    if (name) throw new ConflictException('이미 존재하는 이름입니다.');
+
     const find = await this.userRepository.findByOauthInfo(email, oauthInfo);
 
     if (find) {
@@ -68,7 +76,7 @@ export class AuthService {
     return { statusCode: 201, message: 'Success' };
   }
 
-  // // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
+  // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
   async login(email: string, request: Request) {
     const user = await this.userRepository.findByOauthInfo(
       email,

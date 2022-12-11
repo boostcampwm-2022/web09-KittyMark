@@ -5,7 +5,8 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { S3Service } from 'src/S3/S3.service';
+import { UtilsService } from 'src/utils/utils.service';
+import { S3Service } from '../S3/S3.service';
 import { FollowDto } from './dto/follow.dto';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
@@ -17,6 +18,7 @@ import { UserRepository } from './user.repository';
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
+    private readonly utilsService: UtilsService,
     private readonly s3Service: S3Service,
     private readonly followRepository: FollowRepository,
   ) {}
@@ -39,8 +41,6 @@ export class UserService {
       viewerId,
     );
 
-    console.log(followedByViewer);
-    console.log(followsViewer);
     return {
       statusCode: 200,
       message: 'Success',
@@ -69,8 +69,9 @@ export class UserService {
     }
 
     if (userName) {
+      this.utilsService.validateName(userName);
       const name = await this.userRepository.findByName(userName);
-      if (name) throw new ConflictException('이미 존재하는 닉네임입니다.');
+      if (name) throw new ConflictException('이미 존재하는 이름입니다.');
     }
 
     if (profileUrl && userName) {
