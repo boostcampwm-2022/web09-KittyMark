@@ -41,7 +41,10 @@ const ProfileIcon = ({
       onClick={() => navigate(`/user/${userName}/${targetId}`)}
       customLength={customLength || 2.5}
     >
-      <img src={userProfile} alt="Profile" />
+      <img
+        src={userProfile !== '' ? userProfile : '../../defaultProfile.svg'}
+        alt="Profile"
+      />
     </Button>
   );
 };

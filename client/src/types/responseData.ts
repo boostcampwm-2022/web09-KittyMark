@@ -10,6 +10,7 @@ export interface LoginApi extends Api {
   data?: {
     userId: number;
     userName: string;
+    userProfileUrl: string;
   };
 }
 

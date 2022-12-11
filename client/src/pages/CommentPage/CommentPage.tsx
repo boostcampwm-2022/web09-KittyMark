@@ -89,6 +89,7 @@ const CommentPage = () => {
         </S.Container>
         <MessageForm
           targetId={userData.userId}
+          userProfile={userData.userProfileUrl}
           data={comment}
           onClickSendBtn={onClickSendBtn}
           setFunc={setComment}

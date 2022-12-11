@@ -45,6 +45,7 @@ const LoadingPage = () => {
           setUserData({
             userId: data.data.userId,
             userName: data.data.userName,
+            userProfileUrl: data.data.userProfileUrl,
           });
           navigate('/home', { replace: true });
           return;
