@@ -19,6 +19,7 @@ const user = atom({
   default: {
     userId: -1,
     userName: '',
+    userProfileUrl: '',
   },
   effects: [localStorageEffect('user')],
 });

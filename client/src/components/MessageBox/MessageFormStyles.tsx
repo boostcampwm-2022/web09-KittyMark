@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const SendMessageContainer = styled.div`
+const Container = styled.div`
   width: calc(90% - 2rem);
   height: 2rem;
   background-color: ${(props) => props.theme.palette.inner};
@@ -16,7 +16,7 @@ const SendMessageContainer = styled.div`
   justify-content: space-between;
 `;
 
-const MessageFormWrap = styled.div`
+const Wrap = styled.div`
   width: calc(85% - 1.5rem);
   height: 2.5rem;
   background-color: ${(props) => props.theme.palette.back};
@@ -61,4 +61,4 @@ const SendBtn = styled.button`
   }
 `;
 
-export { SendMessageContainer, MessageFormWrap, SendBtn };
+export default { Container, Wrap, SendBtn };

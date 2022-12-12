@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 const NaverMap = styled.div`
   width: 100vw;
-  height: calc(100vh - 8rem);
+  height: calc(var(--vh, 1vh) * 100 - 8rem);
+  /* height: calc(100vh - 8rem); */
 `;
 
 const SpinnerWrapper = styled.div`

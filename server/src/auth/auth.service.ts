@@ -86,11 +86,14 @@ export class AuthService {
     if (user) {
       await redisClient.set(request.sessionID, user.id);
       await redisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
-      console.log(request.sessionID);
       request.session.userId = user.id;
       return {
         statusCode: 200,
-        data: { userId: user.id, userName: user.name },
+        data: {
+          userId: user.id,
+          userName: user.name,
+          userProfileUrl: user.profileUrl,
+        },
         message: 'Success',
       };
     } else {

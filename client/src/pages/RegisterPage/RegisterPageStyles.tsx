@@ -24,7 +24,7 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
 
-  gap: 20px;
+  gap: 15px;
 
   padding: 3rem 3rem 2rem 3rem;
 
@@ -47,8 +47,9 @@ const Title = styled.p`
 const Info = styled.p`
   margin: 0px;
   font-weight: 590;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 19px;
+  text-align: center;
 `;
 
 const InputContainer = styled.div`

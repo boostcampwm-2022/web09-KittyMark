@@ -3,28 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 // recoil
 import user from '../../store/userAtom';
+// style
+import S from './NavBarStyles';
 // img
 import homeIcon from '../../static/homeIcon.svg';
 import mapIcon from '../../static/mapIcon.svg';
 import messageIcon from '../../static/messageIcon.svg';
 import userIcon from '../../static/userIcon.svg';
-// style
-import S from './NavBarStyles';
 // preload
 import { UserPage, MapPage } from '../../pages';
 
 const NavBar = () => {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const userData = useRecoilValue(user);
 
   return (
     <S.Container>
-      <S.Icon type="button" onClick={() => navigation('/home')}>
+      <S.Icon type="button" onClick={() => navigate('/home')}>
         <img src={homeIcon} alt="Home" />
       </S.Icon>
       <S.Icon
         type="button"
-        onClick={() => navigation('/map')}
+        onClick={() => navigate('/map')}
         onMouseOver={() => MapPage.preload()}
       >
         <img src={mapIcon} alt="Map" />
@@ -35,7 +35,7 @@ const NavBar = () => {
       <S.Icon
         type="button"
         onClick={() =>
-          navigation(`/user/${userData.userName}/${userData.userId}`)
+          navigate(`/user/${userData.userName}/${userData.userId}`)
         }
         onMouseOver={() => UserPage.preload()}
       >

@@ -48,7 +48,7 @@ const HomePage = () => {
           error.response.data.statusCode === 401 &&
           error.response.data.error === 'Unauthorized'
         ) {
-          setUserData({ userId: -1, userName: '' });
+          setUserData({ userId: -1, userName: '', userProfileUrl: '' });
           navigate('/');
         }
       },
