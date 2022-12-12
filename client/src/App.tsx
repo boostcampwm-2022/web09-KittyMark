@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { RecoilRoot } from 'recoil';
@@ -22,6 +22,15 @@ import {
 const queryClient = new QueryClient();
 
 const App = () => {
+  const setScreenSize = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  };
+
+  useEffect(() => {
+    setScreenSize();
+  });
+
   return (
     <ThemeProvider
       theme={{
