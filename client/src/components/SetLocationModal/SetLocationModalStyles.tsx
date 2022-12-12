@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   position: absolute;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 100;
   top: 0;
   left: 0;
@@ -28,7 +28,7 @@ const Background = styled.div`
 
 const MapWrapper = styled.div`
   width: 95%;
-  height: 87%;
+  height: 80%;
   background-color: white;
   display: flex;
   justify-content: center;

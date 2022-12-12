@@ -1,8 +1,11 @@
 import { Coordinate, getQueryMapRange } from './map';
+import footprint from '../../static/footprint.svg';
 
 export const createMap = ({ latitude, longitude }: Coordinate) => {
   return new naver.maps.Map('map', {
     center: new naver.maps.LatLng(latitude, longitude),
+    scaleControl: false,
+    mapDataControl: false,
     zoomControl: true,
     zoomControlOptions: {
       style: naver.maps.ZoomControlStyle.SMALL,
@@ -19,12 +22,13 @@ export const createMarker = (
     position: new naver.maps.LatLng(latitude, longitude),
     map,
     // 원하는 이미지로 마커 커스텀
-    // icon: {
-    //     url: pinImage,
-    //     size: new naver.maps.Size(50, 52),
-    //     origin: new naver.maps.Point(0, 0),
-    //     anchor: new naver.maps.Point(25, 26),
-    //   },
+    icon: {
+      content: `<img src=${footprint} width="25" height="25" alt="Create/Delete DropDown" />`,
+      //     url: pinImage,
+      //     size: new naver.maps.Size(50, 52),
+      //     origin: new naver.maps.Point(0, 0),
+      //     anchor: new naver.maps.Point(25, 26),
+    },
   });
 };
 
@@ -39,11 +43,9 @@ const hideMarker = (map: naver.maps.Map, marker: naver.maps.Marker) => {
 };
 
 const hideAllMarker = (map: naver.maps.Map, markers: naver.maps.Marker[]) => {
-  let marker;
-  for (let i = 0; i < markers.length; i += 1) {
-    marker = markers[i];
+  markers.forEach((marker) => {
     hideMarker(map, marker);
-  }
+  });
 };
 
 const updateMarkers = (map: naver.maps.Map, markers: naver.maps.Marker[]) => {

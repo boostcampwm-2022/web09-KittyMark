@@ -17,6 +17,10 @@ import { NaverMap, SpinnerWrapper, Spinner } from './MapPageStyles';
 import NormalTopBar from '../../components/NormalTopBar/NormalTopBar';
 import NavBar from '../../components/NavBar/NavBar';
 import BoardModal from '../../components/BoardModal/BoardModal';
+// constant
+import { LOCATION_1784, WAIT_TIME_BEFORE_REQUEST } from '../../constants/map';
+// hook
+import useCurrentLocation from '../../hooks/useCurrentLocation';
 
 declare global {
   interface Window {
@@ -35,17 +39,10 @@ interface QueryRange {
   };
 }
 
-const LOCATION1784 = {
-  latitude: 37.3595953,
-  longitude: 127.1053971,
-};
-
 const MapPage = () => {
   const navigation = useNavigate();
   const { naver } = window;
-  const [currentLocation, setCurrentLocation] = useState<
-    { latitude: number; longitude: number } | string
-  >('');
+  const currentLocation = useCurrentLocation();
   const [map, setMap] = useState<naver.maps.Map | null>(null);
   const [boards, setBoards] = useState<Board[]>([]);
   const [clickedBoard, setClickedBoard] = useState<Board | null>(null);
@@ -61,10 +58,10 @@ const MapPage = () => {
     eventHandler: () => {
       navigation('/new-post');
     },
-    description: '게시물을 추가할래요.',
+    description: 'create new post',
   };
 
-  const requestData = async () => {
+  const requestBoardsData = async () => {
     if (!map) return;
     const range = getQueryMapRange(map);
     const data = await getBoardsMutation.mutateAsync(range);
@@ -75,34 +72,31 @@ const MapPage = () => {
     setBoards(boardsInRange);
   };
 
-  /* 사용자 현재 위치 가져오기 */
-  useEffect(() => {
-    const naverMap = NaverMapModule.createMap(LOCATION1784);
-    setMap(naverMap);
+  const requestAfterTimeout = (currentMap: naver.maps.Map, timeout: number) => {
+    const { x: prevX, y: prevY } = currentMap.getCenter();
+    setTimeout(() => {
+      const { x: currentX, y: currentY } = currentMap.getCenter();
+      if (currentX === prevX && currentY === prevY) requestBoardsData();
+    }, timeout);
+  };
 
-    if (window.navigator.geolocation) {
-      window.navigator.geolocation.getCurrentPosition((position) => {
-        setCurrentLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      });
-    } else {
-      // eslint-disable-next-line
-      window.alert('현재 위치를 알 수 없습니다.');
-    }
+  useEffect(() => {
+    const naverMap = NaverMapModule.createMap(LOCATION_1784);
+    setMap(naverMap);
   }, []);
 
-  /* 지도에 이벤트 추가 */
   useEffect(() => {
     if (map === null) return;
 
     naver.maps.Event.addListener(map, 'dragend', () => {
-      requestData();
+      requestAfterTimeout(map, WAIT_TIME_BEFORE_REQUEST);
+    });
+
+    naver.maps.Event.addListener(map, 'zoom_changed', () => {
+      requestAfterTimeout(map, WAIT_TIME_BEFORE_REQUEST);
     });
   }, [map]);
 
-  /* 사용자 위치 기반 지도 만들기 */
   useEffect(() => {
     if (typeof currentLocation === 'string' || !map) return;
 
@@ -110,7 +104,7 @@ const MapPage = () => {
     const { latitude, longitude } = currentLocation;
     const newCenter = new naver.maps.LatLng(latitude, longitude);
     map.panTo(newCenter);
-    requestData();
+    requestBoardsData();
   }, [currentLocation]);
 
   /* 서버에서 받아온 게시글 정보를 기반으로 마킹 */
