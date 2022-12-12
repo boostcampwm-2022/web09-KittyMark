@@ -28,6 +28,7 @@ const LoginPage = () => {
 
   // 사용자가 들어왔을 때 기존 로그인인지 확인한다.
   // 이 로직이 많이 사용되는 것이 아니기 때문에 우선은 LoginPage 에 두고 차후 생각해본다.
+  // TODO 여기 useCallback 쓸모 없음 그냥 때려 치우셈
   const isLoginCheck = useCallback(async () => {
     if (userData.userId === -1 || userData.userName === '') return;
     try {
