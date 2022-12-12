@@ -27,7 +27,7 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
   const setProfile = useSetRecoilState(userProfile);
   const [modalOn, setModalOn] = useState<boolean>(false);
 
-  const userInfo = useQuery<UserInfo, AxiosError>('userInfo', () =>
+  const userInfo = useQuery<UserInfo, AxiosError>(['userInfo', targetId], () =>
     getUserInfo(targetId, userId).then((res) => res.data),
   );
 

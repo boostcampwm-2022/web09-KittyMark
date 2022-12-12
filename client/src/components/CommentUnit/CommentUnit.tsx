@@ -8,11 +8,11 @@ import user from '../../store/userAtom';
 import { deleteCommentInfo } from '../../apis/api/commentApi';
 // style
 import S from './CommentUnitStyles';
-// img
-import menuBtn from '../../static/menuBtn.svg';
 // component
 import MenuModal from '../MenuModal/MenuModal';
 import ProfileIcon from '../ProfileIcon/ProfileIcon';
+// img
+import menuBtn from '../../static/menuBtn.svg';
 
 interface CommentUnitProps {
   targetId: number;
@@ -39,7 +39,7 @@ const CommentUnit = ({
   isModal,
   setModal,
 }: CommentUnitProps) => {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { userId } = useRecoilValue(user);
 
@@ -51,7 +51,7 @@ const CommentUnit = ({
   };
 
   const onClickModify = async () => {
-    navigation('/modify', {
+    navigate('/modify', {
       state: {
         title: '댓글 수정',
         before: content,

@@ -78,7 +78,11 @@ const ModifyUserPage = () => {
         data = await patchUserInfo(userId, nickname, image.image);
       else data = await putUserImage(userId, image.image);
       if (data.statusCode === 200) {
-        setUserInfo((prev) => ({ userId: prev.userId, userName: nickname }));
+        setUserInfo((prev) => ({
+          ...prev,
+          userId: prev.userId,
+          userName: nickname,
+        }));
         navigation(`/user/${nickname}/${userId}`);
       }
       // eslint-disable-next-line no-alert
