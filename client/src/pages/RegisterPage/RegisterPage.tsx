@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 // type
 import { AxiosError } from 'axios';
@@ -37,9 +37,9 @@ const RegisterPage = () => {
   const [{ nickname, checkResult, resultMessage }, setNickname, checkNickname] =
     useNickName('');
 
-  // useEffect(() => {
-  //   if (email === '') navigate('/');
-  // }, []);
+  useEffect(() => {
+    if (email === '') navigate('/');
+  }, []);
 
   const onClickProfileImageBtn = () => {
     if (profileImageBtn.current) {

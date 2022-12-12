@@ -86,7 +86,7 @@ const putUserImage = async (
   formData.append('image', image || '');
 
   const { data }: AxiosResponse<Api> = await defaultFormInstance.patch(
-    `/api/user/image`,
+    `/api/user/info`,
     formData,
   );
   return data;
