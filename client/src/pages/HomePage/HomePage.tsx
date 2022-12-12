@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { AxiosError } from 'axios';
 import { useSetRecoilState } from 'recoil';
 import user from '../../store/userAtom';
@@ -26,7 +26,6 @@ const makeBoarList = (boards: Board[]) => {
 };
 
 const HomePage = () => {
-  const querytClient = useQueryClient();
   const setUserData = useSetRecoilState(user);
   const navigate = useNavigate();
   const requestCount = 10000;
@@ -43,9 +42,6 @@ const HomePage = () => {
     () =>
       getBoardData(requestCount, '-1').then((response) => response.data.boards),
     {
-      onSuccess: () => {
-        querytClient.invalidateQueries('boards');
-      },
       onError: (error) => {
         if (
           error.response &&
