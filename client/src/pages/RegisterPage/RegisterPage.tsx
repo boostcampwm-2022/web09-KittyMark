@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 // type
 import { AxiosError } from 'axios';
@@ -37,9 +37,9 @@ const RegisterPage = () => {
   const [{ nickname, checkResult, resultMessage }, setNickname, checkNickname] =
     useNickName('');
 
-  useEffect(() => {
-    if (email === '') navigate('/');
-  }, []);
+  // useEffect(() => {
+  //   if (email === '') navigate('/');
+  // }, []);
 
   const onClickProfileImageBtn = () => {
     if (profileImageBtn.current) {
@@ -82,7 +82,10 @@ const RegisterPage = () => {
             <br />
             환영합니다!
           </S.Title>
-          <S.Info>회원가입을 위해 추가 정보를 입력해주세요.</S.Info>
+          <S.Info>
+            회원가입을 위해 추가 정보를 입력해주세요. <br />
+            별명은 영어, 숫자, 밑줄, 마침표만 가능합니다.
+          </S.Info>
           <S.ProfileContainer>
             <S.Thumbnail src={image.image64 as string} alt="Slot" />
             <input

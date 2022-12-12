@@ -3,13 +3,16 @@ import { useCallback, useState } from 'react';
 // api
 import { postNameCheck } from '../apis/api/loginApi';
 
+const checkType = /[^\w.]/;
+
 interface Nickname {
   nickname: string;
   checkResult: boolean;
   resultMessage:
     | '별명 중복 체크를 해주세요.'
     | '이미 존재하는 별명입니다.'
-    | '사용 가능한 별명입니다.';
+    | '사용 가능한 별명입니다.'
+    | '별명 규칙을 확인해주세요.';
 }
 
 const useNickName = (
@@ -23,16 +26,21 @@ const useNickName = (
 
   // 사용자 입력에 따라서 값을 바꿔준다.
   const setNickname = (newName: string) => {
+    const checkResult = checkType.test(newName);
+
     setNameObj({
       nickname: newName,
       checkResult: false,
-      resultMessage: '별명 중복 체크를 해주세요.',
+      resultMessage: checkResult
+        ? '별명 규칙을 확인해주세요.'
+        : '별명 중복 체크를 해주세요.',
     });
   };
 
   // 사용자가 중복 검사를 눌렀을 경우
   const checkNickname = useCallback(async () => {
     if (nameObj.nickname === '') return;
+    if (checkType.test(nameObj.nickname)) return;
     try {
       const data = await postNameCheck(nameObj.nickname);
       if (data.statusCode === 200)
