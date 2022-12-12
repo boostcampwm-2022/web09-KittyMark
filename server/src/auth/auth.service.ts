@@ -68,7 +68,7 @@ export class AuthService {
     return { statusCode: 201, message: 'Success' };
   }
 
-  // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
+  // // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
   async login(email: string, request: Request) {
     const user = await this.userRepository.findByOauthInfo(
       email,
@@ -77,7 +77,7 @@ export class AuthService {
 
     if (user) {
       await redisClient.set(request.sessionID, user.id);
-      await redisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
+      await redisClient.expire(request.sessionID, 60 * 60 * 24 * 30 * 1000);
       request.session.userId = user.id;
       return {
         statusCode: 200,

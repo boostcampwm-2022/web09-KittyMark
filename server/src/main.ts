@@ -16,7 +16,7 @@ async function bootstrap() {
       resave: false, //세션이 수정되지 않아도 지속적으로 저장하게 하는 옵션
       saveUninitialized: false, //초기화되지 않는 세션을 저장하게 함
       cookie: {
-        maxAge: 60 * 60 * 24 * 30, //30일
+        maxAge: 60 * 60 * 24 * 30 * 1000, //30일
         httpOnly: true,
         sameSite: 'strict',
         // secure: true,
@@ -24,7 +24,6 @@ async function bootstrap() {
       name: 'kittymark.sid',
     }),
   );
-
   app.useGlobalGuards(new AuthGuard());
   app.useGlobalPipes(
     new ValidationPipe({
