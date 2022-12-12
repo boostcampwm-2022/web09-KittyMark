@@ -15,6 +15,8 @@ const Container = styled.div`
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(1px);
+  overflow: hidden;
+  touch-action: none;
 `;
 
 const Background = styled.div`
@@ -28,7 +30,7 @@ const Background = styled.div`
 
 const MapWrapper = styled.div`
   width: 95%;
-  height: 90%;
+  height: 95%;
   background-color: white;
   display: flex;
   justify-content: center;
@@ -51,7 +53,7 @@ const Wrapper = styled.div`
   height: 8%;
   position: absolute;
   z-index: 1001;
-  bottom: 5%;
+  bottom: 8%;
   display: flex;
   justify-content: center;
 `;
