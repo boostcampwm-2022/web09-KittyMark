@@ -80,7 +80,7 @@ export interface Board {
 export interface BoardApi extends Api {
   data: {
     boards: [Board];
-    nextMaxId: number;
+    next_max_id: number;
     count: number;
   };
 }
