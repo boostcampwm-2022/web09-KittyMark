@@ -1,91 +1,211 @@
-import { ConflictException } from '@nestjs/common';
+import { BadRequestException, ConflictException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { plainToInstance } from 'class-transformer';
+import { S3Service } from 'src/S3/S3.service';
 import { OauthInfo } from '../auth/model/oauth-info.enum';
-import { Repository } from 'typeorm';
+import { GetProfileInfoDto } from './dto/get-profile-info.dto';
+import { FollowRepository } from './follow/follow.repository';
 import { User } from './user.entity';
+import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
+import { when } from 'jest-when';
+import { Follow } from './follow/follow.entity';
 
 describe('UserService', () => {
-  let service: UserService;
-  let repository: jest.Mocked<Repository<User>>;
+  let userService: UserService;
+  const userRepository = {
+    findByName: jest.fn(),
+    findById: jest.fn(),
+    findByOauthInfo: jest.fn(),
+    save: jest.fn(),
+    update: jest.fn(),
+    findUserSummaryById: jest.fn(),
+  };
+  const s3Service = {
+    uploadFile: jest.fn(),
+  };
+  const followRepository = {
+    save: jest.fn(),
+    delete: jest.fn(),
+    findFollowingCnt: jest.fn(),
+    findFollowerCnt: jest.fn(),
+    findFollow: jest.fn(),
+  };
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
-        // {
-        //   provide: UserService,
-        //   useValue: {
-        //     findByOauthInfo: jest.fn(),
-        //   },
-        // },
         {
-          provide: getRepositoryToken(User),
-          useValue: {
-            find: jest.fn(),
-            findOne: jest.fn(),
-            save: jest.fn(),
-          },
+          provide: UserRepository,
+          useValue: userRepository,
         },
+        { provide: S3Service, useValue: s3Service },
+        { provide: FollowRepository, useValue: followRepository },
       ],
     }).compile();
 
-    service = module.get<UserService>(UserService);
-    repository = module.get(getRepositoryToken(User));
-    // userService = module.get<jest.Mocked<UserService>>(UserService);
+    userService = module.get<UserService>(UserService);
   });
 
   const id = 1;
   const name = 'chae_nuun';
   const email = 'dla0510@naver.com';
-  const oauth_info = OauthInfo.NAVER;
-  const profile_url = './defaultProfile.svg';
+  const oauthInfo = OauthInfo.NAVER;
+  const profileUrl = '';
 
-  describe('create', () => {
+  const user = plainToInstance(User, {
+    id,
+    name,
+    email,
+    oauthInfo,
+    profileUrl,
+  });
+
+  describe('create User', () => {
     it('should create user', async () => {
       // Given
-      // register 함수로 registerDto 정보가 들어오면
-      // When
-      // userRepository를 사용해 DB에 New User 저장
-      // Then
-      // { code: 200, message: 'Success' } 반환
-      repository.findOne.mockResolvedValue(null);
-      //   userService.findByOauthInfo.mockResolvedValue(undefined);
-
-      const result = await service.register({
+      const createUserDto = {
         email,
-        imageURL: './defaultProfile.svg',
-        userName: 'chae_nuun',
-      });
+        userName: name,
+        oauthInfo,
+      };
+      userRepository.findByName.mockResolvedValue(null);
+      userRepository.findByOauthInfo.mockResolvedValue(null);
+      userRepository.save.mockResolvedValue(null);
 
-      expect(result).toMatchObject({ code: 200, message: 'Success' });
+      //When
+      const result = await userService.createUser(null, createUserDto);
+
+      //Then
+      expect(result).toMatchObject({
+        statusCode: 201,
+        message: 'Success',
+      });
     });
 
     it('should throw ConflictException when user already exists', async () => {
       // Given
-      // register 함수로 이미 DB에 있는 registerDto 정보가 들어오면
-      // When
-      // userRepository.save에서 오류 발생
-      // Then
-      // ConflictException('이미 존재하는 유저입니다') 반환
-      repository.findOne.mockResolvedValue({
-        id,
-        name,
+      const createUserDto = {
         email,
-        oauth_info,
-        profile_url,
-      });
+        userName: name,
+        oauthInfo,
+      };
+      userRepository.findByName.mockResolvedValue(null);
+      userRepository.findByOauthInfo.mockResolvedValue(user);
 
+      //When
+      //Then
       await expect(
-        service.register({
-          email,
-          imageURL: './defaultProfile.svg',
-          userName: 'chae_nuun',
-        }),
+        userService.createUser(null, createUserDto),
       ).rejects.toThrowError(
         new ConflictException('이미 존재하는 유저입니다.'),
       );
+    });
+
+    it('should throw ConflictException when userName already exists', async () => {
+      // Given
+      const createUserDto = {
+        email,
+        userName: name,
+        oauthInfo,
+      };
+      userRepository.findByName.mockResolvedValue(user);
+
+      //When
+      //Then
+      await expect(
+        userService.createUser(null, createUserDto),
+      ).rejects.toThrowError(
+        new ConflictException('이미 존재하는 이름입니다.'),
+      );
+    });
+
+    it('should throw BadRequestException when userName consists of characters other than a-z, 0-9, _, .', async () => {
+      // Given
+      const createUserDto = {
+        email,
+        userName: 'chae_nuun^^',
+        oauthInfo,
+      };
+
+      //When
+      //Then
+      await expect(
+        userService.createUser(null, createUserDto),
+      ).rejects.toThrowError(
+        new BadRequestException(
+          '사용자 이름에는 문자, 숫자, 밑줄 및 마침표만 사용할 수 있습니다.',
+        ),
+      );
+    });
+  });
+
+  describe('get user info', () => {
+    const getProfileInfoDto: GetProfileInfoDto = {
+      userId: user.id,
+      viewerId: 2,
+    };
+
+    it('should get information of user', async () => {
+      //Given
+      when(userRepository.findUserSummaryById)
+        .calledWith(getProfileInfoDto.userId)
+        .mockResolvedValue({
+          user_id: user.id,
+          user_name: user.name,
+          profile_url: user.profileUrl,
+          boardCount: '2',
+        });
+      when(followRepository.findFollowingCnt)
+        .calledWith(getProfileInfoDto.userId)
+        .mockResolvedValue([{ count: '1' }]);
+      when(followRepository.findFollowerCnt)
+        .calledWith(getProfileInfoDto.userId)
+        .mockResolvedValue([{ count: '2' }]);
+
+      const viewer = plainToInstance(User, {
+        id: 2,
+        name: 'yooji',
+        email: 'yooji0415@naver.com',
+        oauthInfo: 'NAVER',
+        profileUrl: '',
+      });
+
+      const follow = plainToInstance(Follow, {
+        user: viewer,
+        followedUser: user,
+      });
+      const follower = plainToInstance(Follow, {
+        user,
+        followedUser: viewer,
+      });
+      when(followRepository.findFollow)
+        .calledWith(getProfileInfoDto.viewerId, getProfileInfoDto.userId)
+        .mockResolvedValue(follow);
+      when(followRepository.findFollow)
+        .calledWith(getProfileInfoDto.userId, getProfileInfoDto.viewerId)
+        .mockResolvedValue(follower);
+
+      //When
+      //Then
+      const result = await userService.getUserInfo(getProfileInfoDto);
+      expect(result).toMatchObject({
+        userId: 1,
+        userName: 'chae_nuun',
+        userProfileUrl: '',
+        boards: {
+          count: '2',
+        },
+        follow: {
+          count: '1',
+        },
+        followed_by: {
+          count: '2',
+        },
+        followed_by_viewer: true,
+        follows_viewer: true,
+      });
     });
   });
 });

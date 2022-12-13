@@ -29,7 +29,8 @@ export class UserService {
     // TODO: OauthInfo 추가
     const { email, userName, oauthInfo } = createUserDto;
 
-    await this.validateName({ name: userName });
+    const name = await this.validateName({ name: userName });
+    if (name.isExist) throw new ConflictException('이미 존재하는 이름입니다.');
 
     const find = await this.userRepository.findByOauthInfo(email, oauthInfo);
     if (find) {
@@ -58,6 +59,7 @@ export class UserService {
   async getUserInfo(getProfileInfoDto: GetProfileInfoDto) {
     const { userId, viewerId } = getProfileInfoDto;
     const user = await this.userRepository.findUserSummaryById(userId);
+    // console.log(user);
 
     if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
 
