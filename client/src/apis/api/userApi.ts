@@ -4,6 +4,7 @@ import {
   FollowListApi,
   UserInfoApi,
   UserPostApi,
+  ModifyUserApi,
 } from '../../types/responseData';
 import { defaultInstance, defaultFormInstance } from '../utils';
 // type
@@ -64,31 +65,27 @@ const patchUserInfo = async (
   userId: number,
   userName: string,
   image: File | null,
-): Promise<Api> => {
+): Promise<ModifyUserApi> => {
   const formData = new FormData();
   formData.append('userId', String(userId));
   formData.append('userName', userName);
   formData.append('image', image || '');
 
-  const { data }: AxiosResponse<Api> = await defaultFormInstance.patch(
-    `/api/user/info`,
-    formData,
-  );
+  const { data }: AxiosResponse<ModifyUserApi> =
+    await defaultFormInstance.patch(`/api/user/info`, formData);
   return data;
 };
 
 const putUserImage = async (
   userId: number,
   image: File | null,
-): Promise<Api> => {
+): Promise<ModifyUserApi> => {
   const formData = new FormData();
   formData.append('userId', String(userId));
   formData.append('image', image || '');
 
-  const { data }: AxiosResponse<Api> = await defaultFormInstance.patch(
-    `/api/user/info`,
-    formData,
-  );
+  const { data }: AxiosResponse<ModifyUserApi> =
+    await defaultFormInstance.patch(`/api/user/info`, formData);
   return data;
 };
 

@@ -15,10 +15,10 @@ import defaultProfile from '../../static/defaultProfile.svg';
 import plusBtn from '../../static/plusBtn.svg';
 // component
 import TopBar from '../../components/TopBar/TopBar';
-import { Api } from '../../types/responseData';
+import { ModifyUserApi } from '../../types/responseData';
 
 const ModifyUserPage = () => {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const [{ userId, userName, userProfileUrl }, setUserInfo] =
     useRecoilState(user);
@@ -30,6 +30,7 @@ const ModifyUserPage = () => {
 
   const [nameObj, setNickname, checkNickname] = useNickName(
     userName,
+    true,
     '기존 별명은 그대로 사용 가능합니다.',
   );
 
@@ -48,19 +49,22 @@ const ModifyUserPage = () => {
   };
 
   const onClickModifyBtn = async () => {
-    if (userName === nameObj.nickname && !image.image) return;
+    if (userName === nameObj.nickname && !image.image) {
+      navigate(`/user/${userName}/${userId}`);
+      return;
+    }
     try {
-      let data: Api;
+      let data: ModifyUserApi;
       if (userName !== nameObj.nickname)
         data = await patchUserInfo(userId, nameObj.nickname, image.image);
       else data = await putUserImage(userId, image.image);
       if (data.statusCode === 200) {
         setUserInfo((prev) => ({
-          ...prev,
           userId: prev.userId,
           userName: nameObj.nickname,
+          userProfileUrl: data.data?.profileUrl || prev.userProfileUrl,
         }));
-        navigation(`/user/${nameObj.nickname}/${userId}`);
+        navigate(`/user/${nameObj.nickname}/${userId}`);
       }
       // eslint-disable-next-line no-alert
       else alert(data.message);
@@ -76,7 +80,7 @@ const ModifyUserPage = () => {
         isBack
         title={userName}
         isCheck={false}
-        backFunc={() => navigation(-1)}
+        backFunc={() => navigate(-1)}
       />
       <S.Body>
         <S.Form>

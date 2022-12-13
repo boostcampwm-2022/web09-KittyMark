@@ -143,3 +143,9 @@ export interface FollowListData {
 export interface FollowListApi extends Api {
   data: FollowListData;
 }
+
+export interface ModifyUserApi extends Api {
+  data?: {
+    profileUrl: string | null;
+  };
+}

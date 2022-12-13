@@ -20,12 +20,13 @@ interface Nickname {
 
 const useNickName = (
   initalName: string,
-  resultMessage?: messageType,
+  initalCheckResult?: boolean,
+  initalMessage?: messageType,
 ): [Nickname, (newName: string) => void, () => void] => {
   const [nameObj, setNameObj] = useState<Nickname>({
     nickname: initalName,
-    checkResult: false,
-    resultMessage: resultMessage || '별명 중복 체크를 해주세요.',
+    checkResult: initalCheckResult || false,
+    resultMessage: initalMessage || '별명 중복 체크를 해주세요.',
   });
 
   // 사용자 입력에 따라서 값을 바꿔준다.
