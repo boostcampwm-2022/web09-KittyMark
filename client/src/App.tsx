@@ -46,7 +46,7 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/oauth/naverCallback" element={<LoadingPage />} />
+            <Route path="/oauth/:callback" element={<LoadingPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/comment/:boardId" element={<CommentPage />} />

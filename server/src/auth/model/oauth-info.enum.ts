@@ -1,4 +1,4 @@
 export enum OauthInfo {
-  KAKAO = 'KAKAO',
+  GITHUB = 'GITHUB',
   NAVER = 'NAVER',
 }

@@ -11,6 +11,7 @@ import {
 import { Request } from 'express';
 import { RegisterUserDto } from './dto/user-register.dto';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
+import { OauthGithubDto } from './dto/oauth-github.dto';
 import { AuthService } from './auth.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CheckNameDto } from '../auth/dto/check-name.dto';
@@ -39,8 +40,19 @@ export class AuthController {
   }
 
   @Post('/oauth/naver')
-  loginNaver(@Body() oauthNaverDto: OauthNaverDto, @Req() request: Request) {
+  loginNaver(
+    @Body(ValidationPipe) oauthNaverDto: OauthNaverDto,
+    @Req() request: Request,
+  ) {
     return this.authService.loginNaver(oauthNaverDto, request);
+  }
+
+  @Post('/oauth/github')
+  loginGithub(
+    @Body(ValidationPipe) oauthGithubDto: OauthGithubDto,
+    @Req() request: Request,
+  ) {
+    return this.authService.loginGithub(oauthGithubDto, request);
   }
 
   @Post('/nameCheck')
