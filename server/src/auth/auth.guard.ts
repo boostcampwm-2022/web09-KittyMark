@@ -1,29 +1,14 @@
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Request } from 'express';
-import {
-  RedisClientType,
-  RedisFunctions,
-  RedisModules,
-  RedisScripts,
-} from 'redis';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(
-    @Inject('REDIS_CLIENT')
-    private readonly RedisClient: RedisClientType<
-      RedisModules,
-      RedisFunctions,
-      RedisScripts
-    >,
-  ) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -33,6 +18,7 @@ export class AuthGuard implements CanActivate {
   }
 
   private async validateRequest(request: Request) {
+    console.log('req.id', request.sessionID);
     if (
       /^(\/auth)+/g.test(request.path) ||
       (request.path === '/user' && request.method === 'POST') ||
@@ -40,9 +26,7 @@ export class AuthGuard implements CanActivate {
     ) {
       return true;
     }
-
-    const result = await this.RedisClient.get(request.sessionID);
-    if (result && parseInt(result) === request.session.userId) {
+    if (request.session.userId) {
       return true;
     } else {
       throw new UnauthorizedException('This user is an unauthorized user');
