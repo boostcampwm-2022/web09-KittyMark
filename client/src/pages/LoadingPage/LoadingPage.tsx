@@ -41,7 +41,6 @@ const LoadingPage = () => {
         // 그 외의 경우를 처리한다.
         navigate('/', { replace: true });
       } catch (error) {
-        // eslint-disable-next-line no-console
         if (error instanceof AxiosError) {
           if (error.response?.status === 300) {
             // alert(
@@ -55,6 +54,7 @@ const LoadingPage = () => {
             });
             return;
           }
+          // eslint-disable-next-line no-console
           console.log(error);
         }
         navigate('/', { replace: true });
