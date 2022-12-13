@@ -46,10 +46,6 @@ const ContentContainer = styled.div`
   width: 100%;
   height: 100%;
 
-  .user-name {
-    font-weight: bold;
-  }
-
   span {
     word-wrap: break-word;
   }
