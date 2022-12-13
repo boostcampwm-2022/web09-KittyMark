@@ -6,13 +6,13 @@ import { AxiosError } from 'axios';
 // recoil
 import user from '../../store/userAtom';
 // util
-import { onClickNaverLogin } from '../../utils/loginUtils';
+import { onClickNaverLogin, onClickGithubLogin } from '../../utils/loginUtils';
 // style
 import S from './LoginPageStyles';
 // img
 import logo from '../../static/newLogoName.png';
-import kakaoOauth from '../../static/kakao_oauth.png';
 import naverOauth from '../../static/naver_oauth.png';
+import githubOauth from '../../static/githubOauth.png';
 // preloading
 import { RegisterPage, HomePage } from '..';
 import { validate } from '../../apis/api/loginApi';
@@ -56,9 +56,14 @@ const LoginPage = () => {
       >
         <img alt="Naver Oauth" src={naverOauth} />
       </S.OauthButton>
-      <S.OauthButton type="button">
-        <img alt="Kakao Oauth" src={kakaoOauth} />
-      </S.OauthButton>
+      <S.CustomOauthButton
+        type="button"
+        onClick={onClickGithubLogin}
+        onMouseOver={onMouseOver}
+      >
+        <img alt="Github Oauth" src={githubOauth} />
+        <span>GitHub 로그인</span>
+      </S.CustomOauthButton>
     </S.Container>
   );
 };

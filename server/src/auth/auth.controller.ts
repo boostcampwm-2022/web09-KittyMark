@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
+import { OauthGithubDto } from './dto/oauth-github.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -30,5 +31,13 @@ export class AuthController {
     @Req() request: Request,
   ) {
     return this.authService.loginNaver(oauthNaverDto, request);
+  }
+
+  @Post('/oauth/github')
+  loginGithub(
+    @Body(ValidationPipe) oauthGithubDto: OauthGithubDto,
+    @Req() request: Request,
+  ) {
+    return this.authService.loginGithub(oauthGithubDto, request);
   }
 }

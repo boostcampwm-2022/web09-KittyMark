@@ -4,7 +4,8 @@ import { HttpService } from '@nestjs/axios';
 // import { redisClient } from 'src/utils/redis';
 import { OauthInfo } from './model/oauth-info.enum';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
-import { UserRepository } from '../user/user.repository';
+import { OauthGithubDto } from './dto/oauth-github.dto';
+import { UserRepository } from 'src/user/user.repository';
 import { firstValueFrom, map } from 'rxjs';
 import {
   RedisClientType,
@@ -43,12 +44,9 @@ export class AuthService {
   }
 
   // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
-  async login(email: string, request: Request) {
-    const user = await this.userRepository.findByOauthInfo(
-      email,
-      OauthInfo.NAVER,
-    );
-
+  async login(email: string, request: Request, oauthInfo: OauthInfo) {
+    const user = await this.userRepository.findByOauthInfo(email, oauthInfo);
+    console.log(user);
     if (user) {
       await this.RedisClient.set(request.sessionID, user.id);
       await this.RedisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
@@ -68,7 +66,8 @@ export class AuthService {
         statusCode: 200,
         message: 'Register Required',
         redirect: true,
-        email: email,
+        email,
+        oauthInfo,
       };
     }
   }
@@ -90,7 +89,17 @@ export class AuthService {
 
     const email = await this.getUserEmail(accessToken, tokenType);
 
-    return await this.login(email, request);
+    return await this.login(email, request, OauthInfo.NAVER);
+  }
+
+  async loginGithub(oauthGithubDto: OauthGithubDto, request: Request) {
+    const { accessToken, tokenType } = await this.getGithubToken(
+      oauthGithubDto,
+    );
+
+    const { id } = await this.getUserId(tokenType, accessToken);
+
+    return await this.login(id, request, OauthInfo.GITHUB);
   }
 
   async getNaverToken(oauthNaverDto: OauthNaverDto): Promise<{
@@ -139,5 +148,47 @@ export class AuthService {
     const data = await firstValueFrom(response);
 
     return data.response.email;
+  }
+
+  async getGithubToken(
+    oauthGithubDto: OauthGithubDto,
+  ): Promise<{ accessToken: string; tokenType: string }> {
+    const { authorizationCode } = oauthGithubDto;
+
+    const option = {
+      method: 'POST',
+      url: 'https://github.com/login/oauth/access_token',
+      params: {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
+        code: authorizationCode,
+      },
+      headers: {
+        accept: 'application/json',
+      },
+    };
+
+    const response = this.httpService.request(option).pipe(map((r) => r.data));
+    const data = await firstValueFrom(response);
+
+    return {
+      accessToken: data.access_token,
+      tokenType: data.token_type,
+    };
+  }
+
+  async getUserId(tokenType: string, accessToken: string) {
+    const option = {
+      method: 'GET',
+      url: 'https://api.github.com/user',
+      headers: {
+        Authorization: tokenType + ' ' + accessToken,
+      },
+    };
+
+    const response = this.httpService.request(option).pipe(map((r) => r.data));
+    const data = await firstValueFrom(response);
+
+    return { id: data.login };
   }
 }

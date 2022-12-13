@@ -17,7 +17,7 @@ import plusBtn from '../../static/plusBtn.svg';
 
 interface LocationStateType {
   email: string;
-  oauthInfo: 'NAVER' | 'KAKAO';
+  oauthInfo: 'NAVER' | 'GITHUB';
 }
 
 // TODO 만일 사용자가 이상한 주소로 register page 에 접근한다면 어떻게 해야 할까?

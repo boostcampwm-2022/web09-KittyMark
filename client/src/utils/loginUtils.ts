@@ -6,15 +6,21 @@ export const onClickNaverLogin = () => {
   window.location.assign(naverLoginUrl);
 };
 
-export const getSocialName = (url: URL): 'naver' | 'kakao' | undefined => {
+export const onClickGithubLogin = () => {
+  const clientId = process.env.REACT_APP_GITHUB_CLIENT_ID;
+  const githubLoginUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
+  window.location.assign(githubLoginUrl);
+};
+
+export const getSocialName = (url: URL): 'naver' | 'github' | undefined => {
   const callback = url.pathname.split('/')[2];
   if (callback.includes('naver')) return 'naver';
-  if (callback.includes('kakao')) return 'kakao';
+  if (callback.includes('github')) return 'github';
   return undefined;
 };
 
 export const getUrlParms = (url: URL) => {
   const authorizationCode = url.searchParams.get('code');
   const state = url.searchParams.get('state');
-  return [authorizationCode, state];
+  return [authorizationCode, state || 'kittymark'];
 };

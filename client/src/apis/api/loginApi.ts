@@ -4,7 +4,7 @@ import { defaultInstance, defaultFormInstance } from '../utils';
 import { LoginApi, Api, NameCheckApi } from '../../types/responseData';
 
 export const postAuthInfo = async (
-  socialName: 'naver' | 'kakao',
+  socialName: 'naver' | 'github',
   authorizationCode: string,
   state: string,
 ): Promise<LoginApi> => {
@@ -21,7 +21,7 @@ export const postAuthInfo = async (
 export const postRegisterInfo = async (
   email: string,
   userName: string,
-  oauthInfo: 'NAVER' | 'KAKAO',
+  oauthInfo: 'NAVER' | 'GITHUB',
   image: File | null,
 ): Promise<Api> => {
   const formData = new FormData();

@@ -20,7 +20,7 @@ const LoadingPage = () => {
 
   const postAuthrizationInfo = useCallback(
     async (
-      socialName: 'naver' | 'kakao',
+      socialName: 'naver' | 'github',
       authorizationCode: string,
       state: string,
     ) => {
@@ -35,7 +35,7 @@ const LoadingPage = () => {
         // 회원 가입인 경우를 처리한다.
         if (data.redirect) {
           navigate('/register', {
-            state: { email: data.email, oauthInfo: 'NAVER' },
+            state: { email: data.email, oauthInfo: socialName.toUpperCase() },
             replace: true,
           });
           return;
