@@ -80,7 +80,7 @@ export interface Board {
 export interface BoardApi extends Api {
   data: {
     boards: [Board];
-    nextMaxId: number;
+    next_max_id: number;
     count: number;
   };
 }
@@ -149,4 +149,10 @@ export interface FollowListData {
 
 export interface FollowListApi extends Api {
   data: FollowListData;
+}
+
+export interface ModifyUserApi extends Api {
+  data?: {
+    profileUrl: string | null;
+  };
 }

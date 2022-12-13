@@ -3,10 +3,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { AxiosError } from 'axios';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 // recoil
 import user from '../../store/userAtom';
-import userProfile from '../../store/userProfileAtom';
 // api
 import { getUserInfo, postFollow, deleteFollow } from '../../apis/api/userApi';
 // style
@@ -24,7 +23,6 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
   const queryClient = useQueryClient();
 
   const { userId } = useRecoilValue(user);
-  const setProfile = useSetRecoilState(userProfile);
   const [modalOn, setModalOn] = useState<boolean>(false);
 
   const userInfo = useQuery<UserInfo, AxiosError>(['userInfo', targetId], () =>
@@ -75,7 +73,6 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
   };
 
   const onClickModifyBtn = () => {
-    setProfile(userInfo.data.userProfileUrl || '../../defaultProfile.svg');
     navigation('/modify-user');
   };
 

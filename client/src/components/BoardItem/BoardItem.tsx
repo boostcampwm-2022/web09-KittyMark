@@ -14,7 +14,10 @@ const convertPhotosToUrls = (photos: { url: string }[]) => {
   return urls;
 };
 
-const BoardItem = (props: Board) => {
+const BoardItem = (
+  props: Board,
+  ref?: (node?: Element | undefined | null) => void,
+) => {
   if (props === undefined || props === null) return null;
 
   const {
@@ -29,6 +32,29 @@ const BoardItem = (props: Board) => {
     photos,
     user,
   } = props;
+  if (ref)
+    return (
+      <BoardBackground key={id} ref={ref}>
+        <BoardHeader
+          userId={user.id}
+          boardId={id}
+          userProfile={user.profileUrl || '../../defaultProfile.svg'}
+          userName={user.name}
+          isStreet={isStreet}
+          location={location}
+          content={content}
+        />
+        <ImageCarousel imageUrls={convertPhotosToUrls(photos)} />
+        <BoardBody
+          boardId={id}
+          content={content}
+          isLiked={isLiked}
+          like={like}
+          comment={comment}
+          createdAt={createdAt}
+        />
+      </BoardBackground>
+    );
   return (
     <BoardBackground key={id}>
       <BoardHeader

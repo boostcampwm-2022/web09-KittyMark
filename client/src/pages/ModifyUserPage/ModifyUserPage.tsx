@@ -1,37 +1,37 @@
-import React, { useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React, { useRef } from 'react';
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 // recoil
 import user from '../../store/userAtom';
-import userProfile from '../../store/userProfileAtom';
 // style
 import S from './ModifyUserPageStyles';
 // hook
 import useImage from '../../hooks/useImage';
+import useNickName from '../../hooks/useNickname';
 // api
-import { postNameCheck } from '../../apis/api/loginApi';
 import { putUserImage, patchUserInfo } from '../../apis/api/userApi';
 // img
 import defaultProfile from '../../static/defaultProfile.svg';
 import plusBtn from '../../static/plusBtn.svg';
 // component
 import TopBar from '../../components/TopBar/TopBar';
-import { Api } from '../../types/responseData';
+import { ModifyUserApi } from '../../types/responseData';
 
 const ModifyUserPage = () => {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
-  const [{ userId, userName }, setUserInfo] = useRecoilState(user);
-  const profile = useRecoilValue(userProfile);
+  const [{ userId, userName, userProfileUrl }, setUserInfo] =
+    useRecoilState(user);
   const profileImageBtn = useRef<HTMLInputElement>(null);
   const { image, onChangeImage } = useImage({
     image: null,
-    image64: profile || defaultProfile,
+    image64: userProfileUrl || defaultProfile,
   });
-  const [nickname, setNickname] = useState<string>(userName);
-  const [nameCheck, setNameCheck] = useState<boolean>(true);
-  const [nameCheckP, setNameCheckP] = useState<string>(
-    '기존 이름은 그대로 사용 가능합니다.',
+
+  const [nameObj, setNickname, checkNickname] = useNickName(
+    userName,
+    true,
+    '기존 별명은 그대로 사용 가능합니다.',
   );
 
   const onClickProfileImageBtn = () => {
@@ -42,44 +42,29 @@ const ModifyUserPage = () => {
 
   const onChangeNickname = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(event.target.value);
-    if (nameCheck) {
-      setNameCheck(false);
-      setNameCheckP('이름 중복 체크를 해주세요.');
-    }
   };
 
   const onClickNameChekcBtn = async () => {
-    if (nameCheck) return;
-    if (userName === nickname) {
-      setNameCheck(true);
-      setNameCheckP('기존 이름은 그대로 사용 가능합니다.');
-      return;
-    }
-    try {
-      const data = await postNameCheck(nickname);
-      if (data.statusCode === 200) {
-        setNameCheck(true);
-        setNameCheckP('사용 가능한 이름입니다.');
-      } else setNameCheckP(data.message);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
+    checkNickname();
   };
 
   const onClickModifyBtn = async () => {
+    if (userName === nameObj.nickname && !image.image) {
+      navigate(`/user/${userName}/${userId}`);
+      return;
+    }
     try {
-      let data: Api;
-      if (userName !== nickname)
-        data = await patchUserInfo(userId, nickname, image.image);
+      let data: ModifyUserApi;
+      if (userName !== nameObj.nickname)
+        data = await patchUserInfo(userId, nameObj.nickname, image.image);
       else data = await putUserImage(userId, image.image);
       if (data.statusCode === 200) {
         setUserInfo((prev) => ({
-          ...prev,
           userId: prev.userId,
-          userName: nickname,
+          userName: nameObj.nickname,
+          userProfileUrl: data.data?.profileUrl || prev.userProfileUrl,
         }));
-        navigation(`/user/${nickname}/${userId}`);
+        navigate(`/user/${nameObj.nickname}/${userId}`);
       }
       // eslint-disable-next-line no-alert
       else alert(data.message);
@@ -95,7 +80,7 @@ const ModifyUserPage = () => {
         isBack
         title={userName}
         isCheck={false}
-        backFunc={() => navigation(-1)}
+        backFunc={() => navigate(-1)}
       />
       <S.Body>
         <S.Form>
@@ -117,23 +102,23 @@ const ModifyUserPage = () => {
           <S.InputContainer>
             <S.Input
               type="text"
-              value={nickname}
-              placeholder="이름을 입력해주세요."
+              value={nameObj.nickname}
+              placeholder="별명을 입력해주세요."
               onChange={onChangeNickname}
             />
             <S.NameCheckButton
               type="button"
               onClick={onClickNameChekcBtn}
-              checked={nameCheck}
+              checked={nameObj.checkResult}
             >
               중복 검사
             </S.NameCheckButton>
           </S.InputContainer>
-          <S.NameCheckResult>{nameCheckP}</S.NameCheckResult>
+          <S.NameCheckResult>{nameObj.resultMessage}</S.NameCheckResult>
           <S.SubmitButton
             type="button"
             onClick={onClickModifyBtn}
-            disabled={!nickname || !nameCheck}
+            disabled={!nameObj.nickname || !nameObj.checkResult}
           >
             정보수정
           </S.SubmitButton>

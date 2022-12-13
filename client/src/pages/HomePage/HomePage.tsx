@@ -1,7 +1,9 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { Ref, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { InfiniteData, useInfiniteQuery, useQuery } from 'react-query';
 import { AxiosError } from 'axios';
+import { useInView } from 'react-intersection-observer';
 import { useSetRecoilState } from 'recoil';
 import user from '../../store/userAtom';
 // img
@@ -26,6 +28,7 @@ const makeBoarList = (boards: Board[]) => {
 };
 
 const HomePage = () => {
+  const [ref, isView] = useInView();
   const setUserData = useSetRecoilState(user);
   const navigate = useNavigate();
   const requestCount = 10000;
@@ -37,29 +40,86 @@ const HomePage = () => {
     description: '게시물을 추가할래요.',
   };
 
-  const { data: boards } = useQuery<Board[], AxiosError<Api>>(
-    'boards',
-    () =>
-      getBoardData(requestCount, '-1').then((response) => response.data.boards),
-    {
-      onError: (error) => {
-        if (
-          error.response &&
-          error.response.data.statusCode === 401 &&
-          error.response.data.error === 'Unauthorized'
-        ) {
-          setUserData({ userId: -1, userName: '', userProfileUrl: '' });
-          navigate('/');
-        }
-      },
+  // const { data: boards } = useQuery<Board[], AxiosError<Api>>(
+  //   'boards',
+  //   () =>
+  //     getBoardData(requestCount, '-1').then((response) => response.data.boards),
+  //   {
+  //     onError: (error) => {
+  //       if (
+  //         error.response &&
+  //         error.response.data.statusCode === 401 &&
+  //         error.response.data.error === 'Unauthorized'
+  //       ) {
+  //         setUserData({ userId: -1, userName: '', userProfileUrl: '' });
+  //         navigate('/');
+  //       }
+  //     },
+  //   },
+  // );
+
+  // 테스트 중입니다.
+  const fetchBoardList = async ({ pageParam = -1 }) => {
+    const response = await getBoardData(4, String(pageParam));
+    const result = response.data;
+    const nextPage = result.next_max_id;
+    return {
+      result: result.boards,
+      nextPage,
+      isLast: nextPage < 1,
+    };
+  };
+
+  const query = useInfiniteQuery<
+    { result: [Board]; nextPage: number; isLast: boolean },
+    AxiosError<Api>
+  >('[boardlist]', fetchBoardList, {
+    getNextPageParam: (lastPage, pages) => {
+      if (!lastPage.isLast) return lastPage.nextPage;
+      return undefined;
     },
-  );
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    retry: 1,
+    onError: (error) => {
+      if (
+        error.response &&
+        error.response.data.statusCode === 401 &&
+        error.response.data.error === 'Unauthorized'
+      ) {
+        setUserData({ userId: -1, userName: '', userProfileUrl: '' });
+        navigate('/');
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (isView && query.hasNextPage) {
+      query.fetchNextPage();
+    }
+  }, [isView, query.data]);
+
+  //
 
   return (
     <>
       <NormalTopBar buttonData={addPostButton} />
       <S.BoardContainer>
-        {boards ? makeBoarList(boards) : null}
+        {query.data &&
+          query.data.pages.map((pageData, pageNum) => {
+            const boardPage = pageData.result;
+            if (boardPage)
+              return boardPage.map((item, idx) => {
+                if (
+                  query.data.pages.length - 1 === pageNum &&
+                  boardPage.length - 1 === idx
+                )
+                  return BoardItem(item, ref);
+                return BoardItem(item);
+              });
+            return null;
+          })}
         <S.BoardEnd>
           <img
             src={catFootprint}
@@ -67,7 +127,9 @@ const HomePage = () => {
             width="40rem"
             height="40rem"
           />
-          <p>모든 게시물을 확인했습니다</p>
+          <p>
+            {query.isLoading ? '로딩중입니다.' : '모든 게시물을 확인했습니다'}
+          </p>
         </S.BoardEnd>
       </S.BoardContainer>
       <NavBar />

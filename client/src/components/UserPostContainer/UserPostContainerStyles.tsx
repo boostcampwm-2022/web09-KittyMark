@@ -32,6 +32,7 @@ const GridSlot = styled.button`
   img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
     border: 1px solid ${(props) => props.theme.palette.border};
     border-radius: 1.25rem;
   }
