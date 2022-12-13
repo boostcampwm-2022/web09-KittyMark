@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 // recoil
 import user from '../../store/userAtom';
 // type
@@ -18,6 +18,7 @@ interface LikeButtonProps {
 }
 
 const LikeButton = (props: LikeButtonProps) => {
+  const queryClient = useQueryClient();
   const { requestId, isLiked, postLikeApi, deleteLikeApi, setLikeCount } =
     props;
   const [liked, setLiked] = useState(isLiked !== undefined ? isLiked : false);
@@ -30,6 +31,7 @@ const LikeButton = (props: LikeButtonProps) => {
     {
       onSuccess: () => {
         setLiked(!liked);
+        queryClient.invalidateQueries('boards');
       },
     },
   );
