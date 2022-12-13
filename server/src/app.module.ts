@@ -10,9 +10,12 @@ import { BoardModule } from './board/board.module';
 import { ResponseInterceptor } from './interceptor/responseInterceptor';
 import { S3Module } from './S3/S3.module';
 import { AuthGuard } from './auth/auth.guard';
-import { CommentModule } from 'src/comment/comment.module';
+import { CommentModule } from './comment/comment.module';
 import { FollowModule } from './user/follow/follow.module';
 import { MapModule } from './map/map.module';
+import { RedisModule } from './redis/redis.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -25,8 +28,13 @@ import { MapModule } from './map/map.module';
     S3Module,
     FollowModule,
     MapModule,
+    RedisModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ResponseInterceptor, AuthGuard],
+  providers: [
+    AppService,
+    { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
+    { provide: APP_GUARD, useClass: AuthGuard },
+  ],
 })
 export class AppModule {}

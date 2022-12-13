@@ -12,7 +12,7 @@ import { postAuthInfo } from '../../apis/api/loginApi';
 // component
 import LoadingContainer from '../../components/LoadingContainer/LoadingContainer';
 // img
-import { LoginApi } from '../../types/responseData';
+import { LoginApi, RedirectApi } from '../../types/responseData';
 
 const LoadingPage = () => {
   const navigate = useNavigate();
@@ -24,24 +24,12 @@ const LoadingPage = () => {
       authorizationCode: string,
       state: string,
     ) => {
-      let data: LoginApi;
+      let data: LoginApi | RedirectApi;
       try {
         data = await postAuthInfo(socialName, authorizationCode, state);
-        // 서버 에러인 경우를 먼저 처리한다.
-        if (data.statusCode !== 200) {
-          navigate('/', { replace: true });
-          return;
-        }
-        // 회원 가입인 경우를 처리한다.
-        if (data.redirect) {
-          navigate('/register', {
-            state: { email: data.email, oauthInfo: socialName.toUpperCase() },
-            replace: true,
-          });
-          return;
-        }
-        // 로그인 성공인 경우를 처리한다.
-        if (data.data) {
+        if (data.statusCode === 200) {
+          // 로그인 성공인 경우를 처리한다.
+          data = data as LoginApi;
           setUserData({
             userId: data.data.userId,
             userName: data.data.userName,
@@ -53,8 +41,23 @@ const LoadingPage = () => {
         // 그 외의 경우를 처리한다.
         navigate('/', { replace: true });
       } catch (error) {
-        // eslint-disable-next-line no-console
-        if (error instanceof AxiosError) console.log(error.message);
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 300) {
+            // alert(
+            //   '회원 가입되지 않은 회원입니다. 회원 가입 화면으로 이동합니다.',
+            // );
+            // 회원 가입인 경우를 처리한다.
+            data = error.response?.data as RedirectApi;
+            navigate('/register', {
+              state: { email: data.data.email, oauthInfo: data.data.oauthInfo },
+              replace: true,
+            });
+            return;
+          }
+          // eslint-disable-next-line no-console
+          console.log(error);
+        }
+        navigate('/', { replace: true });
       }
     },
     [],

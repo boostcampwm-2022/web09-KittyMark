@@ -10,7 +10,7 @@ type messageType =
   | '별명 중복 체크를 해주세요.'
   | '이미 존재하는 별명입니다.'
   | '사용 가능한 별명입니다.'
-  | '별명 규칙을 확인해주세요.';
+  | '별명은 영어, 숫자, 밑줄, 마침표만 사용 가능합니다.';
 
 interface Nickname {
   nickname: string;
@@ -37,7 +37,7 @@ const useNickName = (
       nickname: newName,
       checkResult: false,
       resultMessage: checkResult
-        ? '별명 규칙을 확인해주세요.'
+        ? '별명은 영어, 숫자, 밑줄, 마침표만 사용 가능합니다.'
         : '별명 중복 체크를 해주세요.',
     });
   };

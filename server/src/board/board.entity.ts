@@ -9,9 +9,9 @@ import {
 } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Photo } from './photo.entity';
-import { Comment } from 'src/comment/comment.entity';
+import { Comment } from '../comment/comment.entity';
 import { Geometry } from 'geojson';
-import { GeometryTransformer } from 'board/board.util';
+import { GeometryTransformer } from './board.util';
 import { Like } from '../like/like.entity';
 
 @Entity()

@@ -103,7 +103,7 @@ const ModifyUserPage = () => {
             <S.Input
               type="text"
               value={nameObj.nickname}
-              placeholder="바꿀 별명은 무엇인가냥?"
+              placeholder="별명을 입력해주세요."
               onChange={onChangeNickname}
             />
             <S.NameCheckButton

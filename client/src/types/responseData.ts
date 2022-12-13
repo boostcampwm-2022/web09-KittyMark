@@ -5,12 +5,19 @@ export interface Api {
 }
 
 export interface LoginApi extends Api {
-  email?: string;
-  redirect?: boolean;
-  data?: {
+  data: {
     userId: number;
     userName: string;
     userProfileUrl: string;
+  };
+}
+
+export interface RedirectApi extends Api {
+  redirect: boolean;
+  data: {
+    url: string;
+    email: string;
+    oauthInfo: string;
   };
 }
 

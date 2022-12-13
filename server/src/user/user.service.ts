@@ -3,14 +3,18 @@ import {
   NotFoundException,
   ConflictException,
   BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { S3Service } from 'src/S3/S3.service';
+import { S3Service } from '../S3/S3.service';
+import { CreateUserDto } from './dto/create-user.dto';
 import { FollowDto } from './dto/follow.dto';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
+import { ValidateNameDto } from './dto/validate-name.dto';
 import { Follow } from './follow/follow.entity';
 import { FollowRepository } from './follow/follow.repository';
+import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 
 @Injectable()
@@ -20,6 +24,36 @@ export class UserService {
     private readonly s3Service: S3Service,
     private readonly followRepository: FollowRepository,
   ) {}
+
+  async createUser(image: Express.Multer.File, createUserDto: CreateUserDto) {
+    // TODO: OauthInfo 추가
+    const { email, userName, oauthInfo } = createUserDto;
+
+    await this.validateName({ name: userName });
+
+    const find = await this.userRepository.findByOauthInfo(email, oauthInfo);
+    if (find) {
+      throw new ConflictException('이미 존재하는 유저입니다.');
+    }
+
+    let imageURL = '';
+
+    if (image) {
+      imageURL = await this.s3Service.uploadFile(image);
+    }
+
+    const userInfo = {
+      name: userName,
+      email: email,
+      oauthInfo: oauthInfo,
+      profileUrl: imageURL,
+    };
+
+    const user = plainToInstance(User, userInfo);
+    this.userRepository.save(user);
+
+    return { statusCode: 201, message: 'Success' };
+  }
 
   async getUserInfo(getProfileInfoDto: GetProfileInfoDto) {
     const { userId, viewerId } = getProfileInfoDto;
@@ -39,29 +73,27 @@ export class UserService {
       viewerId,
     );
 
-    console.log(followedByViewer);
-    console.log(followsViewer);
     return {
-      statusCode: 200,
-      message: 'Success',
-      data: {
-        userId: user.user_id,
-        userName: user.user_name,
-        userProfileUrl: user.profile_url,
-        boards: { count: user.boardCount },
-        follow: { count: follow[0].count },
-        followed_by: { count: follower[0].count },
-        followed_by_viewer: followedByViewer ? true : false,
-        follows_viewer: followsViewer ? true : false,
-      },
+      userId: user.user_id,
+      userName: user.user_name,
+      userProfileUrl: user.profile_url,
+      boards: { count: user.boardCount },
+      follow: { count: follow[0].count },
+      followed_by: { count: follower[0].count },
+      followed_by_viewer: followedByViewer ? true : false,
+      follows_viewer: followsViewer ? true : false,
     };
   }
 
   async updateUserInfo(
     updateUserInfoDto: UpdateUserInfoDto,
     image: Express.Multer.File,
+    session_userId: number,
   ) {
     const { userId, userName } = updateUserInfoDto;
+
+    if (session_userId !== userId)
+      throw new ForbiddenException('본인 정보만 수정할 수 있습니다.');
 
     let profileUrl = null;
     if (image) {
@@ -69,19 +101,38 @@ export class UserService {
     }
 
     if (userName) {
-      const name = await this.userRepository.findByName(userName);
-      if (name) throw new ConflictException('이미 존재하는 닉네임입니다.');
+      await this.validateName({ name: userName });
     }
+
+    let result: null | { profileUrl: string };
 
     if (profileUrl && userName) {
       this.userRepository.update(userId, { profileUrl, name: userName });
+      result = { profileUrl };
     } else if (profileUrl) {
       this.userRepository.update(userId, { profileUrl });
+      result = { profileUrl };
     } else if (userName) {
       this.userRepository.update(userId, { name: userName });
     }
 
-    return { statusCode: 200, message: 'Success' };
+    return result;
+  }
+
+  async validateName(validateNameDto: ValidateNameDto) {
+    const { name } = validateNameDto;
+
+    if (/[^\w.]/.test(name))
+      throw new BadRequestException(
+        '사용자 이름에는 문자, 숫자, 밑줄 및 마침표만 사용할 수 있습니다.',
+      );
+
+    const user = await this.userRepository.findByName(name);
+    if (user) {
+      return { statusCode: 200, message: 'Success', isExist: true };
+    } else {
+      return { statusCode: 200, message: 'Success', isExist: false };
+    }
   }
 
   async addFollow(followDto: FollowDto) {
@@ -109,7 +160,7 @@ export class UserService {
     return {
       statusCode: 200,
       message: 'Success',
-      data: { followId: follow.id },
+      followId: follow.id,
     };
   }
 
@@ -156,11 +207,9 @@ export class UserService {
     return {
       statusCode: 200,
       message: 'Success',
-      data: {
-        userId: userId,
-        users_followed_by_user,
-        users_follow_user,
-      },
+      userId: userId,
+      users_followed_by_user,
+      users_follow_user,
     };
     // return this.userRepository.findFollowsById(userId);
   }

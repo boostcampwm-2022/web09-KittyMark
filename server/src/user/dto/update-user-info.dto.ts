@@ -8,5 +8,6 @@ export class UpdateUserInfoDto {
   userId: number;
 
   @IsOptional()
+  @Transform(({ value }) => value.toLowerCase())
   userName: string;
 }

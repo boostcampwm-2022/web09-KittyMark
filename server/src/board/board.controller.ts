@@ -16,7 +16,6 @@ import {
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-import { ResponseInterceptor } from '../interceptor/responseInterceptor';
 import { DeleteBoardDto } from './dto/delete-board.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { GetUserBoardsDto } from './dto/get-user-boards.dto';
@@ -25,7 +24,6 @@ import { LikeService } from '../like/like.service';
 import { Request } from 'express';
 
 @Controller('board')
-@UseInterceptors(ResponseInterceptor)
 export class BoardController {
   constructor(
     private readonly boardService: BoardService,

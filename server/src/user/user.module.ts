@@ -4,11 +4,11 @@ import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
-import { S3Module } from 'src/S3/S3.module';
+// import { S3Module } from '../S3/S3.module';
 import { FollowModule } from './follow/follow.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), S3Module, FollowModule],
+  imports: [TypeOrmModule.forFeature([User]), FollowModule],
   controllers: [UserController],
   providers: [UserService, UserRepository],
   exports: [UserService, UserRepository],

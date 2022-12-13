@@ -1,21 +1,22 @@
 import {
   Injectable,
-  ConflictException,
+  Inject,
   UnauthorizedException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { HttpService } from '@nestjs/axios';
-import { redisClient } from 'src/utils/redis';
 import { OauthInfo } from './model/oauth-info.enum';
-import { RegisterUserDto } from './dto/user-register.dto';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
 import { OauthGithubDto } from './dto/oauth-github.dto';
 import { UserRepository } from 'src/user/user.repository';
 import { firstValueFrom, map } from 'rxjs';
-import { plainToInstance } from 'class-transformer';
-import { User } from 'src/user/user.entity';
-import { S3Service } from 'src/S3/S3.service';
-import { CheckNameDto } from '../auth/dto/check-name.dto';
+import {
+  RedisClientType,
+  RedisFunctions,
+  RedisModules,
+  RedisScripts,
+} from 'redis';
 
 declare module 'express-session' {
   export interface SessionData {
@@ -28,68 +29,43 @@ export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly httpService: HttpService,
-    private readonly s3Service: S3Service,
+    @Inject('REDIS_CLIENT')
+    private readonly RedisClient: RedisClientType<
+      RedisModules,
+      RedisFunctions,
+      RedisScripts
+    >,
   ) {}
 
   // 홈페이지에서 로그인 확인 요청시 redis에서 세션 id 확인
   async validateLogin(request: Request) {
-    const result = await redisClient.get(request.sessionID);
+    const result = await this.RedisClient.get(request.sessionID);
     if (result && parseInt(result) === request.session.userId) {
-      return;
+      return true;
     } else {
       throw new UnauthorizedException('This user is an unauthorized user');
     }
   }
 
-  async register(image: Express.Multer.File, registerUserDto: RegisterUserDto) {
-    const { email, userName, oauthInfo } = registerUserDto;
-    const find = await this.userRepository.findByOauthInfo(email, oauthInfo);
-
-    if (find) {
-      throw new ConflictException('이미 존재하는 유저입니다.');
-    }
-
-    let imageURL = '';
-
-    if (image) {
-      imageURL = await this.s3Service.uploadFile(image);
-    }
-
-    const userInfo = {
-      name: userName,
-      email: email,
-      oauthInfo: oauthInfo,
-      profileUrl: imageURL,
-    };
-
-    const user = plainToInstance(User, userInfo);
-    this.userRepository.save(user);
-
-    return { statusCode: 201, message: 'Success' };
-  }
-
   // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
   async login(email: string, request: Request, oauthInfo: OauthInfo) {
     const user = await this.userRepository.findByOauthInfo(email, oauthInfo);
-    console.log(user);
     if (user) {
-      await redisClient.set(request.sessionID, user.id);
-      await redisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
+      await this.RedisClient.set(request.sessionID, user.id);
+      await this.RedisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
       request.session.userId = user.id;
+
       return {
         statusCode: 200,
-        data: {
-          userId: user.id,
-          userName: user.name,
-          userProfileUrl: user.profileUrl,
-        },
-        message: 'Success',
+        userId: user.id,
+        userName: user.name,
+        userProfileUrl: user.profileUrl,
       };
     } else {
       return {
-        statusCode: 200,
-        message: 'Register Required',
-        redirect: true,
+        statusCode: 300,
+        message: 'Redirect to /register',
+        url: '/register',
         email,
         oauthInfo,
       };
@@ -97,13 +73,13 @@ export class AuthService {
   }
 
   async logout(request: Request) {
-    await redisClient.del(request.sessionID);
+    await this.RedisClient.del(request.sessionID);
     request.session.destroy((err) => {
       if (err) {
         console.log(err);
-        return { statusCode: 500, message: 'Fail' };
+        throw new InternalServerErrorException();
       } else {
-        return { statusCode: 200, message: 'Success' };
+        return;
       }
     });
   }
@@ -214,16 +190,5 @@ export class AuthService {
     const data = await firstValueFrom(response);
 
     return { id: data.login };
-  }
-
-  async checkName(checkNameDto: CheckNameDto) {
-    const { name } = checkNameDto;
-
-    const user = await this.userRepository.findByName(name);
-    if (user) {
-      return { statusCode: 200, message: 'Success', data: { isExist: true } };
-    } else {
-      return { statusCode: 200, message: 'Success', data: { isExist: false } };
-    }
   }
 }

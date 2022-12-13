@@ -13,7 +13,7 @@ import { DeleteBoardDto } from './dto/delete-board.dto';
 import { plainToInstance } from 'class-transformer';
 import { BoardRepository } from 'board/board.repository';
 import { PhotoRepository } from 'board/photo.repository';
-import { S3Service } from 'src/S3/S3.service';
+import { S3Service } from '../S3/S3.service';
 import { GetUserBoardsDto } from './dto/get-user-boards.dto';
 import { toPoint } from 'board/board.util';
 
