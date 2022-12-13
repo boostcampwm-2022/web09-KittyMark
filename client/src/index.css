@@ -18,3 +18,7 @@ body {
   font-family: 'SF-Pro';
   src: url('./fonts/SF-Pro.ttf');
 }
+
+:root {
+  --vh: 100%;
+}
