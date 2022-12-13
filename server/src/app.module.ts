@@ -14,6 +14,7 @@ import { CommentModule } from './comment/comment.module';
 import { FollowModule } from './user/follow/follow.module';
 import { MapModule } from './map/map.module';
 import { RedisModule } from './redis/redis.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
@@ -32,7 +33,7 @@ import { APP_GUARD } from '@nestjs/core';
   controllers: [AppController],
   providers: [
     AppService,
-    ResponseInterceptor,
+    { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
     { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })

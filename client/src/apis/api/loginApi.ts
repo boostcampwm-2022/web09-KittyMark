@@ -1,13 +1,18 @@
 import { AxiosResponse } from 'axios';
 import { defaultInstance, defaultFormInstance } from '../utils';
 // type
-import { LoginApi, Api, NameCheckApi } from '../../types/responseData';
+import {
+  LoginApi,
+  Api,
+  NameCheckApi,
+  RedirectApi,
+} from '../../types/responseData';
 
 export const postAuthInfo = async (
   socialName: 'naver' | 'github',
   authorizationCode: string,
   state: string,
-): Promise<LoginApi> => {
+): Promise<LoginApi | RedirectApi> => {
   const { data }: AxiosResponse<LoginApi> = await defaultInstance.post(
     `/api/auth/oauth/${socialName}`,
     {

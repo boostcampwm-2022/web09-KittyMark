@@ -59,7 +59,6 @@ export class UserService {
     const { userId, viewerId } = getProfileInfoDto;
     const user = await this.userRepository.findUserSummaryById(userId);
 
-    console.log(user);
     if (!user) throw new NotFoundException('유저가 존재하지 않습니다.');
 
     const follow = await this.followRepository.findFollowingCnt(userId);
@@ -75,18 +74,14 @@ export class UserService {
     );
 
     return {
-      statusCode: 200,
-      message: 'Success',
-      data: {
-        userId: user.user_id,
-        userName: user.user_name,
-        userProfileUrl: user.profile_url,
-        boards: { count: user.boardCount },
-        follow: { count: follow[0].count },
-        followed_by: { count: follower[0].count },
-        followed_by_viewer: followedByViewer ? true : false,
-        follows_viewer: followsViewer ? true : false,
-      },
+      userId: user.user_id,
+      userName: user.user_name,
+      userProfileUrl: user.profile_url,
+      boards: { count: user.boardCount },
+      follow: { count: follow[0].count },
+      followed_by: { count: follower[0].count },
+      followed_by_viewer: followedByViewer ? true : false,
+      follows_viewer: followsViewer ? true : false,
     };
   }
 
@@ -109,19 +104,19 @@ export class UserService {
       await this.validateName({ name: userName });
     }
 
-    let data: null | { profileUrl: string };
+    let result: null | { profileUrl: string };
 
     if (profileUrl && userName) {
       this.userRepository.update(userId, { profileUrl, name: userName });
-      data = { profileUrl };
+      result = { profileUrl };
     } else if (profileUrl) {
       this.userRepository.update(userId, { profileUrl });
-      data = { profileUrl };
+      result = { profileUrl };
     } else if (userName) {
       this.userRepository.update(userId, { name: userName });
     }
 
-    return { statusCode: 200, message: 'Success', data };
+    return result;
   }
 
   async validateName(validateNameDto: ValidateNameDto) {
@@ -134,9 +129,9 @@ export class UserService {
 
     const user = await this.userRepository.findByName(name);
     if (user) {
-      return { statusCode: 200, message: 'Success', data: { isExist: true } };
+      return { statusCode: 200, message: 'Success', isExist: true };
     } else {
-      return { statusCode: 200, message: 'Success', data: { isExist: false } };
+      return { statusCode: 200, message: 'Success', isExist: false };
     }
   }
 
@@ -165,7 +160,7 @@ export class UserService {
     return {
       statusCode: 200,
       message: 'Success',
-      data: { followId: follow.id },
+      followId: follow.id,
     };
   }
 
@@ -212,11 +207,9 @@ export class UserService {
     return {
       statusCode: 200,
       message: 'Success',
-      data: {
-        userId: userId,
-        users_followed_by_user,
-        users_follow_user,
-      },
+      userId: userId,
+      users_followed_by_user,
+      users_follow_user,
     };
     // return this.userRepository.findFollowsById(userId);
   }

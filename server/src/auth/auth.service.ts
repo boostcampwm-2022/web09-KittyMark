@@ -1,7 +1,11 @@
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  UnauthorizedException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { HttpService } from '@nestjs/axios';
-// import { redisClient } from 'src/utils/redis';
 import { OauthInfo } from './model/oauth-info.enum';
 import { OauthNaverDto } from './dto/oauth-naver.dto';
 import { OauthGithubDto } from './dto/oauth-github.dto';
@@ -46,7 +50,6 @@ export class AuthService {
   // 로그인요청시 기존유저인지 검증 아니라면 회원가입 페이지로
   async login(email: string, request: Request, oauthInfo: OauthInfo) {
     const user = await this.userRepository.findByOauthInfo(email, oauthInfo);
-    console.log(user);
     if (user) {
       await this.RedisClient.set(request.sessionID, user.id);
       await this.RedisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
@@ -54,18 +57,15 @@ export class AuthService {
 
       return {
         statusCode: 200,
-        data: {
-          userId: user.id,
-          userName: user.name,
-          userProfileUrl: user.profileUrl,
-        },
-        message: 'Success',
+        userId: user.id,
+        userName: user.name,
+        userProfileUrl: user.profileUrl,
       };
     } else {
       return {
-        statusCode: 200,
-        message: 'Register Required',
-        redirect: true,
+        statusCode: 300,
+        message: 'Redirect to /register',
+        url: '/register',
         email,
         oauthInfo,
       };
@@ -77,9 +77,9 @@ export class AuthService {
     request.session.destroy((err) => {
       if (err) {
         console.log(err);
-        return { statusCode: 500, message: 'Fail' };
+        throw new InternalServerErrorException();
       } else {
-        return { statusCode: 200, message: 'Success' };
+        return;
       }
     });
   }
