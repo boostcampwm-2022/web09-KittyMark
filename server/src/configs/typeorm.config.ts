@@ -1,11 +1,11 @@
 import * as dotenv from 'dotenv';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 import { Board } from '../board/board.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { Photo } from 'board/photo.entity';
-import { Comment } from 'src/comment/comment.entity';
-import { Follow } from 'src/user/follow/follow.entity';
+import { Comment } from '../comment/comment.entity';
+import { Follow } from '../user/follow/follow.entity';
 import { Like } from '../like/like.entity';
 
 dotenv.config();

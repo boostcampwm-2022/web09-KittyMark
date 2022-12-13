@@ -31,7 +31,7 @@ const ModifyUserPage = () => {
   const [nickname, setNickname] = useState<string>(userName);
   const [nameCheck, setNameCheck] = useState<boolean>(true);
   const [nameCheckP, setNameCheckP] = useState<string>(
-    '기존 별명은 그대로 사용 가능합니다.',
+    '기존 이름은 그대로 사용 가능합니다.',
   );
 
   const onClickProfileImageBtn = () => {
@@ -44,7 +44,7 @@ const ModifyUserPage = () => {
     setNickname(event.target.value);
     if (nameCheck) {
       setNameCheck(false);
-      setNameCheckP('별명 중복 체크를 해주세요.');
+      setNameCheckP('이름 중복 체크를 해주세요.');
     }
   };
 
@@ -52,18 +52,14 @@ const ModifyUserPage = () => {
     if (nameCheck) return;
     if (userName === nickname) {
       setNameCheck(true);
-      setNameCheckP('기존 별명은 그대로 사용 가능합니다.');
+      setNameCheckP('기존 이름은 그대로 사용 가능합니다.');
       return;
     }
     try {
       const data = await postNameCheck(nickname);
       if (data.statusCode === 200) {
-        setNameCheck(!data.data.isExist);
-        setNameCheckP(
-          data.data.isExist
-            ? '이미 존재하는 별명입니다.'
-            : '사용 가능한 별명입니다.',
-        );
+        setNameCheck(true);
+        setNameCheckP('사용 가능한 이름입니다.');
       } else setNameCheckP(data.message);
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -122,7 +118,7 @@ const ModifyUserPage = () => {
             <S.Input
               type="text"
               value={nickname}
-              placeholder="바꿀 별명은 무엇인가냥?"
+              placeholder="이름을 입력해주세요."
               onChange={onChangeNickname}
             />
             <S.NameCheckButton

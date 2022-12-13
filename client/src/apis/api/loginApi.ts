@@ -31,16 +31,15 @@ export const postRegisterInfo = async (
   formData.append('image', image || '');
 
   const { data }: AxiosResponse<Api> = await defaultFormInstance.post(
-    `/api/auth/register`,
+    `/api/user`,
     formData,
   );
   return data;
 };
 
 export const postNameCheck = async (name: string): Promise<NameCheckApi> => {
-  const { data }: AxiosResponse<NameCheckApi> = await defaultInstance.post(
-    `/api/auth/namecheck`,
-    { name },
+  const { data }: AxiosResponse<NameCheckApi> = await defaultInstance.get(
+    `/api/user/nameCheck?name=${name}`,
   );
   return data;
 };

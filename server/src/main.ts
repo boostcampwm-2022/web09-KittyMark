@@ -3,7 +3,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as session from 'express-session';
-import { AuthGuard } from './auth/auth.guard';
 
 dotenv.config();
 
@@ -25,7 +24,6 @@ async function bootstrap() {
     }),
   );
 
-  app.useGlobalGuards(new AuthGuard());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

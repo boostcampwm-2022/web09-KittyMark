@@ -13,7 +13,8 @@ import { AuthGuard } from './auth/auth.guard';
 import { CommentModule } from './comment/comment.module';
 import { FollowModule } from './user/follow/follow.module';
 import { MapModule } from './map/map.module';
-import { UtilsModule } from './utils/utils.module';
+import { RedisModule } from './redis/redis.module';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -26,9 +27,13 @@ import { UtilsModule } from './utils/utils.module';
     S3Module,
     FollowModule,
     MapModule,
-    UtilsModule,
+    RedisModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ResponseInterceptor, AuthGuard],
+  providers: [
+    AppService,
+    ResponseInterceptor,
+    { provide: APP_GUARD, useClass: AuthGuard },
+  ],
 })
 export class AppModule {}

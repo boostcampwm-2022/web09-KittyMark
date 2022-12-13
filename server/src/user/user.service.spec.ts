@@ -1,15 +1,14 @@
 import { ConflictException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { OauthInfo } from '../auth/model/oauth-info.enum';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import { OauthInfo } from './user.enum';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;
   let repository: jest.Mocked<Repository<User>>;
-  //   let userService: jest.Mocked<UserService>;
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({

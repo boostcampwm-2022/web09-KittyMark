@@ -11,8 +11,9 @@ export class GeometryTransformer implements ValueTransformer {
 
   from(wkb: string): Record<string, number[]> | undefined[] {
     if (!wkb) return [];
-    const geo: Geometry = wkx.Geometry.parse(wkb).toGeoJSON();
-    return geo.coordinates;
+    const geo = wkx.Geometry.parse(wkb).toGeoJSON();
+    console.log(geo);
+    return geo;
   }
 }
 

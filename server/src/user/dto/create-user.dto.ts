@@ -1,8 +1,8 @@
 import { Transform } from 'class-transformer';
 import { IsEnum, IsNotEmpty } from 'class-validator';
-import { OauthInfo } from '../model/oauth-info.enum';
+import { OauthInfo } from 'src/auth/model/oauth-info.enum';
 
-export class RegisterUserDto {
+export class CreateUserDto {
   @IsNotEmpty()
   email: string;
 
