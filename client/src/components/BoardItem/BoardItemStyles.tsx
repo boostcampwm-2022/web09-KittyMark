@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 const BoardBackground = styled.div`
-  padding-bottom: 1.25rem;
+  padding-bottom: 0.7rem;
   /* max-width: 800px; */
-  width: 93%;
-  border-radius: 15px;
+  width: 97%;
+  border-radius: 5px;
   background-color: ${(props) => props.theme.palette.inner};
   border: 1px solid ${(props) => props.theme.palette.border};
   display: flex;

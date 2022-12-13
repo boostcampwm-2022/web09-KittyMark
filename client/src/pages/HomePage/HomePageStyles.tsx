@@ -17,8 +17,8 @@ const BoardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  padding-top: 1.25rem;
+  padding-top: 0.5rem;
+  gap: 1rem;
 `;
 
 const BoardEnd = styled.div`
