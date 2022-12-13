@@ -44,7 +44,6 @@ const ContentContainer = styled.div`
   font-size: 0.9rem;
   font-weight: 400;
   width: 100%;
-  height: 100%;
 
   span {
     word-wrap: break-word;
