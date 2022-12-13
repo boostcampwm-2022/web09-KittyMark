@@ -28,4 +28,22 @@ const OauthButton = styled.button`
   }
 `;
 
-export default { Container, LogoImg, OauthButton };
+const CustomOauthButton = styled.button`
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 12rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+
+export default { Container, LogoImg, OauthButton, CustomOauthButton };
