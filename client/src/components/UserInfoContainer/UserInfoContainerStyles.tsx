@@ -17,6 +17,7 @@ const StatusWrap = styled.div`
 
 const OuterContainer = styled.div`
   width: calc(85% - 3rem);
+  max-width: 35rem;
   height: calc(7.5rem - 2rem);
   padding: 1rem 1.5rem;
 
