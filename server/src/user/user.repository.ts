@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { OauthInfo } from '../auth/model/oauth-info.enum';
+import { Follow } from './follow/follow.entity';
 
 @Injectable()
 export class UserRepository {
@@ -55,8 +56,30 @@ export class UserRepository {
       .leftJoin('user.boards', 'board')
       .where('user.id = :id', { id: userId })
       .getRawOne();
-
-    console.log(result);
     return result;
+  }
+
+  async findFollowsById(userId: number) {
+    const follows = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoin(
+        (qb) =>
+          qb
+            .select([
+              'follow.user_id',
+              'followedUser.id',
+              'followedUser.name',
+              'followedUser.profile_url',
+            ])
+            .from(Follow, 'follow')
+            .leftJoin('follow.followedUser', 'followedUser')
+            .where('follow.user_id = :id', { id: userId }),
+        'follow',
+        'follow.user_id = user.id',
+      )
+      .select(['user.id', 'follow'])
+      .getRawMany();
+
+    return follows;
   }
 }

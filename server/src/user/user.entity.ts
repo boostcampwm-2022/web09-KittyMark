@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { OauthInfo } from '../auth/model/oauth-info.enum';
 import { Board } from '../board/board.entity';
-import { Comment } from 'src/comment/comment.entity';
+import { Comment } from '../comment/comment.entity';
 import { Like } from '../like/like.entity';
 
 @Entity()

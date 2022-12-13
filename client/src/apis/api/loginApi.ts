@@ -1,13 +1,18 @@
 import { AxiosResponse } from 'axios';
 import { defaultInstance, defaultFormInstance } from '../utils';
 // type
-import { LoginApi, Api, NameCheckApi } from '../../types/responseData';
+import {
+  LoginApi,
+  Api,
+  NameCheckApi,
+  RedirectApi,
+} from '../../types/responseData';
 
 export const postAuthInfo = async (
   socialName: 'naver' | 'github',
   authorizationCode: string,
   state: string,
-): Promise<LoginApi> => {
+): Promise<LoginApi | RedirectApi> => {
   const { data }: AxiosResponse<LoginApi> = await defaultInstance.post(
     `/api/auth/oauth/${socialName}`,
     {
@@ -31,16 +36,15 @@ export const postRegisterInfo = async (
   formData.append('image', image || '');
 
   const { data }: AxiosResponse<Api> = await defaultFormInstance.post(
-    `/api/auth/register`,
+    `/api/user`,
     formData,
   );
   return data;
 };
 
 export const postNameCheck = async (name: string): Promise<NameCheckApi> => {
-  const { data }: AxiosResponse<NameCheckApi> = await defaultInstance.post(
-    `/api/auth/namecheck`,
-    { name },
+  const { data }: AxiosResponse<NameCheckApi> = await defaultInstance.get(
+    `/api/user/nameCheck?name=${name}`,
   );
   return data;
 };

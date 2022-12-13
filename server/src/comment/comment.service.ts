@@ -43,7 +43,7 @@ export class CommentService {
     return {
       statusCode: 201,
       message: 'Success',
-      data: { commentId: comment.id },
+      commentId: comment.id,
     };
   }
 

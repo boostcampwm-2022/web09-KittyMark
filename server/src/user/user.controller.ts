@@ -11,16 +11,34 @@ import {
   UseInterceptors,
   ValidationPipe,
   ParseIntPipe,
+  Req,
 } from '@nestjs/common';
 import { GetProfileInfoDto } from './dto/get-profile-info.dto';
 import { UpdateUserInfoDto } from './dto/update-user-info.dto';
 import { UserService } from './user.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FollowDto } from './dto/follow.dto';
+import { Request } from 'express';
+import { CreateUserDto } from './dto/create-user.dto';
+import { ValidateNameDto } from './dto/validate-name.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Post('')
+  @UseInterceptors(FileInterceptor('image'))
+  createUser(
+    @UploadedFile() image: Express.Multer.File,
+    @Body(ValidationPipe) createUserDto: CreateUserDto,
+  ) {
+    return this.userService.createUser(image, createUserDto);
+  }
+
+  @Get('/nameCheck')
+  checkName(@Query(ValidationPipe) validateNameDto: ValidateNameDto) {
+    return this.userService.validateName(validateNameDto);
+  }
 
   @Get('/profile-info')
   getUserInfo(@Query(ValidationPipe) getProfileInfoDto: GetProfileInfoDto) {
@@ -32,8 +50,13 @@ export class UserController {
   updateUserInfo(
     @UploadedFile() image: Express.Multer.File,
     @Body(ValidationPipe) updateUserInfoDto: UpdateUserInfoDto,
+    @Req() req: Request,
   ) {
-    return this.userService.updateUserInfo(updateUserInfoDto, image);
+    return this.userService.updateUserInfo(
+      updateUserInfoDto,
+      image,
+      req.session.userId,
+    );
   }
 
   @Post('/follow')
