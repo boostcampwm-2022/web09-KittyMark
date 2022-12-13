@@ -62,10 +62,21 @@ const InfoContainer = styled.div`
   justify-content: space-between;
   color: #9b9b9b;
 
+  a {
+    text-decoration: none;
+    color: #9b9b9b;
+  }
+  a:visited {
+    text-decoration: none;
+    color: #9b9b9b;
+  }
+  a:active {
+    text-decoration: none;
+    color: #9b9b9b;
+  }
+
   div {
     display: flex;
-    gap: 0.5rem;
-    white-space: nowrap;
     align-items: flex-end;
 
     .create-time-info {
