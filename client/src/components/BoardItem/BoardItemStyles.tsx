@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const BoardBackground = styled.div`
   padding-bottom: 0.7rem;
-  max-width: 35rem;
+  max-width: 28rem;
   width: 97%;
   border-radius: 5px;
   background-color: ${(props) => props.theme.palette.inner};
