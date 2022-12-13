@@ -31,7 +31,7 @@ const LikeButton = (props: LikeButtonProps) => {
     {
       onSuccess: () => {
         setLiked(!liked);
-        queryClient.invalidateQueries('boards');
+        queryClient.invalidateQueries('[boardlist]');
       },
     },
   );
