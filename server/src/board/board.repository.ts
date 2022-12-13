@@ -76,8 +76,7 @@ export class BoardRepository {
         delete board.likes;
       });
       const _count = boards.length;
-      console.log(boards);
-      const nextMaxId = boards[0].id;
+      const nextMaxId = boards[_count - 1].id;
       return { boards, count: _count, next_max_id: nextMaxId };
     }
     return { boards: null, count: 0, next_max_id: -1 };
@@ -146,9 +145,8 @@ export class BoardRepository {
         });
         delete board.likes;
       });
-      console.log(boards);
       const _count = boards.length;
-      const nextMaxId = boards[0].id;
+      const nextMaxId = boards[_count - 1].id;
       return { boards, count: _count, next_max_id: nextMaxId };
     }
     return { boards: null, count: 0, next_max_id: -1 };
