@@ -45,25 +45,20 @@ export class CommentRepository {
       return {
         statusCode: 200,
         message: 'Success',
-        data: {
-          message: 'Success',
-          comments: results,
-          board_id: boardId,
-          board_user_id: boardUser[0].user_id,
-          count: _count,
-          next_max_id: nextMaxId,
-        },
+        comments: results,
+        board_id: boardId,
+        board_user_id: boardUser[0].user_id,
+        count: _count,
+        next_max_id: nextMaxId,
       };
     } else {
       return {
         statusCode: 200,
         message: 'Success',
-        data: {
-          comments: null,
-          board_id: boardId,
-          count: 0,
-          next_max_id: -1,
-        },
+        comments: null,
+        board_id: boardId,
+        count: 0,
+        next_max_id: -1,
       };
     }
   }
