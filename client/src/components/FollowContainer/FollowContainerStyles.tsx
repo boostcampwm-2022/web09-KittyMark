@@ -19,6 +19,7 @@ const Body = styled.div`
 
 const ButtonContainer = styled.div`
   width: 90%;
+  max-width: 35rem;
   height: 3.25rem;
   border-radius: 2rem;
   border: 1px solid ${(props) => props.theme.palette.border};
@@ -46,6 +47,7 @@ const UnitContainer = styled.div`
   gap: 0.5rem;
 
   width: 90%;
+  max-width: 35rem;
 
   div:not(:last-of-type) {
     padding-bottom: 0.5rem;
