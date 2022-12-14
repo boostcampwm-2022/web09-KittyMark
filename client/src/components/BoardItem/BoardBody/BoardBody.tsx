@@ -45,7 +45,6 @@ const BoardBody = (props: BoardBodyProps) => {
     return returnTags;
   };
 
-  createDescription(content);
   return (
     <S.Wrapper>
       <S.Container>
