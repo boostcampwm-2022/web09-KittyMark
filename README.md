@@ -143,7 +143,7 @@
 <br>
 
 # 기술 스택 및 아키텍처
-<img alt="technical_stack" src="https://user-images.githubusercontent.com/45158550/206941804-a1f54b96-6875-4702-bf16-8a5109baf21e.png" width="800">
+<img alt="technical_stack" src="https://user-images.githubusercontent.com/73357200/207490162-d1d0e566-6c0e-495f-89c3-1487e12798db.png" width="800">
 
 <img alt="architecture" src="https://user-images.githubusercontent.com/73357200/206893082-81afe63c-7f31-48dd-b366-ec432db3ed05.png" width="800">
 
