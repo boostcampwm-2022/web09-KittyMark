@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 const NaverMap = styled.div`
-  width: 100vw;
+  width: 100%;
   height: calc(var(--vh, 1vh) * 100 - 8rem);
   /* height: calc(100vh - 8rem); */
 `;
 
 const SpinnerWrapper = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   position: absolute;
   display: flex;
