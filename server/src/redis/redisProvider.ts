@@ -18,6 +18,7 @@ const RedisProvider = {
     const redisPort: number = +process.env.REDIS_PORT;
     const redisClient = createClient({
       socket: { host: redisHost, port: redisPort },
+      legacyMode: true,
     });
 
     redisClient.on('error', (err) => {
@@ -25,7 +26,6 @@ const RedisProvider = {
     });
 
     await redisClient.connect();
-
     return redisClient;
   },
 };

@@ -1,6 +1,5 @@
 import {
   Injectable,
-  Inject,
   UnauthorizedException,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -11,12 +10,6 @@ import { OauthNaverDto } from './dto/oauth-naver.dto';
 import { OauthGithubDto } from './dto/oauth-github.dto';
 import { UserRepository } from 'src/user/user.repository';
 import { firstValueFrom, map } from 'rxjs';
-import {
-  RedisClientType,
-  RedisFunctions,
-  RedisModules,
-  RedisScripts,
-} from 'redis';
 
 declare module 'express-session' {
   export interface SessionData {
@@ -29,18 +22,11 @@ export class AuthService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly httpService: HttpService,
-    @Inject('REDIS_CLIENT')
-    private readonly RedisClient: RedisClientType<
-      RedisModules,
-      RedisFunctions,
-      RedisScripts
-    >,
   ) {}
 
   // 홈페이지에서 로그인 확인 요청시 redis에서 세션 id 확인
   async validateLogin(request: Request) {
-    const result = await this.RedisClient.get(request.sessionID);
-    if (result && parseInt(result) === request.session.userId) {
+    if (request.session.userId) {
       return true;
     } else {
       throw new UnauthorizedException('This user is an unauthorized user');
@@ -51,10 +37,7 @@ export class AuthService {
   async login(email: string, request: Request, oauthInfo: OauthInfo) {
     const user = await this.userRepository.findByOauthInfo(email, oauthInfo);
     if (user) {
-      await this.RedisClient.set(request.sessionID, user.id);
-      await this.RedisClient.expire(request.sessionID, 60 * 60 * 24 * 30);
       request.session.userId = user.id;
-
       return {
         statusCode: 200,
         userId: user.id,
@@ -73,7 +56,6 @@ export class AuthService {
   }
 
   async logout(request: Request) {
-    await this.RedisClient.del(request.sessionID);
     request.session.destroy((err) => {
       if (err) {
         console.log(err);

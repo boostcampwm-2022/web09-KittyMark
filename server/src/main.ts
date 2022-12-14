@@ -3,24 +3,28 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import * as session from 'express-session';
+import * as createRedisStore from 'connect-redis';
+import redisProvider from './redis/redisProvider';
 
 dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const RedisStore = createRedisStore(session);
+  const redisClient = await redisProvider.useFactory();
 
   app.use(
     session({
+      store: new RedisStore({ client: redisClient }),
+      name: 'kittymark',
       secret: process.env.SESSION_SECRET,
-      resave: false, //세션이 수정되지 않아도 지속적으로 저장하게 하는 옵션
-      saveUninitialized: false, //초기화되지 않는 세션을 저장하게 함
+      resave: false,
+      saveUninitialized: false,
       cookie: {
-        maxAge: 60 * 60 * 24 * 30, //30일
+        maxAge: 60 * 60 * 24 * 30 * 1000,
         httpOnly: true,
         sameSite: 'strict',
-        // secure: true,
       },
-      name: 'kittymark.sid',
     }),
   );
 
