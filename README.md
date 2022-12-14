@@ -145,7 +145,8 @@
 # 기술 스택 및 아키텍처
 <img alt="technical_stack" src="https://user-images.githubusercontent.com/73357200/207490162-d1d0e566-6c0e-495f-89c3-1487e12798db.png" width="800">
 
-<img alt="architecture" src="https://user-images.githubusercontent.com/73357200/206893082-81afe63c-7f31-48dd-b366-ec432db3ed05.png" width="800">
+<img alt="architecture" src="https://user-images.githubusercontent.com/73357200/207520823-eaadd59a-37cf-468f-8442-c08da6a2b4bb.png" width="800">
+
 
 # 팀원
 
