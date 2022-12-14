@@ -11,6 +11,7 @@ const Wrap = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 1rem;
+  padding-bottom: 4.5rem;
 `;
 
 export default { Wrap };
