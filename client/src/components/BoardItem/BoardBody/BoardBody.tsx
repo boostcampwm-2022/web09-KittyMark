@@ -75,13 +75,18 @@ const BoardBody = (props: BoardBodyProps) => {
           </span>
         </S.ContentContainer>
         <S.InfoContainer>
-          <a href={`/comment/${boardId}`}>
+          <div>
             {comment > 0 ? (
-              <span className="comment-info">{viewCommentInfo(comment)}</span>
+              <button
+                type="button"
+                onClick={() => navigate(`/comment/${boardId}`)}
+              >
+                <span className="comment-info">{viewCommentInfo(comment)}</span>
+              </button>
             ) : (
               ''
             )}
-          </a>
+          </div>
           <div>
             <span className="create-time-info">{timeCalc(createdAt)}</span>
           </div>
