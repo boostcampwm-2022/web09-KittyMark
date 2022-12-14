@@ -34,18 +34,19 @@ const BoardBody = (props: BoardBodyProps) => {
   };
 
   const createDescription = (str: string) => {
+    let keyCount = 0;
     const splitContent = str.split('\n');
+
     if (splitContent.length === 1) return <div>{splitContent}</div>;
-    let count = 0;
+
     const returnTags = splitContent.map((desc) => {
-      count += 1;
-      if (desc === '\r') return <br key={count} />;
-      return <div key={count}>{desc}</div>;
+      keyCount += 1;
+      if (desc === '\r') return <br key={keyCount} />;
+      return <div key={keyCount}>{desc}</div>;
     });
     return returnTags;
   };
 
-  createDescription(content);
   return (
     <S.Wrapper>
       <S.Container>
@@ -74,13 +75,18 @@ const BoardBody = (props: BoardBodyProps) => {
           </span>
         </S.ContentContainer>
         <S.InfoContainer>
-          <a href={`/comment/${boardId}`}>
+          <div>
             {comment > 0 ? (
-              <span className="comment-info">{viewCommentInfo(comment)}</span>
+              <button
+                type="button"
+                onClick={() => navigate(`/comment/${boardId}`)}
+              >
+                <span className="comment-info">{viewCommentInfo(comment)}</span>
+              </button>
             ) : (
               ''
             )}
-          </a>
+          </div>
           <div>
             <span className="create-time-info">{timeCalc(createdAt)}</span>
           </div>

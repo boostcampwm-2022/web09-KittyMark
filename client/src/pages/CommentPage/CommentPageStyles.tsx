@@ -14,9 +14,10 @@ const Body = styled.div`
 
 const Container = styled.div`
   width: 90vw;
+  max-width: 30rem;
   height: calc((100vh - 10rem) / 10 * 8.5);
   background-color: ${(props) => props.theme.palette.inner};
-  border-radius: 2rem;
+  border-radius: 1rem;
   border: 1px solid ${(props) => props.theme.palette.border};
   display: flex;
   align-items: center;
@@ -24,17 +25,17 @@ const Container = styled.div`
 
   .inner-container {
     margin: auto;
-    width: calc(92% - 2rem);
-    height: calc(95% - 2rem);
+    width: calc(92% - 1rem);
+    height: calc(95% - 1rem);
     padding: 1rem 1rem;
     background-color: ${(props) => props.theme.palette.back};
-    border-radius: 2rem;
+    border-radius: 0.7rem;
 
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
     justify-content: flex-start;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     div:not(:last-of-type) {
       padding-bottom: 0.5rem;

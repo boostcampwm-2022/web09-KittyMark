@@ -88,6 +88,7 @@ const ButtonContainer = styled.div`
   align-items: center;
 
   width: calc(85% - 2rem);
+  max-width: 35rem;
   height: 2.5rem;
   background-color: ${(props) => props.theme.palette.inner};
   border-radius: 2rem;

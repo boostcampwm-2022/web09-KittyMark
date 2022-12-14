@@ -12,7 +12,7 @@ const BoardContainer = styled.div`
   font-style: normal;
   min-height: 100vh;
   overflow: hidden;
-  width: 100vw;
+  width: 100%;
   height: 90%;
   display: flex;
   flex-direction: column;
