@@ -34,13 +34,15 @@ const BoardBody = (props: BoardBodyProps) => {
   };
 
   const createDescription = (str: string) => {
+    let keyCount = 0;
     const splitContent = str.split('\n');
+
     if (splitContent.length === 1) return <div>{splitContent}</div>;
-    let count = 0;
+
     const returnTags = splitContent.map((desc) => {
-      count += 1;
-      if (desc === '\r') return <br key={count} />;
-      return <div key={count}>{desc}</div>;
+      keyCount += 1;
+      if (desc === '\r') return <br key={keyCount} />;
+      return <div key={keyCount}>{desc}</div>;
     });
     return returnTags;
   };
