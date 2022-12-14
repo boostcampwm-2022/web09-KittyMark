@@ -155,3 +155,8 @@
 | <img src="https://github.com/wooseongshin.png" width="200"/> | <img src="https://github.com/yooji0415.png" width="200"/> | <img src="https://github.com/dla0510.png" width="200"/> | <img src="https://github.com/hjy0951.png" width="200"/> |
 |       [wooseongshin](https://github.com/wooseongshin)        |         [yooji0415](https://github.com/yooji0415)         |          [dla0510](https://github.com/dla0510)          |          [hjy0951](https://github.com/hjy0951)          |
 |                         Web Backend                          |                       Web Frontend                        |                       Web Backend                       |                      Web Frontend                       |
+
+더 자세한 내용이 궁금하시다면! 
+
+- [팀노션](https://www.notion.so/Kitty-Mark-19795f02554044e2a54faf15bc57a424)
+- [위키](https://github.com/boostcampwm-2022/web09-KittyMark/wiki)
