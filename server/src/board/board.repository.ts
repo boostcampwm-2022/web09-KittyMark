@@ -192,7 +192,6 @@ export class BoardRepository {
         });
         delete board.likes;
       });
-      console.log(boards);
       return { boards };
     }
   }
