@@ -35,7 +35,7 @@ const Container = styled.div`
     flex-direction: column;
     gap: 0.8rem;
     justify-content: flex-start;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     div:not(:last-of-type) {
       padding-bottom: 0.5rem;
