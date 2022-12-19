@@ -159,5 +159,5 @@
 
 더 자세한 내용이 궁금하시다면! 
 
-- [팀노션](https://www.notion.so/Kitty-Mark-19795f02554044e2a54faf15bc57a424)
+- [팀노션](https://energetic-pyjama-59d.notion.site/Kitty-Mark-5d3658fb2dcf4c3eaf358d6f77b5e512)
 - [위키](https://github.com/boostcampwm-2022/web09-KittyMark/wiki)
