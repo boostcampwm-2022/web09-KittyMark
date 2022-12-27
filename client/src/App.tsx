@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import {
   BoardDetailPage,
   CommentPage,
+  DmListPage,
   FollowPage,
   HomePage,
   LoadingPage,
@@ -57,6 +58,7 @@ const App = () => {
             <Route path="/follow/:userName/:userId" element={<FollowPage />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/detail" element={<BoardDetailPage />} />
+            <Route path="/dmtest" element={<DmListPage />} />
           </Routes>
         </QueryClientProvider>
       </RecoilRoot>

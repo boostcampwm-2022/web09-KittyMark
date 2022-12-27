@@ -1,6 +1,9 @@
 html {
   font-size: 16px;
   height: 100vh;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: none;
 }
 
 body {
