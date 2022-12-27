@@ -69,7 +69,7 @@ const CountSlot = styled.div`
     cursor: pointer;
   }
 
-  p:last-child {
+  p {
     text-align: center;
     margin: 0px;
     font-weight: 400;
