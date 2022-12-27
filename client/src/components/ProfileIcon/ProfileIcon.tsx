@@ -16,7 +16,7 @@ const Button = styled.button<{ customLength: number }>`
   height: ${(props) => `${props.customLength}rem`};
   background-color: transparent;
   border: 0px;
-  padding: 1px;
+  padding: 0px;
   cursor: pointer;
 
   img {

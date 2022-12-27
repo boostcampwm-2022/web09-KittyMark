@@ -39,16 +39,10 @@ const CustomOauthButton = styled.button`
   justify-content: center;
   gap: 0.5rem;
   font-size: 1.1rem;
-  padding: 0px;
-  margin: 0px;
 
   img {
     width: 1.5rem;
     height: 1.5rem;
-  }
-
-  span {
-    color: #000000;
   }
 `;
 
