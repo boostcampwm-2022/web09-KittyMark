@@ -13,13 +13,10 @@ body {
 }
 
 @font-face {
-  font-family: 'Jua';
-  src: url('./fonts/BMJUA_ttf.ttf');
-}
-
-@font-face {
   font-family: 'SF-Pro';
-  src: url('./fonts/SF-Pro.ttf');
+  src: local('SF-Pro'), url(./fonts//SF-Pro.woff2) format('woff2'),
+    url(./fonts//SF-Pro.woff) format('woff'),
+    url('./fonts/SF-Pro.ttf') format('truetype');
 }
 
 :root {
