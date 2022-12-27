@@ -43,7 +43,7 @@ const Name = styled.p`
   line-height: 30px;
 
   margin-top: 0px;
-  margin: 0.5rem 0rem;
+  margin: 0.5rem 0rem 0.75rem 0rem;
 `;
 
 const InnerContainer = styled.div`
@@ -58,20 +58,17 @@ const CountSlot = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
+
   button {
     font-size: 16px;
     padding: 0px;
+    margin: 0px;
+    color: #000000;
     background-color: transparent;
     border: none;
     cursor: pointer;
   }
-  p:first-child {
-    text-align: center;
-    margin: 0px;
-    font-weight: 590;
-    font-size: 14px;
-    line-height: 17px;
-  }
+
   p:last-child {
     text-align: center;
     margin: 0px;
