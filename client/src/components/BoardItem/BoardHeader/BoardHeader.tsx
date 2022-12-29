@@ -65,7 +65,7 @@ const BoardHeader = (props: BoardHeaderProps) => {
         setMenuHideOption(!menuHideOption);
       },
       onSuccess: () => {
-        queryClient.invalidateQueries('boards');
+        queryClient.invalidateQueries('boardlist');
       },
     },
   );
