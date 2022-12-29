@@ -60,3 +60,8 @@ export const BoardDetailPage = Loadable({
   loader: () => import('./BoardDetailPage/BoardDetailPage'),
   loading: Loading,
 });
+
+export const DirectMessagePage = Loadable({
+  loader: () => import('./DirectMessagePage/DirectMessagePage'),
+  loading: Loading,
+});

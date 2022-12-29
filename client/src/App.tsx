@@ -17,6 +17,7 @@ import {
   NewPostPage,
   RegisterPage,
   UserPage,
+  DirectMessagePage,
 } from './pages/index';
 
 const queryClient = new QueryClient();
@@ -57,6 +58,7 @@ const App = () => {
             <Route path="/follow/:userName/:userId" element={<FollowPage />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/detail" element={<BoardDetailPage />} />
+            <Route path="/direct/:senderName" element={<DirectMessagePage />} />
           </Routes>
         </QueryClientProvider>
       </RecoilRoot>
