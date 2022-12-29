@@ -56,7 +56,7 @@ const FollowUnit = ({
       <S.InnerContainer>
         <ProfileIcon
           targetId={targetId}
-          userName="test"
+          userName={userName}
           userProfile={profile || '../../defaultProfile.svg'}
         />
         <S.Name>{userName}</S.Name>

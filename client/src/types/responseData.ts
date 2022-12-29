@@ -156,3 +156,43 @@ export interface ModifyUserApi extends Api {
     profileUrl: string | null;
   };
 }
+
+// 채팅방 리스트 조회 부분
+export interface Participant {
+  id: number;
+  name: string;
+  profileUrl: string;
+}
+
+export interface ChatRoom {
+  id: number;
+  participant1: Participant;
+  participant2: Participant;
+  lastSeenChatOfParticipant1: string;
+  lastSeenChatOfParticipant2: string;
+  recentMessage: {
+    sender: number;
+    content: string;
+    createdAt: string;
+  };
+  unSeenMsgCnt: number;
+}
+
+export interface DirectMessageListApi extends Api {
+  data?: {
+    chatrooms: ChatRoom[];
+  };
+}
+
+export interface DirectMessage {
+  charRoomId: number;
+  sender: number;
+  content: string;
+  createdAt: string;
+}
+
+export interface DirectMessageApi extends Api {
+  data: {
+    messages: DirectMessage[];
+  };
+}
