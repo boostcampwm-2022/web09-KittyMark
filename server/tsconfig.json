@@ -20,8 +20,10 @@
 		"baseUrl": ".",
 		"paths": {
 			"board/*": [
-				"src/board/*"
+				"api/src/board/*"
 			],
+			"@schemas/*": ["dao/schemas/*"],
+			"@repository/*" : ["dao/repository/*"]
 		}
 	}
 }
