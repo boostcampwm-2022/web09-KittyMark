@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { ChatroomRepository } from './chatroom.repository';
-import { ChatRepository } from '@repository/chat.repository';
+import { DMRoomRepository } from './dmroom.repository';
+import { DMRepository } from '@repository/dm.repository';
 
 @Injectable()
 export class DmService {
   constructor(
-    private readonly chatroomRepository: ChatroomRepository,
-    private readonly chatRepository: ChatRepository,
+    private readonly chatroomRepository: DMRoomRepository,
+    private readonly chatRepository: DMRepository,
   ) {}
 
   async getChatRoomLists(userId: number) {

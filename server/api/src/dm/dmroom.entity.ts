@@ -8,7 +8,7 @@ import {
 import { User } from '../user/user.entity';
 
 @Entity()
-export class ChatRoom {
+export class DMRoom {
   //채팅방 ID -> mongoDB 메세지 정보에 채팅방 ID를 저장하면..? 별론가
   @PrimaryGeneratedColumn()
   id: number;

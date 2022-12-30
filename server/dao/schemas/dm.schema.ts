@@ -2,12 +2,12 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { IsString } from 'class-validator';
 
-export type ChatDocument = HydratedDocument<Chat>;
+export type ChatDocument = HydratedDocument<DM>;
 
 @Schema({ timestamps: { createdAt: 'createdAt' } })
-export class Chat {
+export class DM {
   @Prop({ required: true, type: mongoose.Schema.Types.Number })
-  chatRoomId: number;
+  DMRoomId: number;
 
   @Prop({ required: true, type: mongoose.Schema.Types.Number })
   sender: number;
@@ -20,7 +20,7 @@ export class Chat {
   createdAt: Date;
 }
 
-export const ChatSchema = SchemaFactory.createForClass(Chat);
+export const DMSchema = SchemaFactory.createForClass(DM);
 
 // message {
 //     id: fjaoijdf-1348-dga0g,
