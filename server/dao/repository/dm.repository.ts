@@ -1,11 +1,11 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import { Chat, ChatDocument } from '@schemas/chat.schema';
+import { DM, ChatDocument } from '@schemas/dm.schema';
 import { Model } from 'mongoose';
 
 @Injectable()
-export class ChatRepository {
-  constructor(@InjectModel(Chat.name) private chatModel: Model<ChatDocument>) {}
+export class DMRepository {
+  constructor(@InjectModel(DM.name) private chatModel: Model<ChatDocument>) {}
 
   async findByRoomId(roomId: number) {
     const result = await this.chatModel
@@ -18,7 +18,7 @@ export class ChatRepository {
 
   async findRecentMessageByRoomId(roomId: number) {
     const result = await this.chatModel.findOne(
-      { chatRoomId: roomId },
+      { DMRoomId: roomId },
       { sort: { $natural: -1 } },
     );
 
@@ -26,6 +26,6 @@ export class ChatRepository {
   }
 
   async saveMessage(chatRoomId: number, sender: number, content: string) {
-    return await this.chatModel.create({ chatRoomId, sender, content });
+    return await this.chatModel.create({ DMRoomId: chatRoomId, sender, content });
   }
 }

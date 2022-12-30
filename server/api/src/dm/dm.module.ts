@@ -1,20 +1,20 @@
 import { Module } from '@nestjs/common';
-import { Chat, ChatSchema } from '@schemas/chat.schema';
+import { DM, DMSchema } from '@schemas/dm.schema';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ChatRoom } from './chatroom.entity';
+import { DMRoom } from './dmroom.entity';
 import { DmController } from './dm.controller';
 import { DmService } from './dm.service';
-import { ChatroomRepository } from './chatroom.repository';
-import { ChatRepository } from '@repository/chat.repository';
+import { DMRoomRepository } from './dmroom.repository';
+import { DMRepository } from '@repository/dm.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ChatRoom]),
-    MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]),
+    TypeOrmModule.forFeature([DMRoom]),
+    MongooseModule.forFeature([{ name: DM.name, schema: DMSchema }]),
   ],
   controllers: [DmController],
-  providers: [DmService, ChatroomRepository, ChatRepository],
+  providers: [DmService, DMRoomRepository, DMRepository],
   exports: [MongooseModule],
 })
 export class DmModule {}

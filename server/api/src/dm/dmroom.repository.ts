@@ -1,12 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { ChatRoom } from './chatroom.entity';
+import { DMRoom } from './dmroom.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class ChatroomRepository {
+export class DMRoomRepository {
   constructor(
-    @InjectRepository(ChatRoom) private DmRepository: Repository<ChatRoom>,
+    @InjectRepository(DMRoom) private DmRepository: Repository<DMRoom>,
   ) {}
 
   async getListByUserId(userId: number) {
