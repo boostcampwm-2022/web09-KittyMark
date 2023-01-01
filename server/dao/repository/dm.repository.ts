@@ -10,8 +10,23 @@ export class DMRepository {
   async findByRoomId(roomId: number) {
     const result = await this.chatModel
       .find()
-      .where('chatRoomId')
-      .equals(`${roomId}`);
+      .where('DMRoomId')
+      .equals(`${roomId}`)
+      .exec();
+
+    return result;
+  }
+
+  async findByRoomIdFrom(roomId: number, maxId: string, count: number) {
+    const maxChat = await this.chatModel.findById(maxId).exec();
+    const result = await this.chatModel
+      .find(
+        { DMRoomId: roomId, createdAt: { $gt: maxChat.createdAt } },
+        'sender content createdAt',
+      )
+      .sort({ createdAt: -1 })
+      .limit(count)
+      .exec();
 
     return result;
   }
@@ -26,6 +41,10 @@ export class DMRepository {
   }
 
   async saveMessage(chatRoomId: number, sender: number, content: string) {
-    return await this.chatModel.create({ DMRoomId: chatRoomId, sender, content });
+    return await this.chatModel.create({
+      DMRoomId: chatRoomId,
+      sender,
+      content,
+    });
   }
 }

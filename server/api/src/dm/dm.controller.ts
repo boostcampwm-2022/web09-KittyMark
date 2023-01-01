@@ -1,6 +1,13 @@
-import {Get, Controller, Param, ParseIntPipe, ValidationPipe, Query} from '@nestjs/common';
+import {
+  Get,
+  Controller,
+  Param,
+  ParseIntPipe,
+  ValidationPipe,
+  Query,
+} from '@nestjs/common';
 import { DmService } from './dm.service';
-import {GetMessageDto} from "./dto/get-message.dto";
+import { GetMessageDto } from './dto/get-message.dto';
 // import { GetMessageDto } from './dto/get-message.dto';
 
 @Controller('dm')
@@ -14,6 +21,6 @@ export class DmController {
 
   @Get('/:userId')
   getMessages(@Query(ValidationPipe) getMessageDto: GetMessageDto) {
-    return;
+    return this.dmService.getMessages(getMessageDto);
   }
 }

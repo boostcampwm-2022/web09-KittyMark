@@ -21,9 +21,9 @@ export class DMRoom {
   @JoinColumn()
   participant2: number;
 
-  @Column()
+  @Column({ nullable: true })
   lastSeenChatOfParticipant1: string;
 
-  @Column()
+  @Column({ nullable: true })
   lastSeenChatOfParticipant2: string;
 }

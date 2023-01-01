@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class GetMessageDto {
@@ -11,4 +11,17 @@ export class GetMessageDto {
   @IsInt()
   @Transform(({ value }) => parseInt(value, 10))
   otherUserId: number;
+
+  @IsOptional()
+  @IsInt()
+  @Transform(({ value }) => parseInt(value, 10))
+  dmRoomId: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  @Transform(({ value }) => parseInt(value, 10))
+  count: number;
+
+  @IsNotEmpty()
+  maxId: string;
 }
