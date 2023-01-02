@@ -49,6 +49,6 @@ export class DMRoomRepository {
       await this.DmRoomRepository.save(room);
     }
 
-    return room.id;
+    return room;
   }
 }

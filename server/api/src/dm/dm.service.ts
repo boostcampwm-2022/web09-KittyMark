@@ -51,7 +51,7 @@ export class DmService {
         dmRoomId,
         messages,
         count: messages.length,
-        next_max_id: messages[messages.length].id,
+        next_max_id: messages[messages.length - 1].id,
       };
     } else {
       // userId와 otherUserId로 dmRoomId 찾기
@@ -67,13 +67,26 @@ export class DmService {
           maxId,
           count,
         );
+
+        return {
+          dmRoomId: dmRoom.id,
+          messages,
+          count: messages.length,
+          next_max_id: messages[messages.length - 1].id,
+        };
       } else {
         // 해당 유저들에 대해 dmRoom이 존재하지 않으면 생성하기
-        const id = await this.dmRoomRepository.createRoomByUsers(
+        const createdRoom = await this.dmRoomRepository.createRoomByUsers(
           userId,
           otherUserId,
         );
         const messages = [];
+        return {
+          dmRoomId: createdRoom.id,
+          messages,
+          count: 0,
+          next_max_id: -1,
+        };
       }
     }
   }
