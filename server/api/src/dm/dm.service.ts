@@ -11,8 +11,8 @@ export class DmService {
   ) {}
 
   async getChatRoomLists(userId: number) {
-    const chatRooms = await this.dmRoomRepository.getListByUserId(userId);
-    const results = chatRooms.reduce((acc, curr) => {
+    const result = await this.dmRoomRepository.getListByUserId(userId);
+    const dmrooms = result.reduce((acc, curr) => {
       acc.push({
         ...curr,
         recentMessage: this.dmRepository.findRecentMessageByRoomId(curr.id),
@@ -20,7 +20,7 @@ export class DmService {
       return acc;
     }, []);
 
-    results.sort(function (a, b) {
+    dmrooms.sort(function (a, b) {
       const dateA = new Date(a.recentMessage.createdAt);
       const dateB = new Date(b.recentMessage.createdAt);
       if (dateA < dateB) {
@@ -32,7 +32,9 @@ export class DmService {
       return 0;
     });
 
-    return results;
+    const unSeenMsgCnt = 0;
+
+    return { dmrooms, unSeenMsgCnt };
   }
 
   async getMessages(getMessageDto: GetMessageDto) {
@@ -45,7 +47,6 @@ export class DmService {
         maxId,
         count,
       );
-      // const next_max_id = ;
 
       return {
         dmRoomId,
@@ -68,12 +69,21 @@ export class DmService {
           count,
         );
 
-        return {
-          dmRoomId: dmRoom.id,
-          messages,
-          count: messages.length,
-          next_max_id: messages[messages.length - 1].id,
-        };
+        if (messages.length > 0) {
+          return {
+            dmRoomId: dmRoom.id,
+            messages,
+            count: messages.length,
+            next_max_id: messages[messages.length - 1].id,
+          };
+        } else {
+          return {
+            dmRoomId: dmRoom.id,
+            messages,
+            count: 0,
+            next_max_id: -1,
+          };
+        }
       } else {
         // 해당 유저들에 대해 dmRoom이 존재하지 않으면 생성하기
         const createdRoom = await this.dmRoomRepository.createRoomByUsers(
@@ -81,13 +91,23 @@ export class DmService {
           otherUserId,
         );
         const messages = [];
+
         return {
+          message: '채팅방이 생성되었습니다.',
           dmRoomId: createdRoom.id,
           messages,
           count: 0,
           next_max_id: -1,
         };
       }
+    }
+  }
+
+  async wait(sec: number) {
+    let start = Date.now(),
+      now = start;
+    while (now - start < sec * 1000) {
+      now = Date.now();
     }
   }
 }

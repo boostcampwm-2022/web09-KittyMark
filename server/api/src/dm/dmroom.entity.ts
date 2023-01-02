@@ -14,11 +14,11 @@ export class DMRoom {
   id: number;
 
   @ManyToOne(() => User)
-  @JoinColumn()
+  @JoinColumn({ name: 'participant1', referencedColumnName: 'id' })
   participant1: number;
 
   @ManyToOne(() => User)
-  @JoinColumn()
+  @JoinColumn({ name: 'participant2', referencedColumnName: 'id' })
   participant2: number;
 
   @Column({ nullable: true })

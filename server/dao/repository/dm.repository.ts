@@ -5,10 +5,10 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class DMRepository {
-  constructor(@InjectModel(DM.name) private chatModel: Model<ChatDocument>) {}
+  constructor(@InjectModel(DM.name) private dmModel: Model<ChatDocument>) {}
 
   async findByRoomId(roomId: number) {
-    const result = await this.chatModel
+    const result = await this.dmModel
       .find()
       .where('DMRoomId')
       .equals(`${roomId}`)
@@ -18,30 +18,46 @@ export class DMRepository {
   }
 
   async findByRoomIdFrom(roomId: number, maxId: string, count: number) {
-    const maxChat = await this.chatModel.findById(maxId).exec();
-    const result = await this.chatModel
-      .find(
-        { DMRoomId: roomId, createdAt: { $gt: maxChat.createdAt } },
-        'sender content createdAt',
-      )
-      .sort({ createdAt: -1 })
-      .limit(count)
-      .exec();
+    if (maxId === '-1') {
+      const result = await this.dmModel
+        .find({ DMRoomId: roomId }, 'sender content createdAt')
+        .sort({ createdAt: -1, _id: -1 })
+        .limit(count)
+        .exec();
+      return result;
+    } else {
+      const maxChat = await this.dmModel.findById(maxId).exec();
 
-    return result;
+      console.log(maxChat);
+
+      const result = await this.dmModel
+        .find(
+          {
+            DMRoomId: roomId,
+            createdAt: { $lte: maxChat.createdAt },
+            _id: { $lt: maxChat.id },
+          },
+          'sender content createdAt',
+        )
+        .sort({ createdAt: -1, _id: -1 })
+        .limit(count)
+        .exec();
+
+      return result;
+    }
   }
 
   async findRecentMessageByRoomId(roomId: number) {
-    const result = await this.chatModel.findOne(
+    const result = await this.dmModel.findOne(
       { DMRoomId: roomId },
-      { sort: { $natural: -1 } },
+      { sort: { createdAt: -1, _id: -1 } },
     );
 
     return result;
   }
 
   async saveMessage(chatRoomId: number, sender: number, content: string) {
-    return await this.chatModel.create({
+    return await this.dmModel.create({
       DMRoomId: chatRoomId,
       sender,
       content,

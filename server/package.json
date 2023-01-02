@@ -13,6 +13,7 @@
     "format-check": "prettier --check \"{src,test}/**/*.ts\"",
     "start": "cross-env NODE_ENV=development & nest start",
     "api": "cross-env NODE_ENV=development & nest start api",
+    "api:dev": "cross-env NODE_ENV=development & nest start api --watch",
     "socket": "cross-env NODE_ENV=development & nest start socket",
     "start:dev": "cross-env NODE_ENV=development & nest start --watch",
     "start:debug": "nest start --debug --watch",

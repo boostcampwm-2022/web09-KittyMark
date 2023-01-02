@@ -15,24 +15,26 @@ import { RedisModule } from './redis/redis.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
+import { DmModule } from './dm/dm.module';
 
 @Module({
-    imports: [
-        TypeOrmModule.forRoot(typeORMConfig),
-        UserModule,
-        HttpModule,
-        AuthModule,
-        BoardModule,
-        CommentModule,
-        S3Module,
-        FollowModule,
-        MapModule,
-        RedisModule,
-        MongooseModule.forRoot(process.env.MONGODB_URI),
-    ],
-    providers: [
-        { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
-        { provide: APP_GUARD, useClass: AuthGuard },
-    ],
+  imports: [
+    TypeOrmModule.forRoot(typeORMConfig),
+    UserModule,
+    HttpModule,
+    AuthModule,
+    BoardModule,
+    CommentModule,
+    S3Module,
+    FollowModule,
+    MapModule,
+    RedisModule,
+    DmModule,
+    MongooseModule.forRoot(process.env.MONGODB_URI),
+  ],
+  providers: [
+    { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
+    // { provide: APP_GUARD, useClass: AuthGuard },
+  ],
 })
 export class AppModule {}

@@ -23,7 +23,7 @@ export const typeORMConfig: TypeOrmModuleOptions = {
   namingStrategy: new SnakeNamingStrategy(),
   dropSchema: false,
   timezone: 'z',
-  logging: false,
+  logging: true,
   charset: 'utf8mb4',
   legacySpatialSupport: false,
 };

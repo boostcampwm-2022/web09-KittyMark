@@ -19,7 +19,7 @@ export class DmController {
     return this.dmService.getChatRoomLists(userId);
   }
 
-  @Get('/:userId')
+  @Get('')
   getMessages(@Query(ValidationPipe) getMessageDto: GetMessageDto) {
     return this.dmService.getMessages(getMessageDto);
   }
