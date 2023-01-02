@@ -164,7 +164,7 @@ export interface Participant {
   profileUrl: string;
 }
 
-export interface ChatRoom {
+export interface DmRoom {
   id: number;
   participant1: Participant;
   participant2: Participant;
@@ -179,8 +179,8 @@ export interface ChatRoom {
 }
 
 export interface DirectMessageListApi extends Api {
-  data?: {
-    chatrooms: ChatRoom[];
+  data: {
+    chatrooms: DmRoom[];
   };
 }
 
