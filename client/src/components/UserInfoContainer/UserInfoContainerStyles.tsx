@@ -65,14 +65,8 @@ const CountSlot = styled.div`
     border: none;
     cursor: pointer;
   }
-  p:first-child {
-    text-align: center;
-    margin: 0px;
-    font-weight: 590;
-    font-size: 14px;
-    line-height: 17px;
-  }
-  p:last-child {
+
+  p {
     text-align: center;
     margin: 0px;
     font-weight: 400;
