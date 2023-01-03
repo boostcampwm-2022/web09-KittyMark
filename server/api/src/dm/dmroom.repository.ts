@@ -1,7 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { DMRoom } from './dmroom.entity';
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 @Injectable()
@@ -82,6 +82,10 @@ export class DMRoomRepository {
       room.lastSeenDMOfParticipant1 = messageId;
     } else if (room.participant2.id === userId) {
       room.lastSeenDMOfParticipant2 = messageId;
+    } else {
+      throw new NotFoundException(
+        `유저 아이디 ${userId}를 채팅방 ${dmRoomId}에서 찾을 수 없습니다.`,
+      );
     }
     return await this.DmRoomRepository.save(room);
   }
