@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DMRoomRepository } from './dmroom.repository';
 import { DMRepository } from '@repository/dm.repository';
 import { GetMessageDto } from './dto/get-message.dto';
+import { UpdateLastSeenChatDto } from './dto/update-lastSeenChat.dto';
 
 @Injectable()
 export class DmService {
@@ -48,11 +49,15 @@ export class DmService {
         count,
       );
 
+      const cnt = messages.length;
+      const next_max_id = messages[cnt - 1].id;
+      this.dmRoomRepository.updateLastSeenChat(dmRoomId, userId, next_max_id);
+
       return {
         dmRoomId,
         messages,
-        count: messages.length,
-        next_max_id: messages[messages.length - 1].id,
+        count: cnt,
+        next_max_id,
       };
     } else {
       // userId와 otherUserId로 dmRoomId 찾기
@@ -69,12 +74,20 @@ export class DmService {
           count,
         );
 
+        const cnt = messages.length;
+        const next_max_id = messages[cnt - 1].id;
+        this.dmRoomRepository.updateLastSeenChat(
+          dmRoom.id,
+          userId,
+          next_max_id,
+        );
+
         if (messages.length > 0) {
           return {
             dmRoomId: dmRoom.id,
             messages,
-            count: messages.length,
-            next_max_id: messages[messages.length - 1].id,
+            count: cnt,
+            next_max_id,
           };
         } else {
           return {
@@ -103,11 +116,15 @@ export class DmService {
     }
   }
 
-  async wait(sec: number) {
-    let start = Date.now(),
-      now = start;
-    while (now - start < sec * 1000) {
-      now = Date.now();
+  async updateLastSeenDM(updateLastSeenChatDto: UpdateLastSeenChatDto) {
+    const { dmRoomId, userId, messageId } = updateLastSeenChatDto;
+    if (!messageId) {
+      return;
     }
+    return await this.dmRoomRepository.updateLastSeenChat(
+      dmRoomId,
+      userId,
+      messageId,
+    );
   }
 }

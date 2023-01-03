@@ -15,15 +15,15 @@ export class DMRoom {
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'participant1', referencedColumnName: 'id' })
-  participant1: number;
+  participant1: User;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'participant2', referencedColumnName: 'id' })
-  participant2: number;
+  participant2: User;
 
   @Column({ nullable: true })
-  lastSeenChatOfParticipant1: string;
+  lastSeenDMOfParticipant1: string;
 
   @Column({ nullable: true })
-  lastSeenChatOfParticipant2: string;
+  lastSeenDMOfParticipant2: string;
 }

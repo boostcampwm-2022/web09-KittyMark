@@ -18,9 +18,7 @@ export class DMRoomRepository {
         userId,
       })
       .select([
-        'dmRoom.id',
-        'dmRoom.participant1',
-        'dmRoom.participant2',
+        'dmRoom',
         'p1.id',
         'p1.name',
         'p1.profileUrl',
@@ -52,20 +50,39 @@ export class DMRoomRepository {
       room = plainToInstance(DMRoom, {
         participant1: userId,
         participant2: otherUserId,
-        lastSeenChatOfParticipant1: null,
-        lastSeenChatOfParticipant2: null,
+        lastSeenDMOfParticipant1: null,
+        lastSeenDMOfParticipant2: null,
       });
       await this.DmRoomRepository.save(room);
     } else {
       room = plainToInstance(DMRoom, {
         participant1: otherUserId,
         participant2: userId,
-        lastSeenChatOfParticipant1: null,
-        lastSeenChatOfParticipant2: null,
+        lastSeenDMOfParticipant1: null,
+        lastSeenDMOfParticipant2: null,
       });
       await this.DmRoomRepository.save(room);
     }
 
     return room;
+  }
+
+  async updateLastSeenChat(
+    dmRoomId: number,
+    userId: number,
+    messageId: string,
+  ) {
+    const room = await this.DmRoomRepository.createQueryBuilder('dmRoom')
+      .where('dmRoom.id = :dmRoomId', { dmRoomId })
+      .leftJoin('dmRoom.participant1', 'p1')
+      .leftJoin('dmRoom.participant2', 'p2')
+      .select(['dmRoom', 'p1.id', 'p2.id'])
+      .getOne();
+    if (room.participant1.id === userId) {
+      room.lastSeenDMOfParticipant1 = messageId;
+    } else if (room.participant2.id === userId) {
+      room.lastSeenDMOfParticipant2 = messageId;
+    }
+    return await this.DmRoomRepository.save(room);
   }
 }
