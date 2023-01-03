@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import {
   BoardDetailPage,
   CommentPage,
+  DmListPage,
   FollowPage,
   HomePage,
   LoadingPage,
@@ -17,6 +18,7 @@ import {
   NewPostPage,
   RegisterPage,
   UserPage,
+  DirectMessagePage,
 } from './pages/index';
 
 const queryClient = new QueryClient();
@@ -57,6 +59,8 @@ const App = () => {
             <Route path="/follow/:userName/:userId" element={<FollowPage />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/detail" element={<BoardDetailPage />} />
+            <Route path="/dmtest" element={<DmListPage />} />
+            <Route path="/direct/:senderName" element={<DirectMessagePage />} />
           </Routes>
         </QueryClientProvider>
       </RecoilRoot>
