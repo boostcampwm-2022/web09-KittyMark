@@ -14,10 +14,15 @@ export class DmService {
   async getChatRoomLists(userId: number) {
     const result = await this.dmRoomRepository.getListByUserId(userId);
     const dmrooms = result.reduce((acc, curr) => {
-      acc.push({
-        ...curr,
-        recentMessage: this.dmRepository.findRecentMessageByRoomId(curr.id),
-      });
+      const recentMessage = this.dmRepository.findRecentMessageByRoomId(
+        curr.id,
+      );
+      if (recentMessage) {
+        acc.push({
+          ...curr,
+          recentMessage: this.dmRepository.findRecentMessageByRoomId(curr.id),
+        });
+      }
       return acc;
     }, []);
 
