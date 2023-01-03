@@ -34,7 +34,7 @@ import { DmModule } from './dm/dm.module';
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
-    // { provide: APP_GUARD, useClass: AuthGuard },
+    { provide: APP_GUARD, useClass: AuthGuard },
   ],
 })
 export class AppModule {}
