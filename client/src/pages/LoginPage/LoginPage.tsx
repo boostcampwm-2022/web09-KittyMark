@@ -20,11 +20,11 @@ const onMouseOver = () => {
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const isLoginCheck = useLoginCheck();
+  const loginCheck = useLoginCheck();
 
   useEffect(() => {
     const checkLoginToSendHome = async () => {
-      const result = await isLoginCheck();
+      const result = await loginCheck();
       if (result) navigate('/home', { replace: true });
     };
 

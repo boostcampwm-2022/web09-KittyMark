@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import { validate } from '../apis/api/loginApi';
 import user from '../store/userAtom';
@@ -6,7 +7,8 @@ import user from '../store/userAtom';
 const useLoginCheck = () => {
   const [userData, setUserData] = useRecoilState(user);
 
-  const isLoginCheck = async (): Promise<boolean> => {
+  // 여기에 useCallBack을 사용하는게 큰 의미가 있을까?
+  const loginCheck = useCallback(async (): Promise<boolean> => {
     if (userData.userId === -1 || userData.userName) return false;
     try {
       const data = await validate();
@@ -22,9 +24,9 @@ const useLoginCheck = () => {
       return false;
     }
     return false;
-  };
+  }, [userData]);
 
-  return isLoginCheck;
+  return loginCheck;
 };
 
 export default useLoginCheck;
