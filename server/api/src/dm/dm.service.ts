@@ -13,18 +13,19 @@ export class DmService {
 
   async getChatRoomLists(userId: number) {
     const result = await this.dmRoomRepository.getListByUserId(userId);
-    const dmrooms = result.reduce((acc, curr) => {
-      const recentMessage = this.dmRepository.findRecentMessageByRoomId(
+    const dmrooms = await result.reduce(async (promise, curr) => {
+      const acc = await promise.then();
+      const recentMessage = await this.dmRepository.findRecentMessageByRoomId(
         curr.id,
       );
       if (recentMessage) {
         acc.push({
           ...curr,
-          recentMessage: this.dmRepository.findRecentMessageByRoomId(curr.id),
+          recentMessage,
         });
       }
-      return acc;
-    }, []);
+      return Promise.resolve(acc);
+    }, Promise.resolve([]));
 
     dmrooms.sort(function (a, b) {
       const dateA = new Date(a.recentMessage.createdAt);
@@ -54,16 +55,29 @@ export class DmService {
         count,
       );
 
-      const cnt = messages.length;
-      const next_max_id = messages[cnt - 1].id;
-      this.dmRoomRepository.updateLastSeenChat(dmRoomId, userId, next_max_id);
+      if (messages.length > 0) {
+        const cnt = messages.length;
+        const next_max_id = messages[cnt - 1].id;
+        await this.dmRoomRepository.updateLastSeenChat(
+          dmRoomId,
+          userId,
+          next_max_id,
+        );
 
-      return {
-        dmRoomId,
-        messages,
-        count: cnt,
-        next_max_id,
-      };
+        return {
+          dmRoomId,
+          messages,
+          count: cnt,
+          next_max_id,
+        };
+      } else {
+        return {
+          dmRoomId,
+          messages,
+          count: 0,
+          next_max_id: -1,
+        };
+      }
     } else {
       // userId와 otherUserId로 dmRoomId 찾기
       const dmRoom = await this.dmRoomRepository.getRoomIdByUsers(
@@ -81,7 +95,7 @@ export class DmService {
 
         const cnt = messages.length;
         const next_max_id = messages[cnt - 1].id;
-        this.dmRoomRepository.updateLastSeenChat(
+        await this.dmRoomRepository.updateLastSeenChat(
           dmRoom.id,
           userId,
           next_max_id,

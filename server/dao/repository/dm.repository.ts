@@ -48,11 +48,11 @@ export class DMRepository {
   }
 
   async findRecentMessageByRoomId(roomId: number) {
-    const result = await this.dmModel.findOne(
-      { DMRoomId: roomId },
-      { sort: { createdAt: -1, _id: -1 } },
-    );
-
+    const result = await this.dmModel
+      .findOne({ DMRoomId: roomId }, 'sender content createdAt', {
+        sort: { createdAt: -1, _id: -1 },
+      })
+      .exec();
     return result;
   }
 
