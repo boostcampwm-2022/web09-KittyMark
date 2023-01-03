@@ -17,6 +17,7 @@ const Container = styled.div`
   width: auto;
   display: flex;
   align-content: left;
+  cursor: pointer;
 `;
 
 const InfoContainer = styled.div`

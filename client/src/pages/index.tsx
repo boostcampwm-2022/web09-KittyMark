@@ -65,3 +65,8 @@ export const DmListPage = Loadable({
   loader: () => import('./DmListPage/DmListPage'),
   loading: Loading,
 });
+
+export const DirectMessagePage = Loadable({
+  loader: () => import('./DirectMessagePage/DirectMessagePage'),
+  loading: Loading,
+});
