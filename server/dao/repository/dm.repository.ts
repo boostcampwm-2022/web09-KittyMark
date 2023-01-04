@@ -10,7 +10,7 @@ export class DMRepository {
   async findByRoomId(roomId: number) {
     const result = await this.dmModel
       .find()
-      .where('dmRoomId')
+      .where('DMRoomId')
       .equals(`${roomId}`)
       .exec();
 
@@ -20,7 +20,7 @@ export class DMRepository {
   async findByRoomIdFrom(roomId: number, maxId: string, count: number) {
     if (maxId === '-1') {
       const result = await this.dmModel
-        .find({ dmRoomId: roomId }, 'sender content createdAt')
+        .find({ DMRoomId: roomId }, 'sender content createdAt')
         .sort({ createdAt: -1, _id: -1 })
         .limit(count)
         .exec();
@@ -33,7 +33,7 @@ export class DMRepository {
       const result = await this.dmModel
         .find(
           {
-            dmRoomId: roomId,
+            DMRoomId: roomId,
             createdAt: { $lte: maxChat.createdAt },
             _id: { $lt: maxChat.id },
           },
@@ -49,16 +49,16 @@ export class DMRepository {
 
   async findRecentMessageByRoomId(roomId: number) {
     const result = await this.dmModel
-      .findOne({ dmRoomId: roomId }, 'sender content createdAt', {
+      .findOne({ DMRoomId: roomId }, 'sender content createdAt', {
         sort: { createdAt: -1, _id: -1 },
       })
       .exec();
     return result;
   }
 
-  async saveMessage(dmRoomId: number, sender: number, content: string) {
+  async saveMessage(chatRoomId: number, sender: number, content: string) {
     return await this.dmModel.create({
-      dmRoomId,
+      DMRoomId: chatRoomId,
       sender,
       content,
     });

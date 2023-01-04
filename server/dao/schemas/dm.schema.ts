@@ -7,7 +7,7 @@ export type ChatDocument = HydratedDocument<DM>;
 @Schema({ timestamps: { createdAt: 'createdAt' } })
 export class DM {
   @Prop({ required: true, type: mongoose.Schema.Types.Number })
-  dmRoomId: number;
+  DMRoomId: number;
 
   @Prop({ required: true, type: mongoose.Schema.Types.Number })
   sender: number;

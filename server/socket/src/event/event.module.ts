@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
-import { DM, DMSchema } from '@schemas/dm.schema';
-import { DMRepository } from '@repository/dm.repository';
+import { Chat, ChatSchema } from '@schemas/chat.schema';
+import { ChatRepository } from '@repository/chat.repository';
 import { EventsGateway } from './event.gateway';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DmEventService } from './dmEvent.service';
+
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_URI),
-    MongooseModule.forFeature([{ name: DM.name, schema: DMSchema }]),
+    MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]),
   ],
-  providers: [EventsGateway, DMRepository, DmEventService],
+  providers: [EventsGateway, ChatRepository],
   exports: [MongooseModule],
 })
 export class EventsModule {}
