@@ -9,31 +9,31 @@ import redisProvider from './redis/redisProvider';
 dotenv.config();
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
-    const RedisStore = createRedisStore(session);
-    const redisClient = await redisProvider.useFactory();
+  const app = await NestFactory.create(AppModule);
+  const RedisStore = createRedisStore(session);
+  const redisClient = await redisProvider.useFactory();
 
-    app.use(
-        session({
-            store: new RedisStore({ client: redisClient }),
-            name: 'kittymark',
-            secret: process.env.SESSION_SECRET,
-            resave: false,
-            saveUninitialized: false,
-            cookie: {
-                maxAge: 60 * 60 * 24 * 30 * 1000,
-                httpOnly: true,
-                sameSite: 'strict',
-            },
-        }),
-    );
+  app.use(
+    session({
+      store: new RedisStore({ client: redisClient }),
+      name: 'kittymark',
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: 60 * 60 * 24 * 30 * 1000,
+        httpOnly: true,
+        sameSite: 'strict',
+      },
+    }),
+  );
 
-    app.useGlobalPipes(
-        new ValidationPipe({
-            transform: true,
-        }),
-    );
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
 
-    await app.listen(4000);
+  await app.listen(4000);
 }
 bootstrap();
