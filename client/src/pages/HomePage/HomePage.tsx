@@ -44,8 +44,6 @@ const HomePage = () => {
     }
   }, [isView, query.data]);
 
-  //
-
   return (
     <>
       <NormalTopBar buttonData={addPostButton} />
