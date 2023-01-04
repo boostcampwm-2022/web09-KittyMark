@@ -13,4 +13,4 @@ const LoadingContainer = () => {
   );
 };
 
-export default LoadingContainer;
+export default React.memo(LoadingContainer);
