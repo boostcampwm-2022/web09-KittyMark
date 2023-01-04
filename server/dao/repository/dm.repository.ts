@@ -20,7 +20,7 @@ export class DMRepository {
   async findByRoomIdFrom(roomId: number, maxId: string, count: number) {
     if (maxId === '-1') {
       const result = await this.dmModel
-        .find({ DMRoomId: roomId }, 'sender content createdAt')
+        .find({ dmRoomId: roomId }, 'sender content createdAt')
         .sort({ createdAt: -1, _id: -1 })
         .limit(count)
         .exec();
@@ -33,7 +33,7 @@ export class DMRepository {
       const result = await this.dmModel
         .find(
           {
-            DMRoomId: roomId,
+            dmRoomId: roomId,
             createdAt: { $lte: maxChat.createdAt },
             _id: { $lt: maxChat.id },
           },
@@ -49,16 +49,16 @@ export class DMRepository {
 
   async findRecentMessageByRoomId(roomId: number) {
     const result = await this.dmModel
-      .findOne({ DMRoomId: roomId }, 'sender content createdAt', {
+      .findOne({ dmRoomId: roomId }, 'sender content createdAt', {
         sort: { createdAt: -1, _id: -1 },
       })
       .exec();
     return result;
   }
 
-  async saveMessage(chatRoomId: number, sender: number, content: string) {
+  async saveMessage(dmRoomId: number, sender: number, content: string) {
     return await this.dmModel.create({
-      DMRoomId: chatRoomId,
+      dmRoomId: dmRoomId,
       sender,
       content,
     });
