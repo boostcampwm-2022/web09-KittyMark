@@ -24,7 +24,7 @@ const createSocket = () => {
     // 때 enter 이벤트 발생시키기
     socket.emit('enter', { userId: 1, chatRoomId: 5, lastMessage: 8 });
     // 1:1 채팅방 퇴장할 때 exit 이벤트 발생시키기
-    socket.emit('exit', { userId: 1, chatRoomId: 5, lastSeenChat: 12})
+    socket.emit('exit', { userId: 1, chatRoomId: 5, lastSeenChat: 12 });
     console.log();
   });
   socket.on('chat', (data) => {
@@ -34,7 +34,9 @@ const createSocket = () => {
       `메세지가 왔습니다. 보낸 이 : ${sender}, 채팅방아이디: ${chatRoomId}, 내용 : ${text}`,
     );
   });
-}
+};
+
+export default createSocket;
 
 // export const initSocketConnection = () => {
 //   if (socket) return;
