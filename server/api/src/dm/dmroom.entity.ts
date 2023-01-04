@@ -14,16 +14,16 @@ export class DMRoom {
   id: number;
 
   @ManyToOne(() => User)
-  @JoinColumn()
-  participant1: number;
+  @JoinColumn({ name: 'participant1', referencedColumnName: 'id' })
+  participant1: User;
 
   @ManyToOne(() => User)
-  @JoinColumn()
-  participant2: number;
+  @JoinColumn({ name: 'participant2', referencedColumnName: 'id' })
+  participant2: User;
 
-  @Column()
-  lastSeenChatOfParticipant1: string;
+  @Column({ nullable: true })
+  lastSeenDMOfParticipant1: string;
 
-  @Column()
-  lastSeenChatOfParticipant2: string;
+  @Column({ nullable: true })
+  lastSeenDMOfParticipant2: string;
 }
