@@ -11,7 +11,7 @@ export class DmService {
     private readonly dmRepository: DMRepository,
   ) {}
 
-  async getChatRoomLists(userId: number) {
+  async getDMRoomLists(userId: number) {
     const result = await this.dmRoomRepository.getListByUserId(userId);
     const dmrooms = await result.reduce(async (promise, curr) => {
       const acc = await promise.then();
