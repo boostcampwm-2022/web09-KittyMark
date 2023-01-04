@@ -61,7 +61,7 @@ export class DmService {
         await this.dmRoomRepository.updateLastSeenChat(
           dmRoomId,
           userId,
-          next_max_id,
+          messages[0].id,
         );
 
         return {
@@ -93,15 +93,15 @@ export class DmService {
           count,
         );
 
-        const cnt = messages.length;
-        const next_max_id = messages[cnt - 1].id;
-        await this.dmRoomRepository.updateLastSeenChat(
-          dmRoom.id,
-          userId,
-          next_max_id,
-        );
-
         if (messages.length > 0) {
+          const cnt = messages.length;
+          const next_max_id = messages[cnt - 1].id;
+          await this.dmRoomRepository.updateLastSeenChat(
+            dmRoom.id,
+            userId,
+            messages[0].id,
+          );
+
           return {
             dmRoomId: dmRoom.id,
             messages,
