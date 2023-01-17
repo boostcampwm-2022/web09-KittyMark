@@ -7,11 +7,12 @@
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
-    "lint": "eslint \"api/{src,test}/**/*.ts\" --fix",
-    "format": "prettier --write \"{src,test}/**/*.ts\"",
-    "format-check": "prettier --check \"{src,test}/**/*.ts\"",
-    "start": "cross-env NODE_ENV=development & nest start",
+    "build:socket": "nest build socket",
+    "build:api": "nest build api",
+    "lint": "eslint \"{api,socket}/src/**/*.ts\" --fix",
+    "format": "prettier --write \"{api,socket}/src/**/*.ts\"",
+    "format-check": "prettier --check \"{api,socket}/**/*.ts\"",
+    "start": "cross-env NODE_ENV=development & nest start api",
     "api": "cross-env NODE_ENV=development & nest start api",
     "socket": "cross-env NODE_ENV=development & nest start socket",
     "start:dev": "cross-env NODE_ENV=development & nest start --watch",
@@ -90,9 +91,11 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "moduleNameMapper": {
-      "src/(.*)": "<rootDir>/$1"
+      "src/(.*)": "<rootDir>/api/src/like",
+      "@repository/(.*)": "<rootDir>/dao/repository/$1",
+      "@schemas/(.*)": "<rootDir>/dao/schemas/$1"
     },
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {

@@ -1,0 +1,17 @@
+FROM node:16-alpine
+
+COPY ./package.json .
+COPY ./package-lock.json .
+COPY ./pm2.config.js .
+COPY ./tsconfig.json .
+COPY ./nest-cli.json .
+
+COPY ./socket ./socket
+
+WORKDIR .
+
+RUN npm i
+#RUN npm install -g pm2
+#RUN npm run build:socket
+#CMD ["pm2-runtime","start","pm2.config.js"]
+CMD ["npm","run","socket"]
