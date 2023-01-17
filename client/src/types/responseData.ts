@@ -180,19 +180,20 @@ export interface DmRoom {
 
 export interface DirectMessageListApi extends Api {
   data: {
-    chatrooms: DmRoom[];
+    dmRooms: DmRoom[];
   };
 }
 
-export interface DirectMessage {
-  charRoomId: number;
+export interface DirectMessageData {
+  id: string;
   sender: number;
   content: string;
   createdAt: string;
 }
 
-export interface DirectMessageApi extends Api {
+export interface DirectMessageDataApi extends Api {
   data: {
-    messages: DirectMessage[];
+    dmRoomId: number;
+    messages: DirectMessageData[];
   };
 }
