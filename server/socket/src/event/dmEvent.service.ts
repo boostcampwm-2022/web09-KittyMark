@@ -9,8 +9,8 @@ export class DmEventService {
   logger = new Logger('DmEventService');
   constructor(private readonly dmRepository: DMRepository) {}
 
-  async init(userId, socket: Socket) {
-    await Redis.set(userId, socket.id);
+  async init(userId: number, socket: Socket) {
+    await Redis.set(String(userId), socket.id);
   }
 
   async chat(client: Socket, dm: DMEvent, server: Server) {
@@ -18,12 +18,16 @@ export class DmEventService {
     this.logger.log(`메세지 받음 ${sender}: [${content}]`);
     // const s = receiver + '';
 
-    await this.dmRepository.saveMessage(dmRoomId, sender, content);
+    const message = await this.dmRepository.saveMessage(
+      dmRoomId,
+      sender,
+      content,
+    );
     const target = await Redis.get(String(receiver));
     const targetSocket = await Redis.get(client.id);
 
     if (target && targetSocket) {
-      server.to(target).emit('chat', content);
+      server.to(target).emit('chat', { content, messageId: message.id });
     }
   }
 }
