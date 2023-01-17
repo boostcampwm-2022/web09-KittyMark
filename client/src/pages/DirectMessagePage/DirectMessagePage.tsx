@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useNavigate, useParams } from 'react-router-dom';
 // recoil
@@ -10,6 +10,9 @@ import TopBar from '../../components/TopBar/TopBar';
 import NavBar from '../../components/NavBar/NavBar';
 import MessageForm from '../../components/MessageBox/MessageForm';
 import DirectMessage from '../../components/DirectMessage/DirectMessage';
+// socket
+import { SocketContext } from '../../store/SocketContext';
+// import { isReadable } from 'stream';
 
 /*
   구현할 내용
@@ -25,20 +28,20 @@ import DirectMessage from '../../components/DirectMessage/DirectMessage';
 
 // const testMessage = ['test1', 'test2', 'test3'];
 // const testReceivedMessage = ['test1', 'test2'];
-const testMessage = [
-  { isReceived: true, message: 'test1', profileUrl: '' },
-  { isReceived: true, message: 'test2', profileUrl: '' },
-  { isReceived: true, message: 'test3', profileUrl: '' },
-  { isReceived: false, message: 'test4', profileUrl: '' },
-  { isReceived: false, message: 'test5', profileUrl: '' },
-  { isReceived: false, message: 'asdasdasdsadsadsadasdasdas', profileUrl: '' },
-  {
-    isReceived: false,
-    message:
-      'asdasdasdsadsadsadasdasdasasdasdsadasdsadasdsadsadasdasdasdsadsaasdsasassadsadasds',
-    profileUrl: '',
-  },
-];
+// const testMessage = [
+//   { isReceived: true, message: 'test1', profileUrl: '' },
+//   { isReceived: true, message: 'test2', profileUrl: '' },
+//   { isReceived: true, message: 'test3', profileUrl: '' },
+//   { isReceived: false, message: 'test4', profileUrl: '' },
+//   { isReceived: false, message: 'test5', profileUrl: '' },
+//   { isReceived: false, message: 'asdasdasdsadsadsadasdasdas', profileUrl: '' },
+//   {
+//     isReceived: false,
+//     message:
+//       'asdasdasdsadsadsadasdasdasasdasdsadasdsadasdsadsadasdasdasdsadsaasdsasassadsadasds',
+//     profileUrl: '',
+//   },
+// ];
 
 const makeDmComponent = (
   messages: { isReceived: boolean; message: string; profileUrl: string }[],
@@ -48,19 +51,60 @@ const makeDmComponent = (
   });
 };
 
+interface MessageList {
+  isReceived: boolean;
+  message: string;
+  profileUrl: string;
+}
+
 const DirectMessagePage = () => {
+  // socket test
+  const socket = useContext(SocketContext);
+  //
   const { senderName } = useParams();
   const navigation = useNavigate();
   const { userId, userProfileUrl } = useRecoilValue(user);
   const [message, setMessage] = useState<string>('');
+  const [messageList, setMessageList] = useState<MessageList[]>([]);
+
+  const onReceivedMessage = (dataString: string) => {
+    // eslint-disable-next-line no-console
+    const {
+      content,
+    }: {
+      content: string;
+    } = JSON.parse(dataString);
+    // eslint-disable-next-line no-console
+    console.log(content);
+    setMessageList((prev) => [
+      ...prev,
+      { isReceived: true, message: content, profileUrl: '' },
+    ]);
+  };
 
   const onClickSendMessage = () => {
     // TODO: Socket 서버에 메시지 전달
+    const data = {
+      sender: userId,
+      receiver: 1, // 일단 1 박아두고 나중에 api 연결 후 수정
+      dmRoomId: 1, // 일단 1 박아두고 나중에 api 연결 후 수정
+      content: message,
+    };
+    socket.emit('chat', JSON.stringify(data));
     setMessage('');
   };
 
   // TODO: 올바르지 않은 유저 이름일 경우 예외 처리 필요
   if (!senderName) return null;
+
+  useEffect(() => {
+    socket.emit('init', JSON.stringify({ userId }));
+    socket.on('MESSAGE', onReceivedMessage);
+
+    return () => {
+      socket.off('MESSAGE', onReceivedMessage);
+    };
+  }, [socket, userId]);
 
   return (
     <>
@@ -72,7 +116,8 @@ const DirectMessagePage = () => {
       />
       <S.Body>
         <S.MessageWrapper>
-          <S.Container>{makeDmComponent(testMessage)}</S.Container>
+          {/* <S.Container>{makeDmComponent(testMessage)}</S.Container> */}
+          <S.Container>{makeDmComponent(messageList)}</S.Container>
         </S.MessageWrapper>
         <MessageForm
           targetId={userId}
