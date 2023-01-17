@@ -15,6 +15,7 @@ interface DmListUnitProps {
   messageTime: string;
   messageCnt: number;
   lastMessage: string;
+  onClick: () => void;
 }
 
 const DmListUnit = ({
@@ -24,6 +25,7 @@ const DmListUnit = ({
   messageTime,
   messageCnt,
   lastMessage,
+  onClick,
 }: DmListUnitProps) => {
   const navigate = useNavigate();
 

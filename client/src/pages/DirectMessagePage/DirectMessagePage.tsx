@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { AxiosError } from 'axios';
 // recoil
 import user from '../../store/userAtom';
 // style
@@ -13,6 +15,13 @@ import DirectMessage from '../../components/DirectMessage/DirectMessage';
 // socket
 import { SocketContext } from '../../store/SocketContext';
 // import { isReadable } from 'stream';
+// api
+import { getDirectMessages, patchLastSeenDm } from '../../apis/api/dmApi';
+// type
+import {
+  DirectMessageData,
+  DirectMessageDataApi,
+} from '../../types/responseData';
 
 /*
   구현할 내용
@@ -55,30 +64,41 @@ interface MessageList {
   isReceived: boolean;
   message: string;
   profileUrl: string;
+  messageId: string;
 }
 
 const DirectMessagePage = () => {
   // socket test
   const socket = useContext(SocketContext);
   //
-  const { senderName } = useParams();
   const navigation = useNavigate();
+  const { senderName, senderId } = useParams();
+  const otherUserId = Number(senderId);
+  const { state } = useLocation();
+  let roomId = state.roomId ? state.roomId : -1;
   const { userId, userProfileUrl } = useRecoilValue(user);
+  const { data: prevData } = useQuery<DirectMessageDataApi, AxiosError>(
+    ['prevMessages'],
+    () => {
+      return getDirectMessages(userId, otherUserId, 1000, '-1', roomId);
+    },
+  );
   const [message, setMessage] = useState<string>('');
   const [messageList, setMessageList] = useState<MessageList[]>([]);
 
-  const onReceivedMessage = (dataString: string) => {
+  const onReceivedMessage = (data: { messageId: string; content: string }) => {
     // eslint-disable-next-line no-console
-    const {
-      content,
-    }: {
-      content: string;
-    } = JSON.parse(dataString);
+    const { messageId, content } = data;
     // eslint-disable-next-line no-console
     console.log(content);
     setMessageList((prev) => [
       ...prev,
-      { isReceived: true, message: content, profileUrl: '' },
+      {
+        isReceived: true,
+        message: content,
+        profileUrl: '../../../public/defaultProfile.svg',
+        messageId,
+      },
     ]);
   };
 
@@ -86,23 +106,54 @@ const DirectMessagePage = () => {
     // TODO: Socket 서버에 메시지 전달
     const data = {
       sender: userId,
-      receiver: 1, // 일단 1 박아두고 나중에 api 연결 후 수정
-      dmRoomId: 1, // 일단 1 박아두고 나중에 api 연결 후 수정
+      receiver: otherUserId, // 일단 1 박아두고 나중에 api 연결 후 수정
+      dmRoomId: roomId, // 일단 1 박아두고 나중에 api 연결 후 수정
       content: message,
     };
-    socket.emit('chat', JSON.stringify(data));
+    socket.emit('chat', data);
     setMessage('');
   };
 
   // TODO: 올바르지 않은 유저 이름일 경우 예외 처리 필요
   if (!senderName) return null;
 
+  const exitPage = async () => {
+    try {
+      await patchLastSeenDm(
+        roomId,
+        userId,
+        messageList[messageList.length - 1].messageId,
+      );
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
-    socket.emit('init', JSON.stringify({ userId }));
+    if (!prevData || prevData.data.messages.length === 0) return;
+    if (roomId < 0) roomId = prevData.data.dmRoomId;
+
+    const prevMessageList = prevData.data.messages.map(
+      (msg: DirectMessageData) => {
+        return {
+          isReceived: msg.sender === otherUserId,
+          message: msg.content,
+          profileUrl: '../../../public/defaultProfile.svg',
+          messageId: msg.id,
+        };
+      },
+    );
+    setMessageList(prevMessageList);
+  }, [prevData]);
+
+  useEffect(() => {
+    socket.emit('init', { userId });
     socket.on('MESSAGE', onReceivedMessage);
 
     return () => {
       socket.off('MESSAGE', onReceivedMessage);
+      exitPage();
     };
   }, [socket, userId]);
 
@@ -127,7 +178,6 @@ const DirectMessagePage = () => {
           setFunc={setMessage}
         />
       </S.Body>
-
       <NavBar />
     </>
   );

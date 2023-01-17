@@ -11,7 +11,7 @@ import mapIcon from '../../static/mapIcon.svg';
 import messageIcon from '../../static/messageIcon.svg';
 import userIcon from '../../static/userIcon.svg';
 // preload
-import { UserPage, MapPage } from '../../pages';
+import { UserPage, MapPage, DmListPage } from '../../pages';
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -29,7 +29,11 @@ const NavBar = () => {
       >
         <img src={mapIcon} alt="Map" />
       </S.Icon>
-      <S.Icon type="button">
+      <S.Icon
+        type="button"
+        onClick={() => navigate('/dm')}
+        onMouseOver={() => DmListPage.preload()}
+      >
         <img src={messageIcon} alt="Message" />
       </S.Icon>
       <S.Icon

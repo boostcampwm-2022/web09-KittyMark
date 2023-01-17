@@ -65,9 +65,9 @@ const App = () => {
               />
               <Route path="/map" element={<MapPage />} />
               <Route path="/detail" element={<BoardDetailPage />} />
-              <Route path="/dmtest" element={<DmListPage />} />
+              <Route path="/dm" element={<DmListPage />} />
               <Route
-                path="/direct/:senderName"
+                path="/dm/:senderName/:senderId"
                 element={<DirectMessagePage />}
               />
             </Routes>

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import axios, { AxiosError } from 'axios';
 
@@ -22,8 +23,9 @@ interface FollowerContainerProps {
 
 // TODO 리엑트 쿼리 관련 코드를 분할하는 것이 좋을 수 있다.
 const DmListContainer = ({ userId, userName }: FollowerContainerProps) => {
+  const navigate = useNavigate();
   const DmList = useQuery<DmRoom[], AxiosError>('DmList', () =>
-    getDirectMessageList(userId).then((res) => res.data.chatrooms),
+    getDirectMessageList(userId).then((res) => res.data.dmRooms),
   );
 
   if (DmList.isLoading || DmList.isIdle) {
@@ -60,6 +62,11 @@ const DmListContainer = ({ userId, userName }: FollowerContainerProps) => {
                 messageTime={dm.recentMessage.createdAt}
                 messageCnt={dm.unSeenMsgCnt || 0}
                 lastMessage={dm.recentMessage.content}
+                onClick={() => {
+                  navigate(`/dm/${chatUser.name}/${chatUser.id}`, {
+                    state: { roomId: dm.id },
+                  });
+                }}
               />
             );
           })}
