@@ -6,10 +6,18 @@ services:
     build:
         dockerfile: Dockerfile
         context: ../client
-  nest:
-    image: "ghcr.io/wooseongshin/server:latest"
+
+  api:
+    image: "ghcr.io/wooseongshin/api:latest"
     restart: always
     build:
-      dockerfile: Dockerfile
+      dockerfile: apiDockerfile
+      context: ../server
+
+  socket:
+    image: "ghcr.io/wooseongshin/socket:latest"
+    restart: always
+    build:
+      dockerfile: socketDockerfile
       context: ../server
 

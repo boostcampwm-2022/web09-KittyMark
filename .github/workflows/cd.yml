@@ -39,7 +39,8 @@ jobs:
         CI: ""
         SERVER_SECRET: ${{ secrets.API_SERVER_SECRETS }}
       run: |
-        echo "$SERVER_SECRET" > ../server/.env
+        echo "$SERVER_SECRET" > ../server/api/.env
+        echo "$SERVER_SECRET" > ../server/socket/.env
         docker-compose -f docker-compose-build.yml build
         docker-compose -f docker-compose-build.yml push
 
