@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsInt, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsInt, IsNotEmpty } from 'class-validator';
 
 export class UpdateLastSeenChatDto {
   @IsNotEmpty()
@@ -12,6 +12,6 @@ export class UpdateLastSeenChatDto {
   @Transform(({ value }) => parseInt(value, 10))
   userId: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   messageId: string;
 }

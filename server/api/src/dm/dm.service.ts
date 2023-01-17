@@ -137,9 +137,6 @@ export class DmService {
 
   async updateLastSeenDM(updateLastSeenChatDto: UpdateLastSeenChatDto) {
     const { dmRoomId, userId, messageId } = updateLastSeenChatDto;
-    if (!messageId) {
-      return;
-    }
     return await this.dmRoomRepository.updateLastSeenChat(
       dmRoomId,
       userId,
