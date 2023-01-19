@@ -18,7 +18,6 @@ export class AuthGuard implements CanActivate {
   }
 
   private async validateRequest(request: Request) {
-    console.log('req.id', request.sessionID);
     if (
       /^(\/auth)+/g.test(request.path) ||
       (request.path === '/user' && request.method === 'POST') ||

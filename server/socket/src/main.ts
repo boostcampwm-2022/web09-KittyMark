@@ -9,4 +9,5 @@ async function bootstrap() {
   app.useWebSocketAdapter(redisIoAdapter);
   await app.listen(2000);
 }
+
 bootstrap();

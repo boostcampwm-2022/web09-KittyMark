@@ -1,5 +1,6 @@
 import { Logger } from '@nestjs/common';
 import {
+  MessageBody,
   ConnectedSocket,
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -39,12 +40,18 @@ export class EventsGateway
   }
 
   @SubscribeMessage('init')
-  async handleSocketList(data: InitEvent, socket: Socket) {
+  async handleSocketList(
+    @MessageBody() data: InitEvent,
+    @ConnectedSocket() socket: Socket,
+  ) {
     await this.dmEventService.init(data.userId, socket);
   }
 
   @SubscribeMessage('chat')
-  async handleMessage(socket: Socket, dm: DMEvent) {
+  async handleMessage(
+    @ConnectedSocket() socket: Socket,
+    @MessageBody() dm: DMEvent,
+  ) {
     await this.dmEventService.chat(socket, dm, this.server);
   }
 }

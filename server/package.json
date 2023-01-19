@@ -14,7 +14,9 @@
     "format-check": "prettier --check \"{api,socket}/**/*.ts\"",
     "start": "cross-env NODE_ENV=development & nest start api",
     "api": "cross-env NODE_ENV=development & nest start api",
+    "api:dev": "cross-env NODE_ENV=development & nest start api --watch",
     "socket": "cross-env NODE_ENV=development & nest start socket",
+    "socket:dev": "cross-env NODE_ENV=development & nest start socket --watch",
     "start:dev": "cross-env NODE_ENV=development & nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "cross-env NODE_ENV=production & node dist/main",
@@ -25,9 +27,12 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.8.4",
+    "@grpc/proto-loader": "^0.7.4",
     "@nestjs/axios": "^1.0.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/microservices": "^9.2.1",
     "@nestjs/mongoose": "^9.2.1",
     "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.2.0",

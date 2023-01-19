@@ -3,6 +3,7 @@ export interface DMEvent {
   receiver: number;
   dmRoomId: number;
   content: string;
+  requestId: number;
 }
 
 export interface InitEvent {

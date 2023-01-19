@@ -31,8 +31,6 @@ export class DMRepository {
     } else {
       const maxChat = await this.dmModel.findById(maxId).exec();
 
-      console.log(maxChat);
-
       const result = await this.dmModel
         .find(
           {

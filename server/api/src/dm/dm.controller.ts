@@ -30,6 +30,7 @@ export class DmController {
   updateLastSeenDM(
     @Body(ValidationPipe) updateLastSeenChatDto: UpdateLastSeenChatDto,
   ) {
+    console.log('lastseendm ', updateLastSeenChatDto);
     return this.dmService.updateLastSeenDM(updateLastSeenChatDto);
   }
 }
