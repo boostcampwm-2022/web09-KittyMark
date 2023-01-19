@@ -1,7 +1,7 @@
 import React from 'react';
 import { io, Socket } from 'socket.io-client';
 
-export const socket = io('http://localhost:2000/dm', {
+export const socket = io(`/dm`, {
   transports: ['websocket'],
 });
 export const SocketContext = React.createContext<Socket>(socket);

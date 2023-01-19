@@ -168,8 +168,8 @@ export interface DmRoom {
   id: number;
   participant1: Participant;
   participant2: Participant;
-  lastSeenChatOfParticipant1: string;
-  lastSeenChatOfParticipant2: string;
+  lastSeenChatOfParticipant1: string | null;
+  lastSeenChatOfParticipant2: string | null;
   recentMessage: {
     sender: number;
     content: string;

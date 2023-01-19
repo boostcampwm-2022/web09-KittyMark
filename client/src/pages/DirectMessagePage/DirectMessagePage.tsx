@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
@@ -35,37 +35,23 @@ import {
   4. 채팅방에 들어오거나 새로고침시 항상 가장 아래(최신) 메시지를 볼 수 있도록 useRef 이용
 */
 
-// const testMessage = ['test1', 'test2', 'test3'];
-// const testReceivedMessage = ['test1', 'test2'];
-// const testMessage = [
-//   { isReceived: true, message: 'test1', profileUrl: '' },
-//   { isReceived: true, message: 'test2', profileUrl: '' },
-//   { isReceived: true, message: 'test3', profileUrl: '' },
-//   { isReceived: false, message: 'test4', profileUrl: '' },
-//   { isReceived: false, message: 'test5', profileUrl: '' },
-//   { isReceived: false, message: 'asdasdasdsadsadsadasdasdas', profileUrl: '' },
-//   {
-//     isReceived: false,
-//     message:
-//       'asdasdasdsadsadsadasdasdasasdasdsadasdsadasdsadsadasdasdasdsadsaasdsasassadsadasds',
-//     profileUrl: '',
-//   },
-// ];
-
-const makeDmComponent = (
-  messages: { isReceived: boolean; message: string; profileUrl: string }[],
-) => {
-  return messages.map((message) => {
-    return DirectMessage(message);
-  });
-};
-
-interface MessageList {
+interface MessageData {
   isReceived: boolean;
   message: string;
   profileUrl: string;
   messageId: string;
 }
+
+interface ChatResponse {
+  messageId: string;
+  isSaved: boolean;
+}
+
+const makeDmComponent = (messages: MessageData[]) => {
+  return messages.map((message, index) => {
+    return DirectMessage(message, index);
+  });
+};
 
 const DirectMessagePage = () => {
   // socket test
@@ -75,7 +61,8 @@ const DirectMessagePage = () => {
   const { senderName, senderId } = useParams();
   const otherUserId = Number(senderId);
   const { state } = useLocation();
-  let roomId = state.roomId ? state.roomId : -1;
+  const messageQue = useRef<number[]>([]);
+  const [roomId, setRoomId] = useState(state.roomId ? state.roomId : -1);
   const { userId, userProfileUrl } = useRecoilValue(user);
   const { data: prevData } = useQuery<DirectMessageDataApi, AxiosError>(
     ['prevMessages'],
@@ -84,17 +71,17 @@ const DirectMessagePage = () => {
     },
   );
   const [message, setMessage] = useState<string>('');
-  const [messageList, setMessageList] = useState<MessageList[]>([]);
+  const [messageList, setMessageList] = useState<MessageData[]>([]);
 
-  const onReceivedMessage = (data: { messageId: string; content: string }) => {
-    // eslint-disable-next-line no-console
-    const { messageId, content } = data;
-    // eslint-disable-next-line no-console
-    console.log(content);
+  const updateMessageList = (
+    isReceived: boolean,
+    content: string,
+    messageId: string,
+  ) => {
     setMessageList((prev) => [
       ...prev,
       {
-        isReceived: true,
+        isReceived,
         message: content,
         profileUrl: '../../../public/defaultProfile.svg',
         messageId,
@@ -102,15 +89,27 @@ const DirectMessagePage = () => {
     ]);
   };
 
+  const onReceivedMessage = (data: { messageId: string; content: string }) => {
+    // eslint-disable-next-line no-console
+    const { messageId, content } = data;
+    // eslint-disable-next-line no-console
+    console.log(content);
+    updateMessageList(true, content, messageId);
+  };
+
   const onClickSendMessage = () => {
     // TODO: Socket 서버에 메시지 전달
+    if (message.length === 0) return;
     const data = {
       sender: userId,
-      receiver: otherUserId, // 일단 1 박아두고 나중에 api 연결 후 수정
-      dmRoomId: roomId, // 일단 1 박아두고 나중에 api 연결 후 수정
+      receiver: otherUserId,
+      dmRoomId: roomId,
       content: message,
+      requestId: messageList.length,
     };
     socket.emit('chat', data);
+    updateMessageList(false, message, '');
+    messageQue.current.push(messageList.length);
     setMessage('');
   };
 
@@ -118,6 +117,7 @@ const DirectMessagePage = () => {
   if (!senderName) return null;
 
   const exitPage = async () => {
+    if (messageList.length === 0) return;
     try {
       await patchLastSeenDm(
         roomId,
@@ -130,9 +130,27 @@ const DirectMessagePage = () => {
     }
   };
 
+  // 테스트
+  const onReceiveMessageId = (data: ChatResponse) => {
+    const { messageId, isSaved } = data;
+    if (!isSaved) return;
+
+    const targetMessageIdx = messageQue.current[0];
+    setMessageList((prev) => {
+      const newMessageList = [...prev];
+      newMessageList[targetMessageIdx].messageId = messageId;
+      return newMessageList;
+    });
+    messageQue.current.shift();
+  };
+  //
+
+  // 메시지를 받을 때마다
+
   useEffect(() => {
-    if (!prevData || prevData.data.messages.length === 0) return;
-    if (roomId < 0) roomId = prevData.data.dmRoomId;
+    if (!prevData) return;
+    setRoomId(prevData.data.dmRoomId);
+    if (prevData.data.messages.length === 0) return;
 
     const prevMessageList = prevData.data.messages.map(
       (msg: DirectMessageData) => {
@@ -150,9 +168,11 @@ const DirectMessagePage = () => {
   useEffect(() => {
     socket.emit('init', { userId });
     socket.on('MESSAGE', onReceivedMessage);
+    socket.on('chatResponse', onReceiveMessageId);
 
     return () => {
       socket.off('MESSAGE', onReceivedMessage);
+      socket.off('chatResponse');
       exitPage();
     };
   }, [socket, userId]);
@@ -167,8 +187,8 @@ const DirectMessagePage = () => {
       />
       <S.Body>
         <S.MessageWrapper>
-          {/* <S.Container>{makeDmComponent(testMessage)}</S.Container> */}
           <S.Container>{makeDmComponent(messageList)}</S.Container>
+          <div className="container-bottom" />
         </S.MessageWrapper>
         <MessageForm
           targetId={userId}
