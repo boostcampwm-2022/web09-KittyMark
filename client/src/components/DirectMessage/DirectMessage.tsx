@@ -7,11 +7,11 @@ interface DirectMessageProps {
   message: string;
 }
 
-const DirectMessage = (props: DirectMessageProps) => {
+const DirectMessage = (props: DirectMessageProps, index: number) => {
   const { isReceived, message } = props;
 
   return (
-    <S.Body>
+    <S.Body key={index}>
       {isReceived === true ? (
         <S.ReceivedWrapper>
           <ProfileIcon

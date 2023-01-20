@@ -11,4 +11,12 @@ module.exports = (app) => {
       },
     }),
   );
+  app.use(
+    createProxyMiddleware('/', {
+      target: 'http://localhost:2000',
+      changeOrigin: true,
+      ws: true,
+      logLevel: 'debug',
+    }),
+  );
 };

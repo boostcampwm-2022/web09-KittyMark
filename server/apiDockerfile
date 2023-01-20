@@ -1,0 +1,18 @@
+FROM node:16-alpine
+
+COPY ./package.json .
+COPY ./package-lock.json .
+COPY ./pm2.config.js .
+COPY ./tsconfig.json .
+COPY ./nest-cli.json .
+COPY ./dao .
+
+COPY ./api ./api
+
+WORKDIR .
+
+RUN npm ci
+#RUN npm install -g pm2
+#RUN npm run build:api
+#CMD ["pm2-runtime","start","pm2.config.js"]
+CMD ["npm","run","api"]

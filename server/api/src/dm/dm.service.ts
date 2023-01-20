@@ -13,7 +13,7 @@ export class DmService {
 
   async getDMRoomLists(userId: number) {
     const result = await this.dmRoomRepository.getListByUserId(userId);
-    const dmrooms = await result.reduce(async (promise, curr) => {
+    const dmRooms = await result.reduce(async (promise, curr) => {
       const acc = await promise.then();
       const recentMessage = await this.dmRepository.findRecentMessageByRoomId(
         curr.id,
@@ -27,7 +27,7 @@ export class DmService {
       return Promise.resolve(acc);
     }, Promise.resolve([]));
 
-    dmrooms.sort(function (a, b) {
+    dmRooms.sort(function (a, b) {
       const dateA = new Date(a.recentMessage.createdAt);
       const dateB = new Date(b.recentMessage.createdAt);
       if (dateA < dateB) {
@@ -41,7 +41,7 @@ export class DmService {
 
     const unSeenMsgCnt = 0;
 
-    return { dmrooms, unSeenMsgCnt };
+    return { dmRooms, unSeenMsgCnt };
   }
 
   async getMessages(getMessageDto: GetMessageDto) {
@@ -137,9 +137,6 @@ export class DmService {
 
   async updateLastSeenDM(updateLastSeenChatDto: UpdateLastSeenChatDto) {
     const { dmRoomId, userId, messageId } = updateLastSeenChatDto;
-    if (!messageId) {
-      return;
-    }
     return await this.dmRoomRepository.updateLastSeenChat(
       dmRoomId,
       userId,

@@ -168,8 +168,8 @@ export interface DmRoom {
   id: number;
   participant1: Participant;
   participant2: Participant;
-  lastSeenChatOfParticipant1: string;
-  lastSeenChatOfParticipant2: string;
+  lastSeenChatOfParticipant1: string | null;
+  lastSeenChatOfParticipant2: string | null;
   recentMessage: {
     sender: number;
     content: string;
@@ -180,19 +180,20 @@ export interface DmRoom {
 
 export interface DirectMessageListApi extends Api {
   data: {
-    chatrooms: DmRoom[];
+    dmRooms: DmRoom[];
   };
 }
 
-export interface DirectMessage {
-  charRoomId: number;
+export interface DirectMessageData {
+  id: string;
   sender: number;
   content: string;
   createdAt: string;
 }
 
-export interface DirectMessageApi extends Api {
+export interface DirectMessageDataApi extends Api {
   data: {
-    messages: DirectMessage[];
+    dmRoomId: number;
+    messages: DirectMessageData[];
   };
 }

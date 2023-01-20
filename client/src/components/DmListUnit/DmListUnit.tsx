@@ -15,6 +15,7 @@ interface DmListUnitProps {
   messageTime: string;
   messageCnt: number;
   lastMessage: string;
+  onClick: () => void;
 }
 
 const DmListUnit = ({
@@ -24,6 +25,7 @@ const DmListUnit = ({
   messageTime,
   messageCnt,
   lastMessage,
+  onClick,
 }: DmListUnitProps) => {
   const navigate = useNavigate();
 
@@ -38,7 +40,7 @@ const DmListUnit = ({
         userName={userName}
         userProfile={userProfile || '../../defaultProfile.svg'}
       />
-      <S.InnerContainer type="button">
+      <S.InnerContainer type="button" onClick={onClick}>
         <S.Name>{userName}</S.Name>
         <S.DmContentContainer>
           <S.Message>{lastMessage}</S.Message>

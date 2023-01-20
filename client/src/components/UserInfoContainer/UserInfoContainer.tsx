@@ -19,7 +19,7 @@ import { Api, UserInfo } from '../../types/responseData';
 import menuBtn from '../../static/menuBtn.svg';
 
 const UserInfoContainer = ({ targetId }: { targetId: number }) => {
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { userId } = useRecoilValue(user);
@@ -64,7 +64,7 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
   }
 
   const onClickFollowCnt = () => {
-    navigation(`/follow/${userInfo.data.userName}/${userInfo.data.userId}`);
+    navigate(`/follow/${userInfo.data.userName}/${userInfo.data.userId}`);
   };
 
   const onClickFollowBtn = () => {
@@ -73,7 +73,7 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
   };
 
   const onClickModifyBtn = () => {
-    navigation('/modify-user');
+    navigate('/modify-user');
   };
 
   return (
@@ -132,7 +132,16 @@ const UserInfoContainer = ({ targetId }: { targetId: number }) => {
           >
             {userInfo.data.followed_by_viewer ? '팔로잉' : '팔로우'}
           </S.FollowButton>
-          <S.DMButton type="button">메시지</S.DMButton>
+          <S.DMButton
+            type="button"
+            onClick={() =>
+              navigate(`/dm/${userInfo.data.userName}/${targetId}`, {
+                state: { roomId: undefined },
+              })
+            }
+          >
+            메시지
+          </S.DMButton>
         </S.ButtonContainer>
       )}
     </>
