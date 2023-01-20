@@ -17,8 +17,8 @@ export class DmController {
   constructor(private readonly dmService: DmService) {}
 
   @Get(':userId')
-  getChatRoomLists(@Param('userId', ParseIntPipe) userId: number) {
-    return this.dmService.getChatRoomLists(userId);
+  getDMRoomLists(@Param('userId', ParseIntPipe) userId: number) {
+    return this.dmService.getDMRoomLists(userId);
   }
 
   @Get('')

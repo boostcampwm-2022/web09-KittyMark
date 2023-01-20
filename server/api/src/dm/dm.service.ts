@@ -3,6 +3,7 @@ import { DMRoomRepository } from './dmroom.repository';
 import { DMRepository } from '@repository/dm.repository';
 import { GetMessageDto } from './dto/get-message.dto';
 import { UpdateLastSeenChatDto } from './dto/update-lastSeenChat.dto';
+import { pipe, map, toArray } from '@fxts/core';
 
 @Injectable()
 export class DmService {
@@ -11,7 +12,7 @@ export class DmService {
     private readonly dmRepository: DMRepository,
   ) {}
 
-  async getChatRoomLists(userId: number) {
+  async getDMRoomLists(userId: number) {
     const result = await this.dmRoomRepository.getListByUserId(userId);
     const dmRooms = await result.reduce(async (promise, curr) => {
       const acc = await promise.then();
@@ -55,29 +56,30 @@ export class DmService {
         count,
       );
 
-      if (messages.length > 0) {
-        const cnt = messages.length;
-        const next_max_id = messages[cnt - 1].id;
+      const cnt = messages.length;
+      let next_max_id;
+
+      if (cnt > 0) {
+        next_max_id = messages[cnt - 1].id;
         await this.dmRoomRepository.updateLastSeenChat(
           dmRoomId,
           userId,
-          next_max_id,
+          messages[0].id,
         );
-
-        return {
-          dmRoomId,
-          messages,
-          count: cnt,
-          next_max_id,
-        };
       } else {
-        return {
-          dmRoomId,
-          messages,
-          count: 0,
-          next_max_id: -1,
-        };
+        next_max_id = -1;
       }
+
+      return {
+        dmRoomId,
+        messages: pipe(
+          messages,
+          map((message) => message.toClient()),
+          toArray,
+        ),
+        count: cnt,
+        next_max_id,
+      };
     } else {
       // userId와 otherUserId로 dmRoomId 찾기
       const dmRoom = await this.dmRoomRepository.getRoomIdByUsers(
@@ -93,30 +95,30 @@ export class DmService {
           count,
         );
 
-        if (messages.length > 0) {
-          const cnt = messages.length;
-          const next_max_id = messages[cnt - 1].id;
+        const cnt = messages.length;
+        let next_max_id;
 
+        if (cnt > 0) {
+          next_max_id = messages[cnt - 1].id;
           await this.dmRoomRepository.updateLastSeenChat(
             dmRoom.id,
             userId,
-            next_max_id,
+            messages[0].id,
           );
-
-          return {
-            dmRoomId: dmRoom.id,
-            messages,
-            count: cnt,
-            next_max_id,
-          };
         } else {
-          return {
-            dmRoomId: dmRoom.id,
-            messages,
-            count: 0,
-            next_max_id: -1,
-          };
+          next_max_id = -1;
         }
+
+        return {
+          dmRoomId: dmRoom.id,
+          messages: pipe(
+            messages,
+            map((message) => message.toClient()),
+            toArray,
+          ),
+          count: cnt,
+          next_max_id,
+        };
       } else {
         // 해당 유저들에 대해 dmRoom이 존재하지 않으면 생성하기
         const createdRoom = await this.dmRoomRepository.createRoomByUsers(
