@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import ProfileIcon from '../ProfileIcon/ProfileIcon';
+import { useNavigate } from 'react-router-dom';
 // style
 import S from './DmListUnitStyles';
 // util
 import timeCalc from '../../utils/timeCalc';
+// component
+import ProfileIcon from '../ProfileIcon/ProfileIcon';
 
 interface DmListUnitProps {
   targetId: number;
@@ -13,6 +15,7 @@ interface DmListUnitProps {
   messageTime: string;
   messageCnt: number;
   lastMessage: string;
+  onClick: () => void;
 }
 
 const DmListUnit = ({
@@ -22,7 +25,14 @@ const DmListUnit = ({
   messageTime,
   messageCnt,
   lastMessage,
+  onClick,
 }: DmListUnitProps) => {
+  const navigate = useNavigate();
+
+  const onClickDmListUnit = () => {
+    navigate('/');
+  };
+
   return (
     <S.OuterContainer>
       <ProfileIcon
@@ -30,7 +40,7 @@ const DmListUnit = ({
         userName={userName}
         userProfile={userProfile || '../../defaultProfile.svg'}
       />
-      <S.InnerContainer type="button">
+      <S.InnerContainer type="button" onClick={onClick}>
         <S.Name>{userName}</S.Name>
         <S.DmContentContainer>
           <S.Message>{lastMessage}</S.Message>

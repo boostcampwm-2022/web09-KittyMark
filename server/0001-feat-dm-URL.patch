@@ -1,0 +1,173 @@
+From 9c644c25d54b2703548ca2071069c326ca9e1256 Mon Sep 17 00:00:00 2001
+From: hjy0951 <hjy0951@gmail.com>
+Date: Tue, 17 Jan 2023 17:02:41 +0900
+Subject: [PATCH] =?UTF-8?q?feat:=20dm=20=ED=8E=98=EC=9D=B4=EC=A7=80=20URL?=
+ =?UTF-8?q?=20=EB=B3=80=EA=B2=BD?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ client/src/App.tsx                            |  4 ++--
+ server/api/src/dm/dm.service.ts               |  3 ---
+ .../api/src/dm/dto/update-lastSeenChat.dto.ts |  4 ++--
+ server/dao/repository/dm.repository.ts        | 21 ++++++++++++-------
+ server/socket/src/event/dmEvent.service.ts    | 14 +++++++++----
+ server/socket/src/redis.adapter.ts            |  4 ++--
+ 6 files changed, 30 insertions(+), 20 deletions(-)
+
+diff --git a/client/src/App.tsx b/client/src/App.tsx
+index d790ce9..7410cf5 100644
+--- a/client/src/App.tsx
++++ b/client/src/App.tsx
+@@ -65,9 +65,9 @@ const App = () => {
+               />
+               <Route path="/map" element={<MapPage />} />
+               <Route path="/detail" element={<BoardDetailPage />} />
+-              <Route path="/dmtest" element={<DmListPage />} />
++              <Route path="/dm" element={<DmListPage />} />
+               <Route
+-                path="/direct/:senderName"
++                path="/dm/:senderName/:senderId"
+                 element={<DirectMessagePage />}
+               />
+             </Routes>
+diff --git a/server/api/src/dm/dm.service.ts b/server/api/src/dm/dm.service.ts
+index d04fb63..549036b 100644
+--- a/server/api/src/dm/dm.service.ts
++++ b/server/api/src/dm/dm.service.ts
+@@ -137,9 +137,6 @@ export class DmService {
+ 
+   async updateLastSeenDM(updateLastSeenChatDto: UpdateLastSeenChatDto) {
+     const { dmRoomId, userId, messageId } = updateLastSeenChatDto;
+-    if (!messageId) {
+-      return;
+-    }
+     return await this.dmRoomRepository.updateLastSeenChat(
+       dmRoomId,
+       userId,
+diff --git a/server/api/src/dm/dto/update-lastSeenChat.dto.ts b/server/api/src/dm/dto/update-lastSeenChat.dto.ts
+index 617d0d6..3897beb 100644
+--- a/server/api/src/dm/dto/update-lastSeenChat.dto.ts
++++ b/server/api/src/dm/dto/update-lastSeenChat.dto.ts
+@@ -1,5 +1,5 @@
+ import { Transform } from 'class-transformer';
+-import { IsInt, IsNotEmpty, IsOptional } from 'class-validator';
++import { IsInt, IsNotEmpty } from 'class-validator';
+ 
+ export class UpdateLastSeenChatDto {
+   @IsNotEmpty()
+@@ -12,6 +12,6 @@ export class UpdateLastSeenChatDto {
+   @Transform(({ value }) => parseInt(value, 10))
+   userId: number;
+ 
+-  @IsOptional()
++  @IsNotEmpty()
+   messageId: string;
+ }
+diff --git a/server/dao/repository/dm.repository.ts b/server/dao/repository/dm.repository.ts
+index 846ce87..eb1d60c 100644
+--- a/server/dao/repository/dm.repository.ts
++++ b/server/dao/repository/dm.repository.ts
+@@ -20,8 +20,11 @@ export class DMRepository {
+   async findByRoomIdFrom(roomId: number, maxId: string, count: number) {
+     if (maxId === '-1') {
+       const result = await this.dmModel
+-        .find({ dmRoomId: roomId }, 'sender content createdAt')
+-        .sort({ createdAt: -1, _id: -1 })
++        .find(
++          { dmRoomId: roomId },
++          { _id: 0, id: '$_id', sender: 1, content: 1, createdAt: 1 },
++        )
++        .sort({ createdAt: -1, id: -1 })
+         .limit(count)
+         .exec();
+       return result;
+@@ -37,9 +40,9 @@ export class DMRepository {
+             createdAt: { $lte: maxChat.createdAt },
+             _id: { $lt: maxChat.id },
+           },
+-          'sender content createdAt',
++          { _id: 0, id: '$_id', sender: 1, content: 1, createdAt: 1 },
+         )
+-        .sort({ createdAt: -1, _id: -1 })
++        .sort({ createdAt: -1, id: -1 })
+         .limit(count)
+         .exec();
+ 
+@@ -49,9 +52,13 @@ export class DMRepository {
+ 
+   async findRecentMessageByRoomId(roomId: number) {
+     const result = await this.dmModel
+-      .findOne({ dmRoomId: roomId }, 'sender content createdAt', {
+-        sort: { createdAt: -1, _id: -1 },
+-      })
++      .findOne(
++        { dmRoomId: roomId },
++        { _id: 0, id: '$_id', sender: 1, content: 1, createdAt: 1 },
++        {
++          sort: { createdAt: -1, id: -1 },
++        },
++      )
+       .exec();
+     return result;
+   }
+diff --git a/server/socket/src/event/dmEvent.service.ts b/server/socket/src/event/dmEvent.service.ts
+index 834a079..cc8e6ae 100644
+--- a/server/socket/src/event/dmEvent.service.ts
++++ b/server/socket/src/event/dmEvent.service.ts
+@@ -9,8 +9,8 @@ export class DmEventService {
+   logger = new Logger('DmEventService');
+   constructor(private readonly dmRepository: DMRepository) {}
+ 
+-  async init(userId, socket: Socket) {
+-    await Redis.set(userId, socket.id);
++  async init(userId: number, socket: Socket) {
++    await Redis.set(String(userId), socket.id);
+   }
+ 
+   async chat(client: Socket, dm: DMEvent, server: Server) {
+@@ -18,12 +18,18 @@ export class DmEventService {
+     this.logger.log(`메세지 받음 ${sender}: [${content}]`);
+     // const s = receiver + '';
+ 
+-    await this.dmRepository.saveMessage(dmRoomId, sender, content);
++    const message = await this.dmRepository.saveMessage(
++      dmRoomId,
++      sender,
++      content,
++    );
++
++    console.log(message._id);
+     const target = await Redis.get(String(receiver));
+     const targetSocket = await Redis.get(client.id);
+ 
+     if (target && targetSocket) {
+-      server.to(target).emit('chat', content);
++      server.to(target).emit('chat', { content, messageId: message._id });
+     }
+   }
+ }
+diff --git a/server/socket/src/redis.adapter.ts b/server/socket/src/redis.adapter.ts
+index 53aac54..76f71a6 100644
+--- a/server/socket/src/redis.adapter.ts
++++ b/server/socket/src/redis.adapter.ts
+@@ -1,5 +1,5 @@
+ import { IoAdapter } from '@nestjs/platform-socket.io';
+-import { ServerOptions } from 'socket.io';
++import { ServerOptions, Server } from 'socket.io';
+ import { createAdapter } from '@socket.io/redis-adapter';
+ import { createClient } from 'redis';
+ import * as dotenv from 'dotenv';
+@@ -20,7 +20,7 @@ export class RedisIoAdapter extends IoAdapter {
+     this.adapterConstructor = createAdapter(pubClient, subClient);
+   }
+ 
+-  createIOServer(port: number, options?: ServerOptions): any {
++  createIOServer(port: number, options?: ServerOptions): Server {
+     const server = super.createIOServer(port, options);
+     server.adapter(this.adapterConstructor);
+     return server;
+-- 
+2.37.3
+

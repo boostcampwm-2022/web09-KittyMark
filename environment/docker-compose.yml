@@ -13,6 +13,9 @@ services:
   react:
     image: "ghcr.io/wooseongshin/client:latest"
     restart: always
-  nest:
-    image: "ghcr.io/wooseongshin/server:latest"
+  api:
+    image: "ghcr.io/wooseongshin/api:latest"
+    restart: always
+  socket:
+    image: "ghcr.io/wooseongshin/socket:latest"
     restart: always
