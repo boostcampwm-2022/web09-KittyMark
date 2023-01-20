@@ -1,11 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
-import { IsString } from 'class-validator';
-
-export type ChatDocument = HydratedDocument<DM>;
+import mongoose, { Document } from 'mongoose';
 
 @Schema({ timestamps: { createdAt: 'createdAt' } })
-export class DM {
+export class DM extends Document {
   @Prop({ required: true, type: mongoose.Schema.Types.Number })
   dmRoomId: number;
 
@@ -13,14 +10,37 @@ export class DM {
   sender: number;
 
   @Prop({ required: true })
-  @IsString()
   content: string;
 
   @Prop({ default: new Date(), type: mongoose.Schema.Types.Date })
   createdAt: Date;
+
+  toClient(): { id: string; sender: number; content: string; createdAt: Date } {
+    const obj = {
+      id: this._id,
+      sender: this.sender,
+      content: this.content,
+      createdAt: this.createdAt,
+    };
+
+    return obj;
+  }
 }
 
 export const DMSchema = SchemaFactory.createForClass(DM);
+
+DMSchema.loadClass(DM);
+
+// DMSchema.methods.toClient = function () {
+//   const obj = {
+//     id: this._id,
+//     sender: this.sender,
+//     content: this.content,
+//     createdAt: this.createdAt,
+//   };
+
+//   return obj;
+// };
 
 // message {
 //     id: fjaoijdf-1348-dga0g,

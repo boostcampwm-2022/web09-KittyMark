@@ -1,11 +1,11 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import { DM, ChatDocument } from '@schemas/dm.schema';
+import { DM } from '@schemas/dm.schema';
 import { Model } from 'mongoose';
 
 @Injectable()
 export class DMRepository {
-  constructor(@InjectModel(DM.name) private dmModel: Model<ChatDocument>) {}
+  constructor(@InjectModel(DM.name) private dmModel: Model<DM>) {}
 
   async findByRoomId(roomId: number) {
     const result = await this.dmModel
@@ -20,11 +20,8 @@ export class DMRepository {
   async findByRoomIdFrom(roomId: number, maxId: string, count: number) {
     if (maxId === '-1') {
       const result = await this.dmModel
-        .find(
-          { dmRoomId: roomId },
-          { _id: 0, id: '$_id', sender: 1, content: 1, createdAt: 1 },
-        )
-        .sort({ createdAt: -1, id: -1 })
+        .find({ dmRoomId: roomId }, { sender: 1, content: 1, createdAt: 1 })
+        .sort({ createdAt: -1, _id: -1 })
         .limit(count)
         .exec();
       return result;
@@ -38,9 +35,9 @@ export class DMRepository {
             createdAt: { $lte: maxChat.createdAt },
             _id: { $lt: maxChat.id },
           },
-          { _id: 0, id: '$_id', sender: 1, content: 1, createdAt: 1 },
+          { sender: 1, content: 1, createdAt: 1 },
         )
-        .sort({ createdAt: -1, id: -1 })
+        .sort({ createdAt: -1, _id: -1 })
         .limit(count)
         .exec();
 
@@ -52,9 +49,9 @@ export class DMRepository {
     const result = await this.dmModel
       .findOne(
         { dmRoomId: roomId },
-        { _id: 0, id: '$_id', sender: 1, content: 1, createdAt: 1 },
+        { sender: 1, content: 1, createdAt: 1 },
         {
-          sort: { createdAt: -1, id: -1 },
+          sort: { createdAt: -1, _id: -1 },
         },
       )
       .exec();
