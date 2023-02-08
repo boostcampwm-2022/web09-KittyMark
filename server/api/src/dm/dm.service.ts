@@ -3,7 +3,7 @@ import { DMRoomRepository } from './dmroom.repository';
 import { DMRepository } from '@repository/dm.repository';
 import { GetMessageDto } from './dto/get-message.dto';
 import { UpdateLastSeenChatDto } from './dto/update-lastSeenChat.dto';
-import { pipe, map, toArray } from '@fxts/core';
+import { pipe, map, toArray, reverse } from '@fxts/core';
 
 @Injectable()
 export class DmService {
@@ -75,6 +75,7 @@ export class DmService {
         messages: pipe(
           messages,
           map((message) => message.toClient()),
+          reverse,
           toArray,
         ),
         count: cnt,
@@ -114,6 +115,7 @@ export class DmService {
           messages: pipe(
             messages,
             map((message) => message.toClient()),
+            reverse,
             toArray,
           ),
           count: cnt,
