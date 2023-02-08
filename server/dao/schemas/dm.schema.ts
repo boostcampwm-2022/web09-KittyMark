@@ -12,7 +12,7 @@ export class DM extends Document {
   @Prop({ required: true })
   content: string;
 
-  @Prop({ default: new Date(), type: mongoose.Schema.Types.Date })
+  @Prop({ type: mongoose.Schema.Types.Date })
   createdAt: Date;
 
   toClient(): { id: string; sender: number; content: string; createdAt: Date } {
